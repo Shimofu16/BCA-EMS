@@ -1,4 +1,5 @@
-@extends('homepage.index')
+@extends('BCA.Home.pages.home.index')
+
 @section('page_level_css')
     <link rel="stylesheet" href="{{ asset('css/home/carousel.css') }}">
 @endsection
@@ -28,6 +29,9 @@
             <div class="d-flex justify-content-end">
                 <a href="{{ route('enroll.index') }}" class="btn btn-bca"><i class="fa-solid fa-book"></i>&#160;&#160;Enroll now</a>
             </div>
+        </div>
+        <div class="container">
+            <hr>
         </div>
         <h3 class="mt-4">More Photos</h3>
         <div class="row gy-2 gx-2">

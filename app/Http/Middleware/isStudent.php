@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class isStudent
 {
@@ -16,6 +17,16 @@ class isStudent
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
+        if (Auth::guard('student')->check()) {
+            if (Auth::guard('student')->user()->active == 1) {
+                return $next($request);
+            } else {
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+            }
+        }
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('student.portal');
     }
 }

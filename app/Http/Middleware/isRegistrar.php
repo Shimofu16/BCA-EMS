@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class isRegistrar
 {
@@ -16,6 +17,15 @@ class isRegistrar
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
+        if (Auth::guard('registrar')->check()) {
+            if (Auth::guard('registrar')->user()->active == 1  && Auth::guard('registrar')->user()->isRegistrar == 1) {
+                return $next($request);
+            }  elseif (Auth::guard('registrar')->user()->active == 1 && Auth::guard('registrar')->user()->isRegistrar == 0) {
+                return redirect()->route('cashier.dashboard.index');
+            }
+        }
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('registrar.portal');
     }
 }

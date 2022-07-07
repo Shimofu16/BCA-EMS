@@ -1,4 +1,4 @@
-@extends('homepage.index')
+@extends('BCA.Home.pages.home.index')
 @section('title')
     <span class="text-bca">A</span>bout <span class="text-bca">U</span>s
 @endsection

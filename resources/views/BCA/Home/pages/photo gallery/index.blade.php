@@ -1,4 +1,4 @@
-@extends('homepage.index')
+@extends('BCA.Home.index')
 @section('title')
 <span class="text-bca">P</span>hoto <span class="text-bca">G</span>allery
 @endsection
@@ -8,7 +8,7 @@
 @section('contents')
 <section>
     <div class="container-sm">
-        @include('homepage.pages.partials._pageTitle')
+        @include('BCA.Home.pages.partials._pageTitle')
         <div class="row gy-2 gx-2">
             <div class="col-sm-5 col-md-5 col-lg-4">
                 <div class="box rounded-3">

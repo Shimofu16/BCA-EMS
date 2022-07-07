@@ -1,16 +1,15 @@
-@extends('homepage.pages.portal.index')
+@extends('BCA.Home.pages.portal.index')
 @section('title')
 Breakthrough Christian Academy
 @endsection
 @section('message')
 <h1 class="h6 text-gray-900">Type Your Email</h1>
-
 @endsection
 @section('forms')
 @if (Request::is(''))
 
 @endif
-    <form class="user" method="POST" action="{{ route('send') }}">
+    <form class="user" method="POST" action="{{ route('send.otp') }}">
         @csrf
         <div class="form-group">
             <label for="email" class="col-form-label text-md-end text-dark">Email</label>

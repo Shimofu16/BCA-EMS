@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- font awesome -->
     {{-- bootstrap --}}
-    <link href="{{ asset('css/sb-admin/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sb-admin/sb-admin-2.min.css') }}" rel="stylesheet">
     {{-- custom css --}}
-    <link rel="stylesheet" href="{{ asset('css/home/custom.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/home/custom.css') }}" />
     {{-- hover effects --}}
     {{-- school logo --}}
-    <link rel="icon" href="{{ asset('img/BCA-Logo.png') }}">
+    <link rel="icon" href="{{ asset('assets/img/BCA-Logo.png') }}">
     {{-- page level css --}}
 
     @yield('page_level_css')
@@ -33,15 +33,14 @@
                         <!-- Nested Row within Card Body -->
                         <div class="row">
                             <div class="col-lg-6 d-none d-lg-block">
-                                <img src="{{ asset('img/students/Pre-School/nursery.jpg') }}" alt="login"
+                                <img src="{{ asset('assets/img/students/Pre-School/nursery.jpg') }}" alt="login"
                                     class="img-fluid">
                             </div>
                             <div class="col-lg-6">
                                 <div class="mt-5 px-5">
                                     <div class="text-center">
-                                        <a class="" href="{{ route('special.index') }}">
-                                            <img src="{{ asset('img/BCA-Logo.png') }}" alt="" class="loginLogo mb-2">
-                                        </a>
+                                        <img src="{{ asset('assets/img/BCA-Logo.png') }}" alt=""
+                                            class="loginLogo mb-2">
                                         <h1 class="h4 text-gray-900 mb-2">@yield('title')</h1>
                                         @yield('message')
                                     </div>

@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Registrar\Family;
-use App\Models\Student\Student;
+use App\Models\Registrar\Student;
 use Illuminate\Database\Seeder;
 
 class StudentSeeder extends Seeder

@@ -1,4 +1,5 @@
-@extends('homepage.pages.portal.index')
+@extends('BCA.Home.pages.portal.index')
+
 @section('title')
 Admin Portal
 @endsection

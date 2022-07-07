@@ -1,4 +1,5 @@
-@extends('homepage.index')
+@extends('BCA.Home.pages.home.index')
+
 @section('page_level_css')
     <link rel="stylesheet" href="{{ asset('css/home/carousel.css') }}">
 @endsection

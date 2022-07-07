@@ -1,4 +1,5 @@
-@extends('homepage.index')
+@extends('BCA.Home.pages.home.index')
+
 @section('title')
     <span class="text-bca">C</span>alendar
 @endsection

@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Cashier\CashierDashboardController;
 use App\Http\Controllers\Home\HomeController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Manage\MailController;
+use App\Http\Controllers\Student\StudentDashboardController;
 use App\Models\Registrar\GradeLevel;
 use Illuminate\Support\Facades\Route;
 
@@ -36,10 +41,10 @@ Route::middleware(['guest', 'PreventBack'])->group(function () {
     Route::controller(MailController::class)->group(function () {
         Route::post('/resend/verification/code', 'resendCode')->name('resend.code');
         Route::get('/verify', 'verifyStudent')->name('verify.student');
-        Route::post('/send/otp/code', 'sendOtp')->name('send.otp');
+        Route::post('/send/otp/code', 'resendCode')->name('send.otp');
     });
-    Route::view('/resend/verification', 'homepage.pages.verification.index');
-    Route::view('/send/otp', 'homepage.pages.verification.index')->name('otp');
+    Route::view('/resend/verification', 'BCA.Home.pages.verification.index');
+    Route::view('/send/otp', 'BCA.Home.pages.verification.index')->name('otp');
 });
 /* route::get('/verify/email', function () {
     $code = sha1(time());
@@ -63,15 +68,15 @@ route::get('/accepted/email', function () {
     MailController::sendAcceptedMail($name, $recipient, $password);
 }); */
 route::prefix('admin')->name('admin.')->group(function () {
-    route::middleware(['guest:admin', 'preventBack'])->controller(LoginController::class)->group(function () {
-        Route::view('/portal', 'homepage.pages.portal.portals.admin')->name('portal');
+    route::middleware(['guest:admin', 'PreventBack'])->controller(LoginController::class)->group(function () {
+        Route::view('/portal', 'BCA.Home.pages.portal.portals.admin')->name('portal');
         Route::post('/login', 'adminLogin')->name('login');
     });
     route::middleware(['auth:admin', 'isAdmin'])->group(function () {
         Route::post('/logout', [LoginController::class, 'adminLogout'])->name('logout');
-        Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard.index');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard.index');
 
-        route::name('events.')->controller(EventsController::class)->group(function () {
+        route::name('events.')->controller(EventController::class)->group(function () {
             Route::get('/events', 'index')->name('index');
             Route::post('/events/add', 'store')->name('store');
             Route::put('/events/update/{id}', 'update')->name('update');
@@ -80,8 +85,8 @@ route::prefix('admin')->name('admin.')->group(function () {
     });
 });
 route::prefix('cashier')->name('cashier.')->group(function () {
-    route::middleware(['guest:registrar', 'preventBack'])->controller(LoginController::class)->group(function () {
-        Route::view('/portal', 'homepage.pages.portal.portals.registrar')->name('portal');
+    route::middleware(['guest:registrar', 'PreventBack'])->controller(LoginController::class)->group(function () {
+        Route::view('/portal', 'BCA.Home.pages.portal.portals.registrar')->name('portal');
         Route::post('/login', 'registrarLogin')->name('login');
     });
     route::middleware(['auth:registrar', 'isCashier'])->group(function () {
@@ -104,8 +109,8 @@ route::prefix('cashier')->name('cashier.')->group(function () {
 });
 
 Route::prefix('registrar')->name('registrar.')->group(function () {
-    route::middleware(['guest:registrar', 'preventBack'])->controller(LoginController::class)->group(function () {
-        Route::view('/portal', 'homepage.pages.portal.portals.registrar')->name('portal');
+    route::middleware(['guest:registrar', 'PreventBack'])->controller(LoginController::class)->group(function () {
+        Route::view('/portal', 'BCA.Home.pages.portal.portals.registrar')->name('portal');
         Route::post('/login', 'registrarLogin')->name('login');
     });
     Route::middleware(['auth:registrar', 'isRegistrar'])->group(function () {
@@ -170,8 +175,8 @@ Route::prefix('registrar')->name('registrar.')->group(function () {
 });
 
 route::prefix('teacher')->name('teacher.')->group(function () {
-    route::middleware(['guest:teacher', 'preventBack'])->controller(LoginController::class)->group(function () {
-        Route::view('/portal', 'homepage.pages.portal.portals.teacher')->name('portal');
+    route::middleware(['guest:teacher', 'PreventBack'])->controller(LoginController::class)->group(function () {
+        Route::view('/portal', 'BCA.Home.pages.portal.portals.teacher')->name('portal');
         Route::post('/login', 'teacherLogin')->name('login');
     });
     route::middleware(['auth:teacher'])->group(function () {
@@ -180,13 +185,13 @@ route::prefix('teacher')->name('teacher.')->group(function () {
     });
 });
 route::prefix('student')->name('student.')->group(function () {
-    route::middleware(['guest:student', 'preventBack'])->controller(LoginController::class)->group(function () {
-        Route::view('/portal', 'homepage.pages.portal.portals.student')->name('portal');
+    route::middleware(['guest:student', 'PreventBack'])->controller(LoginController::class)->group(function () {
+        Route::view('/portal', 'BCA.Home.pages.portal.portals.student')->name('portal');
         Route::post('/login', 'studentLogin')->name('login');
     });
     route::middleware(['auth:student', 'isStudent'])->group(function () {
         Route::post('/logout', [LoginController::class, 'studentlogout'])->name('logout');
-        Route::get('/dashboard', [StudentDashboard::class, 'index'])->name('dashboard.index');
+        Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard.index');
 
         Route::name('enrolment.')->controller(StudentEnrollmentController::class)->group(function () {
             Route::get('/enrolment', 'index')->name('index');

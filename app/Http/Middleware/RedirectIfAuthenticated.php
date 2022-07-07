@@ -23,10 +23,22 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                if ($guard == 'admin') {
+                    return redirect()->intended(route('admin.dashboard.index'));
+                }
+                if ($guard == 'registrar') {
+                    if (Auth::guard('registrar')->user()->isRegistrar == 1) {
+                        return redirect()->intended(route('registrar.dashboard.index'));
+                    } else {
+                        return redirect()->intended(route('cashier.dashboard.index'));
+                    }
+                }
+                if ($guard == 'student') {
+                    return redirect()->intended(route('student.dashboard.index'));
+                }
+                return redirect()->route('home.index');
             }
         }
-
         return $next($request);
     }
 }

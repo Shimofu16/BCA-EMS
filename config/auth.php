@@ -17,6 +17,22 @@ return [
         'guard' => 'web',
         'passwords' => 'users',
     ],
+    'admins' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Admin\AdminAccount::class,
+    ],
+    'registrars' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Registrar\RegistrarAccount::class,
+    ],
+    'teachers' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Teacher\TeacherAccount::class,
+    ],
+    'students' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Student\StudentAccount::class,
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -39,6 +55,22 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+        ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+        'registrar' => [
+            'driver' => 'session',
+            'provider' => 'registrars',
+        ],
+        'teacher' => [
+            'driver' => 'session',
+            'provider' => 'teachers',
+        ],
+        'student' => [
+            'driver' => 'session',
+            'provider' => 'students',
         ],
     ],
 
@@ -69,6 +101,22 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin\AdminAccount::class,
+        ],
+        'registrars' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Registrar\RegistrarAccount::class,
+        ],
+        'teachers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Teacher\TeacherAccount::class,
+        ],
+        'students' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Student\StudentAccount::class,
+        ],
     ],
 
     /*
@@ -92,6 +140,22 @@ return [
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
+        ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin\AdminAccount::class,
+        ],
+        'registrars' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Registrar\RegistrarAccount::class,
+        ],
+        'teachers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Teacher\TeacherAccount::class,
+        ],
+        'students' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Student\StudentAccount::class,
         ],
     ],
 
