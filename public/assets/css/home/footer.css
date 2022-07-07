@@ -1,0 +1,40 @@
+.footer-title {
+    font-size: 22px;
+    color: #fff;
+    font-weight: 500;
+}
+
+.footer-text {
+    font-size: 13px;
+    font-weight: 400;
+    color: #ffffff;
+}
+
+.footer-icon-o {
+    font-size: 18px;
+    color: #ffffff !important;
+    margin-right: 5px;
+}
+
+.footer-icon {
+    font-size: 25px;
+    color: #ffffff;
+}
+
+.footer-bg {
+    background-color: var(--bca);
+}
+
+.footer-icon-border {
+    border: 2px solid #fff;
+    border-radius: 5px;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    background: transparent;
+    margin: 0 10px;
+    animation: myAnim 1s ease-in 0s 1 normal forwards;
+}

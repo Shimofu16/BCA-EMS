@@ -1,0 +1,609 @@
+:root {
+    --bca: #0b2090;
+    --bca-hover: #041470;
+    --bcahover: #1c309e;
+    --text-color: #2b3233;
+}
+
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #0b2090;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #041677;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+
+/* global custom css */
+
+.pt-home {
+    padding-top: 100px;
+    background-color: #f2f7fb;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.container.pt-home {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+@media (max-width: 768px) {
+    .pt-home {
+        padding-top: 12vh;
+    }
+}
+
+.overflow-x {
+    overflow-x: scroll;
+}
+
+.btn-bca {
+    color: #fff !important;
+    border-color: var(--bca) !important;
+    background-color: var(--bca) !important;
+}
+
+.btn-bca:hover {
+    color: #fff !important;
+    border-color: var(--bca) !important;
+    background-color: var(--bcahover) !important;
+}
+
+.btn-bca-outline {
+    border: 1px solid var(--bca) !important;
+}
+
+.text-bca {
+    color: var(--bca) !important;
+    text-decoration: none !important;
+}
+
+.home-title {
+    font-size: 38px;
+    color: #2b3233;
+}
+
+.bg-bca {
+    background-color: var(--bca);
+}
+
+
+/* navigation bar */
+
+.bg-bca-nav {
+    background-color: #f3f7fb;
+}
+
+.navbar-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+.myLogo {
+    height: 70px;
+    width: 70px;
+    margin-right: 1rem;
+}
+
+@media (max-width: 425px) {
+    .myLogo {
+        height: 50px;
+        width: 50px;
+        margin-right: 1rem;
+    }
+    .navbar-title {
+        font-size: 1rem;
+    }
+}
+
+.nav-item .hover-bca {
+    transition: all 0.5s ease !important;
+    border-radius: 5px;
+}
+
+.nav-item:hover a {
+    background-color: var(--bca);
+    color: #fff !important;
+}
+
+.nav-line.active a {
+    background-color: var(--bca)!important;
+    color: #fff !important;
+}
+
+.nav-line {
+    position: relative;
+}
+
+.nav-line::before {
+    content: "";
+    position: absolute;
+    background-color: #fff;
+    visibility: hidden;
+    height: 3px;
+    bottom: -5px;
+    width: 50%;
+    transform: translateX(50%);
+    transition: all 0.4s ease;
+    z-index: 10000;
+}
+
+.nav-line.active::before,
+.nav-line:hover::before {
+    bottom: 10px;
+    visibility: visible;
+}
+
+.dropdown-menu .hover-bca-dd:hover {
+    color: var(--bca) !important;
+    background-color: #fff;
+}
+
+.dropdown-menu li {
+    position: relative;
+}
+
+.navbar-nav .nav-item:hover #dd {
+    display: block;
+}
+
+.dropdown-menu li:hover .submenu {
+    display: block;
+}
+
+.submenu {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: -3px;
+}
+
+
+/* burger */
+
+.navbar-toggler-icon:not(.collapsed) {
+    width: 30px;
+    height: 20px;
+    position: relative;
+    margin: 0px;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: 0.5s ease-in-out;
+    -moz-transition: 0.5s ease-in-out;
+    -o-transition: 0.5s ease-in-out;
+    transition: 0.5s ease-in-out;
+    cursor: pointer;
+}
+
+.navbar-toggler-icon span {
+    display: block;
+    position: absolute;
+    height: 5px;
+    width: 100%;
+    border-radius: 9px;
+    opacity: 1;
+    left: 0;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: 0.25s ease-in-out;
+    -moz-transition: 0.25s ease-in-out;
+    -o-transition: 0.25s ease-in-out;
+    transition: 0.25s ease-in-out;
+}
+
+.navbar-toggler-icon span {
+    background: var(--bca);
+}
+
+.navbar-toggler-icon span:nth-child(1) {
+    top: 0px;
+    -webkit-transform-origin: left center;
+    -moz-transform-origin: left center;
+    -o-transform-origin: left center;
+    transform-origin: left center;
+}
+
+.navbar-toggler-icon span:nth-child(2) {
+    top: 10px;
+    -webkit-transform-origin: left center;
+    -moz-transform-origin: left center;
+    -o-transform-origin: left center;
+    transform-origin: left center;
+}
+
+.navbar-toggler-icon span:nth-child(3) {
+    top: 20px;
+    -webkit-transform-origin: left center;
+    -moz-transform-origin: left center;
+    -o-transform-origin: left center;
+    transform-origin: left center;
+}
+
+.navbar-toggler-icon.collapsed span:nth-child(2) {
+    width: 0%;
+    opacity: 0;
+}
+
+.navbar-toggler-icon.collapsed span:nth-child(3) {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    top: 21px;
+    left: 8px;
+}
+
+
+/* footer */
+
+.footer-title {
+    font-size: 22px;
+    color: #fff;
+    font-weight: 500;
+}
+
+.footer-text {
+    font-size: 13px;
+    font-weight: 400;
+    color: #ffffff;
+}
+
+.footer-icon-o {
+    font-size: 18px;
+    color: #ffffff !important;
+    margin-right: 5px;
+}
+
+.footer-icon {
+    font-size: 25px;
+    color: #ffffff;
+}
+
+.footer-bg {
+    background-color: var(--bca);
+}
+
+.footer-icon-border {
+    border: 2px solid #fff;
+    border-radius: 5px;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    background: transparent;
+    margin: 0 10px;
+    animation: myAnim 1s ease-in 0s 1 normal forwards;
+}
+
+
+/* dashboard */
+
+
+/* ========== contents========== */
+
+.plr-custom {
+    padding: 0 100px !important;
+    background-color: blue;
+}
+
+.custom-btn {
+    border: none;
+    background: transparent;
+    filter: none;
+    cursor: pointer;
+}
+
+.row-c-height {
+    height: 576px !important;
+}
+
+
+/* ========== =========================================== HOME CSS ================================================================= */
+
+
+/* home icons */
+
+.home-icon-border {
+    font-size: 36px;
+    line-height: 90px;
+    height: 90px;
+    width: 90px;
+    text-align: center;
+    border: 2px solid #0b2090;
+    border-radius: 50%;
+}
+
+.home-icons {
+    color: var(--bca);
+}
+
+.icon-title {
+    color: #2b3233 !important;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.icon-sub-title {
+    color: #2b3233;
+    font-size: 16px;
+}
+
+
+/* news */
+
+#news {
+    height: 50%;
+}
+
+.news-hover {
+    transition: all 0.3s ease;
+}
+
+.news-hover:focus,
+.news-hover:hover {
+    background-color: #f2f7f7;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 8%), 0 2px 12px rgb(0 0 0 / 16%);
+    z-index: 3;
+    border-radius: 5px;
+}
+
+
+/* featured videos */
+
+.f-video {
+    height: 230px;
+    width: 100%;
+}
+
+@media (max-width: 425px) {
+    .f-video {
+        height: 200px;
+        width: 100%;
+    }
+}
+
+
+/* photo gallery */
+
+.photo-text {
+    font-size: 22px;
+    color: #ffffff;
+    text-decoration: none;
+    z-index: -1;
+    position: absolute;
+    text-align: center;
+}
+
+
+/* page titles */
+
+.custom-page-tittle {
+    background-color: #ffffff;
+}
+
+.breadcrumb {
+    margin: 0 !important;
+}
+
+.h1 {
+    margin: 0 !important;
+}
+
+
+/* ========================================================================================= Academics =========================================== */
+
+.acad-con {
+    height: 300px;
+}
+
+.acad-img {
+    width: 300px;
+    height: 300px;
+}
+
+.acad-title {
+    position: absolute !important;
+    background: transparent;
+}
+
+.show-content {
+    display: block;
+}
+
+.hide-content {
+    display: none;
+}
+
+
+/* login form  */
+
+.loginLogo {
+    height: 100px;
+    width: 100px;
+}
+
+.btn-user {
+    font-size: 1rem !important;
+}
+
+label:not(.gender)::after {
+    content: ' :';
+}
+.pe-auto {
+    pointer-events: auto!important
+}
+.loader{
+    z-index: 100;
+    top: 50%;
+    left: 50%;
+}
+/* ----------------------------------------------
+ * Generated by Animista on 2022-2-16 23:15:12
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+
+/**
+ * ----------------------------------------
+ * animation scale-in-ver-center
+ * ----------------------------------------
+ */
+
+.scale-in-ver-center {
+    -webkit-animation: scale-in-ver-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: scale-in-ver-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@-webkit-keyframes scale-in-ver-center {
+    0% {
+        -webkit-transform: scaleY(0);
+        transform: scaleY(0);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: scaleY(1);
+        transform: scaleY(1);
+        opacity: 1;
+    }
+}
+
+@keyframes scale-in-ver-center {
+    0% {
+        -webkit-transform: scaleY(0);
+        transform: scaleY(0);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: scaleY(1);
+        transform: scaleY(1);
+        opacity: 1;
+    }
+}
+
+
+/* ----------------------------------------------
+ * Generated by Animista on 2022-2-16 23:31:45
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+
+/**
+ * ----------------------------------------
+ * animation slide-in-bottom
+ * ----------------------------------------
+ */
+
+.slide-in-bottom {
+    -webkit-animation: slide-in-bottom 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: slide-in-bottom 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@-webkit-keyframes slide-in-bottom {
+    0% {
+        -webkit-transform: translateY(1000px);
+        transform: translateY(1000px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-bottom {
+    0% {
+        -webkit-transform: translateY(1000px);
+        transform: translateY(1000px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+/* ----------------------------------------------
+ * Generated by Animista on 2022-2-16 23:30:49
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+
+/**
+ * ----------------------------------------
+ * animation slide-out-top
+ * ----------------------------------------
+ */
+
+.slide-out-top {
+    -webkit-animation: slide-out-top 0.6s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+    animation: slide-out-top 0.6s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+}
+
+@-webkit-keyframes slide-out-top {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateY(-1000px);
+        transform: translateY(-1000px);
+        opacity: 0;
+    }
+}
+
+@keyframes slide-out-top {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateY(-1000px);
+        transform: translateY(-1000px);
+        opacity: 0;
+    }
+}
+
+
+/* small */
+
+@media (max-width:575px) {
+    .dd-sm-none {
+        display: none !important;
+    }
+    .cust-col-sm-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}

@@ -1,0 +1,765 @@
+@font-face {
+    font-family: poppins;
+    src: url(/fonts/poppins/Poppins-Regular.ttf);
+}
+:root {
+    --bca: #0b2090;
+    --bca-hover: #041470;
+    --bcahover: #1c309e;
+    --text-color: #2b3233;
+}
+html {
+    scroll-behavior: smooth;
+}
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #0b2090;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #041677;
+}
+body {
+
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+.custom-pt {
+    padding-top: 100px;
+    background-color: #fff;
+}
+.text-bca {
+    color: var(--bca);
+}
+.bg-bca {
+    background-color: var(--bca);
+}
+.btn-bca {
+    color: #fff !important;
+    border-color: var(--bca) !important;
+    background-color: var(--bca) !important;
+}
+
+.btn-bca:hover {
+    color: #fff !important;
+    border-color: var(--bca) !important;
+    background-color: var(--bcahover) !important;
+}
+
+.btn-bca-outline {
+    border: 1px solid var(--bca) !important;
+}
+.w-fit {
+    width: fit-content;
+}
+.custom-shadow {
+    border-radius: 5px;
+    overflow: hidden;
+    height: 100%;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 1px 5px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.3s;
+}
+.custom-shadow:hover {
+    box-shadow: 0 1px 3px rgb(0 0 0 / 8%), 0 2px 12px rgb(0 0 0 / 16%);
+    z-index: 3;
+}
+.custom-ration {
+    --bs-aspect-ratio: 60%;
+}
+.text-sm {
+    color: #a4b1b3;
+    font-size: 13px;
+}
+.overflow-x-scroll {
+    overflow-x: scroll;
+    flex-wrap: nowrap;
+}
+.loginLogo {
+    height: 100px;
+    width: 100px;
+}
+label:not(.gender)::after {
+    content: " :";
+}
+.myLogo {
+    height: 70px;
+    width: 70px;
+    margin-right: 1rem;
+}
+/* photo gallery */
+.box {
+    background: #333;
+    font-family: "PT Sans", sans-serif;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+}
+.box img {
+    transform: translateX(18px) scale(1.15);
+    transition: all 0.5s ease;
+    height: 250px;
+    width: 100% !important;
+    box-shadow: 0 3px 3px rgb(0 0 0 / 8%), 0 2px 12px rgb(0 0 0 / 16%);
+}
+.box:hover img {
+    opacity: 0.3;
+    transform: translateX(-18px) scale(1.15);
+}
+.box-content {
+    color: #fff;
+    width: 100%;
+    padding: 0 20px;
+    opacity: 0;
+    transform: translateY(-50%);
+    position: absolute;
+    top: 60%;
+    left: 0;
+    z-index: 2;
+    transition: all 0.5s ease;
+}
+.box:hover .box-content {
+    opacity: 1;
+    top: 50%;
+}
+.box .title {
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 0 3px;
+}
+.calendar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px var(--bca) solid;
+}
+.calendar-top {
+    height: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 90%;
+    font-weight: bold;
+    padding: 6px 0;
+    color: #fff;
+    background: var(--bca);
+}
+.calendar-bottom {
+    text-align: center;
+}
+.academics-card-img {
+    width: 100%;
+    height: 300px; /* height of container */
+    object-fit: fill;
+}
+[data-scroll] {
+    transition: opacity 1s;
+}
+#events[data-scroll="in"] {
+    opacity: 1;
+}
+[data-scroll="in"] {
+    opacity: 1;
+}
+[data-scroll="out"] {
+    opacity: 0;
+}
+.main-img {
+    height: 500px;
+    width: 100%;
+    object-fit: fill;
+}
+
+/* Animations */
+/** * Extracted from: SweetAlert * Modified by: Istiak Tridip */
+.success-checkmark {
+    width: 80px;
+    height: 115px;
+    margin: 0 auto;
+}
+.success-checkmark .check-icon {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    border-radius: 50%;
+    box-sizing: content-box;
+    border: 4px solid #4caf50;
+}
+.success-checkmark .check-icon::before {
+    top: 3px;
+    left: -2px;
+    width: 30px;
+    transform-origin: 100% 50%;
+    border-radius: 100px 0 0 100px;
+}
+.success-checkmark .check-icon::after {
+    top: 0;
+    left: 30px;
+    width: 60px;
+    transform-origin: 0 50%;
+    border-radius: 0 100px 100px 0;
+    animation: rotate-circle 4.25s ease-in;
+}
+.success-checkmark .check-icon::before,
+.success-checkmark .check-icon::after {
+    content: "";
+    height: 100px;
+    position: absolute;
+    background: #fff;
+    transform: rotate(-45deg);
+}
+.success-checkmark .check-icon .icon-line {
+    height: 5px;
+    background-color: #4caf50;
+    display: block;
+    border-radius: 2px;
+    position: absolute;
+    z-index: 10;
+}
+.success-checkmark .check-icon .icon-line.line-tip {
+    top: 46px;
+    left: 14px;
+    width: 25px;
+    transform: rotate(45deg);
+    animation: icon-line-tip 0.75s;
+}
+.success-checkmark .check-icon .icon-line.line-long {
+    top: 38px;
+    right: 8px;
+    width: 47px;
+    transform: rotate(-45deg);
+    animation: icon-line-long 0.75s;
+}
+.success-checkmark .check-icon .icon-circle {
+    top: -4px;
+    left: -4px;
+    z-index: 10;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    position: absolute;
+    box-sizing: content-box;
+    border: 4px solid rgba(76, 175, 80, 0.5);
+}
+.success-checkmark .check-icon .icon-fix {
+    top: 8px;
+    width: 5px;
+    left: 26px;
+    z-index: 1;
+    height: 85px;
+    position: absolute;
+    transform: rotate(-45deg);
+    background-color: #fff;
+}
+@keyframes rotate-circle {
+    0% {
+        transform: rotate(-45deg);
+    }
+    5% {
+        transform: rotate(-45deg);
+    }
+    12% {
+        transform: rotate(-405deg);
+    }
+    100% {
+        transform: rotate(-405deg);
+    }
+}
+@keyframes icon-line-tip {
+    0% {
+        width: 0;
+        left: 1px;
+        top: 19px;
+    }
+    54% {
+        width: 0;
+        left: 1px;
+        top: 19px;
+    }
+    70% {
+        width: 50px;
+        left: -8px;
+        top: 37px;
+    }
+    84% {
+        width: 17px;
+        left: 21px;
+        top: 48px;
+    }
+    100% {
+        width: 25px;
+        left: 14px;
+        top: 45px;
+    }
+}
+@keyframes icon-line-long {
+    0% {
+        width: 0;
+        right: 46px;
+        top: 54px;
+    }
+    65% {
+        width: 0;
+        right: 46px;
+        top: 54px;
+    }
+    84% {
+        width: 55px;
+        right: 0px;
+        top: 35px;
+    }
+    100% {
+        width: 47px;
+        right: 8px;
+        top: 38px;
+    }
+}
+
+.scale-out-center {
+    -webkit-animation: scale-out-center 0.5s
+        cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+    animation: scale-out-center 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+}
+@-webkit-keyframes scale-out-center {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+        opacity: 1;
+    }
+}
+@keyframes scale-out-center {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+        opacity: 1;
+    }
+}
+.scale-in-center {
+    -webkit-animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+        both;
+    animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+@-webkit-keyframes scale-in-center {
+    0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+@keyframes scale-in-center {
+    0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+.fade-in {
+    -webkit-animation: fade-in 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+    animation: fade-in 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+/* ----------------------------------------------
+ * Generated by Animista on 2022-3-5 21:27:21
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation fade-in
+ * ----------------------------------------
+ */
+@-webkit-keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.fade-in-fwd {
+    -webkit-animation: fade-in-fwd 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+    animation: fade-in-fwd 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+/* ----------------------------------------------
+ * Generated by Animista on 2022-3-5 21:25:57
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation fade-in-fwd
+ * ----------------------------------------
+ */
+@-webkit-keyframes fade-in-fwd {
+    0% {
+        -webkit-transform: translateZ(-80px);
+        transform: translateZ(-80px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        opacity: 1;
+    }
+}
+@keyframes fade-in-fwd {
+    0% {
+        -webkit-transform: translateZ(-80px);
+        transform: translateZ(-80px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        opacity: 1;
+    }
+}
+.fade-in-right {
+    -webkit-animation: fade-in-right 0.6s cubic-bezier(0.39, 0.575, 0.565, 1)
+        both;
+    animation: fade-in-right 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+/* ----------------------------------------------
+ * Generated by Animista on 2022-3-5 21:28:36
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation fade-in-right
+ * ----------------------------------------
+ */
+@-webkit-keyframes fade-in-right {
+    0% {
+        -webkit-transform: translateX(50px);
+        transform: translateX(50px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+@keyframes fade-in-right {
+    0% {
+        -webkit-transform: translateX(50px);
+        transform: translateX(50px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+.fade-in-left {
+    -webkit-animation: fade-in-left 0.6s cubic-bezier(0.39, 0.575, 0.565, 1)
+        both;
+    animation: fade-in-left 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+/* ----------------------------------------------
+ * Generated by Animista on 2022-3-5 21:29:4
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation fade-in-left
+ * ----------------------------------------
+ */
+@-webkit-keyframes fade-in-left {
+    0% {
+        -webkit-transform: translateX(-50px);
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+@keyframes fade-in-left {
+    0% {
+        -webkit-transform: translateX(-50px);
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.scale-in-tr {
+    -webkit-animation: scale-in-tr 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+        both;
+    animation: scale-in-tr 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+} /* ----------------------------------------------
+ * Generated by Animista on 2022-3-6 19:35:14
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation scale-in-tr
+ * ----------------------------------------
+ */
+@-webkit-keyframes scale-in-tr {
+    0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+        -webkit-transform-origin: 100% 0%;
+        transform-origin: 100% 0%;
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        -webkit-transform-origin: 100% 0%;
+        transform-origin: 100% 0%;
+        opacity: 1;
+    }
+}
+@keyframes scale-in-tr {
+    0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+        -webkit-transform-origin: 100% 0%;
+        transform-origin: 100% 0%;
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        -webkit-transform-origin: 100% 0%;
+        transform-origin: 100% 0%;
+        opacity: 1;
+    }
+}
+
+/* bottom part of landing page */
+.icon-bordered {
+    font-size: 36px;
+    line-height: 90px;
+    height: 90px;
+    width: 90px;
+    text-align: center;
+    border: 2px solid #0b2090;
+    border-radius: 50%;
+}
+.icon-bordered i {
+    color: var(--bca);
+}
+.icon-title {
+    color: #2b3233 !important;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.icon-sub-title {
+    color: #2b3233;
+    font-size: 16px;
+}
+.justify-align-center {
+    justify-content: center !important;
+    align-items: center !important;
+}
+.name,
+.lastname,
+.firstname,
+.middleinitial,
+.signature-1,
+.signature-2,
+.signature-3 {
+    position: relative;
+    text-align: center;
+}
+.signature .signature-1::before,
+.signature .signature-2::before,
+.signature .signature-3::before{
+    position: absolute;
+    bottom: -25px;
+    z-index: 2;
+    text-align: center;
+}
+.name .lastname::before,
+.name .firstname::before,
+.name .middleinitial::before {
+    position: absolute;
+    bottom: -25px;
+    z-index: 2;
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+}
+.name .lastname::before {
+    content: "Last name";
+}
+.name .firstname::before {
+    content: "First name";
+}
+.name .middleinitial::before {
+    content: "MI";
+}
+.signature .signature-1::before{
+    content: 'Parent / Guardian Signature';
+}
+.custom-date-pos {
+    position: relative;
+    top: 50px;
+}
+.custom-border {
+    border: 2px solid #000;
+}
+.w-max-content {
+    width: max-content !important;
+}
+.w-min-content {
+    width: min-content !important;
+}
+.border-dark{
+    border: #000 2px solid ;
+}
+.border-start-dark {
+    border-left: 2px solid #000;
+}
+.border-end-dark {
+    border-right: 2px solid #000;
+}
+.border-top-dark {
+    border-top: 2px solid #000;
+}
+.border-bottom-dark {
+    border-bottom: 2px solid #000;
+}
+
+.border-dashed{
+    border: 3px  #000;
+    border-style: dashed;
+
+}
+.custom-h-25 {
+    height: 80px !important;
+}
+.h-0{
+    height: 0 !important;
+}
+.w-30 {
+    width: 30% !important;
+}
+.w-40 {
+    width: 40% !important;
+}
+.w-45 {
+    width: 45% !important;
+}
+.w-70 {
+    width: 70% !important;
+}
+.w-80 {
+    width: 80% !important;
+}
+.w-90 {
+    width: 90% !important;
+}
+.fontsize-17-fw-500{
+   font-size: 17px !important;
+   font-weight: 500 !important;
+}
+.fontsize-16-fw-500{
+   font-size: 16px !important;
+   font-weight: 500 !important;
+}
+.payment-method{
+    position: absolute;
+    right: 0;
+    top: 50px;
+}
+.text-title-border-white{
+    background-color: #a4b1b3;
+}
+.text-title-border-blue{
+    background-color: var(--bca);
+}
+.text-title-border-yellow{
+    background-color: yellow;
+}
+/* xm screen size */
+@media (max-width: 768px) {
+    .md-scale-in-tr {
+        -webkit-animation: scale-in-tr 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+            both;
+        animation: scale-in-tr 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    }
+    .md-justify-align-center {
+        justify-content: center !important;
+        align-items: center;
+    }
+}
+
+@media (max-width: 425px) {
+    .custom-pt {
+        padding-top: 75px;
+    }
+    .mt-xsm-2 {
+        margin-top: 0.5rem !important;
+    }
+    .mx-xsm-2 {
+        margin-right: 0.5rem !important;
+        margin-left: 0.5rem !important;
+    }
+}
