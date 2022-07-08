@@ -1,4 +1,4 @@
-@extends('admin.registrar-layouts.layouts.index')
+@extends('BCA.Admin.registrar-layouts.layouts.index')
 @section('role')
     Registrar
 @endsection

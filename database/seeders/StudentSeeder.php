@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Registrar\Family;
+use App\Models\Registrar\SchoolYear;
 use App\Models\Registrar\Student;
 use Illuminate\Database\Seeder;
 
@@ -29,7 +30,7 @@ class StudentSeeder extends Seeder
                 'address' => 'calauan,laguna',
                 'grade_level_id' => 1,
                 'section_id' => 1,
-                'sy_id' => 1,
+                'sy_id' => SchoolYear::where('isCurrent', '=', 1)->first()->id,
                 'status' => 1,
                 'isDone' => 1,
                 'student_type' => 'Old Student',
@@ -51,8 +52,8 @@ class StudentSeeder extends Seeder
                 'student_type' => 'Old Student',
                 'hasVerifiedEmail' => 1,
                 'grade_level_id' => 2,
-                'section_id' => 1,
-                'sy_id' => 1,
+                'section_id' => 1,  'isDone' => 1,
+                'sy_id' => SchoolYear::where('isCurrent', '=', 1)->first()->id,
                 'created_at' => now(),
             ], [
                 'student_id' => '2022-00002-CL-0',
@@ -67,8 +68,8 @@ class StudentSeeder extends Seeder
                 'address' => 'calauan,laguna',
                 'status' => 0, //not enrolled
                 'student_type' => 'New Student',
-                'grade_level_id' => 3,
-                'sy_id' => 1,
+                'grade_level_id' => 3,  'isDone' => 1,
+                'sy_id' => SchoolYear::where('isCurrent', '=', 1)->first()->id,
                 'status' => 0,
                 'hasVerifiedEmail' => 1,
                 'created_at' => now(),
@@ -87,8 +88,8 @@ class StudentSeeder extends Seeder
                 'status' => 0, //not enrolled
                 'student_type' => 'Old Student',
                 'grade_level_id' => 3,
-                'sy_id' => 1,
-                'status' => 0,
+                'sy_id' => SchoolYear::where('isCurrent', '=', 1)->first()->id,
+                'status' => 0,  'isDone' => 1,
                 'hasVerifiedEmail' => 1,
                 'created_at' => now(),
             ],
@@ -219,7 +220,7 @@ class StudentSeeder extends Seeder
                 'contact_no' => '09123456789',
                 'email' => 'ginadyt@gmail.com',
                 'address' => 'brgy imok, Calauan, Laguna',
-            ],[
+            ], [
                 'student_id' => '2022-00002-CL-0',
                 'name' => 'Dino Sy Tamad 2',
                 'birthdate' => '2000-05-23',

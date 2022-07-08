@@ -6,8 +6,13 @@ use App\Http\Controllers\Cashier\CashierDashboardController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Manage\MailController;
+use App\Http\Controllers\Registrar\RegistrarDashboardController;
+use App\Http\Controllers\Registrar\Student\Enrolled\EnrolledStudentController;
+use App\Http\Controllers\Registrar\Student\Enrollee\EnrolleController;
+use App\Http\Controllers\Student\EnrollmentController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Models\Registrar\GradeLevel;
+use App\Models\Registrar\SchoolYear;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -128,7 +133,7 @@ Route::prefix('registrar')->name('registrar.')->group(function () {
         });
         Route::post('/students/enrollee/requirements', [EnrolleeRequirementController::class, 'store'])->name('enrollee.store.requirements');
         //Enrolled
-        route::name('enrolled.')->controller(StudentsController::class)->group(function () {
+        route::name('enrolled.')->controller(EnrolledStudentController::class)->group(function () {
             Route::get('/students/enrolled', 'index')->name('index');
             Route::get('/students/enrolled/{id}/show', 'show')->name('show');
             Route::put('/students/enrolled/{id}', 'update')->name('update');
@@ -193,9 +198,14 @@ route::prefix('student')->name('student.')->group(function () {
         Route::post('/logout', [LoginController::class, 'studentlogout'])->name('logout');
         Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard.index');
 
-        Route::name('enrolment.')->controller(StudentEnrollmentController::class)->group(function () {
-            Route::get('/enrolment', 'index')->name('index');
+        Route::name('enrolment.')->controller(EnrollmentController::class)->group(function () {
+            Route::get('/enrollment', 'index')->name('index');
         });
     });
 });
+Route::post('/update/sy/{id}', function ($id) {
+    $current = SchoolYear::where('isCurrent', '=', 1)->first()->update(['isCurrent' => 0]);
+    $new = SchoolYear::where('id', '=', $id)->first()->update(['isCurrent' => 1]);
+    return back();
+})->name('change.sy');
 Route::get('download/pdf', [Downloadables::class, 'PDF'])->name('download.pdf');

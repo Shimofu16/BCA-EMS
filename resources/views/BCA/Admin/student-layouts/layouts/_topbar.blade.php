@@ -91,7 +91,7 @@
                         class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::guard('student')->user()->name }}</span>
                     @if (Auth::guard('student')->user()->gender == 'Male')
                         <img class="img-profile rounded-circle"
-                            src="{{ asset('img/illustrations/icons/undraw_profile_2.svg') }}">
+                            src="{{ asset('assets/img/illustrations/icons/undraw_profile_2.svg') }}">
                         @if (Auth::guard('student')->user()->active == 1)
                             <span class="badge badge-success badge-counter">o</span>
                         @else
@@ -99,7 +99,7 @@
                         @endif
                     @else
                         <img class="img-profile rounded-circle"
-                            src="{{ asset('img/illustrations/icons/undraw_profile_3.svg') }}">
+                            src="{{ asset('assets/img/illustrations/icons/undraw_profile_3.svg') }}">
                         @if (Auth::guard('student')->user()->active == 1)
                             <span class="badge badge-success badge-counter">o</span>
                         @else

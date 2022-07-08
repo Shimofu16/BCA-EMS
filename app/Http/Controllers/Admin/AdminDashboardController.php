@@ -14,7 +14,7 @@ class AdminDashboardController extends Controller
      */
     public function index()
     {
-        //
+        return view('BCA.Admin.admin-layouts.dashboard.index');
     }
 
     /**

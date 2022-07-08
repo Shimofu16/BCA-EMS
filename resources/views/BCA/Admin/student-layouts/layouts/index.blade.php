@@ -16,9 +16,9 @@
             rel="stylesheet">
         <!-- Custom styles for this template-->
         @yield('dashboard-css')
-        <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/sb-admin/sb-admin-2.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/sb-admin/custom.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/sb-admin/sb-admin-2.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/sb-admin/custom.css') }}" rel="stylesheet">
         {{-- school logo --}}
         <link rel="icon" href="{{ asset('./img/BCA-Logo.png') }}">
 
@@ -38,7 +38,7 @@
                 <div id="content">
 
                     <!-- Topbar -->
-                    @include('admin.student-layouts.layouts._topbar')
+                    @include('BCA.Admin.student-layouts.layouts._topbar')
                     <!-- End of Topbar -->
 
                     <!-- Begin Page Content -->
@@ -95,15 +95,15 @@
 
         <!-- Bootstrap core JavaScript-->
 
-        <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-        <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <!-- Core plugin JavaScript-->
-        <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
         <!-- Custom scripts for all pages-->
-        <script src="{{ asset('js/sb-admin/sb-admin-2.min.js') }}"></script>
+        <script src="{{ asset('assets/js/sb-admin/sb-admin-2.min.js') }}"></script>
         {{--  scripts for data tables  --}}
-        <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
-        <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
         @yield('dashboard-javascript')
         <script>

@@ -1,4 +1,5 @@
-@extends('admin.registrar-layouts.index')
+@extends('BCA.Admin.registrar-layouts.index')
+
 
 @section('page-title')
     Student’s Information

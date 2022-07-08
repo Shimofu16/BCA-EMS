@@ -8,6 +8,7 @@ use App\Models\Cashier\Payment;
 use App\Models\Cashier\PaymentLog;
 use App\Models\Registrar\Family;
 use App\Models\Registrar\GradeLevel;
+use App\Models\Registrar\SchoolYear;
 use App\Models\Registrar\VerificationCode;
 use App\Models\Registrar\Student;
 use Carbon\Carbon;
@@ -506,6 +507,7 @@ class Form extends Component
 
         $code = sha1(time() . $student_id);
         $recipient = $this->email;
+        $sy =SchoolYear::where('isCurrent','=',1)->first();
 
         try {
             VerificationCode::create([
@@ -535,7 +537,8 @@ class Form extends Component
                 'grade_level_id' => $this->grade_level_id,
                 'student_type' => $student_type,
                 'hasPromissoryNote' => $pn,
-                'sy_id' => 1,
+                'sy_id' => $sy->id,
+                'isDone' => 1,
                 'created_at' => now(),
             ])->id;
             $payment = Payment::create([

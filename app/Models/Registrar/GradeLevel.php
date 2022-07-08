@@ -3,7 +3,7 @@
 namespace App\Models\Registrar;
 
 use App\Models\Cashier\Payment;
-use App\Models\Student\Student;
+use App\Models\Registrar\Student;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

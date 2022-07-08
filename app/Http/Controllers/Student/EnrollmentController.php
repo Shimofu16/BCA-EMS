@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Models\Registrar\Family;
+use App\Models\Registrar\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class StudentDashboardController extends Controller
+class EnrollmentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +17,11 @@ class StudentDashboardController extends Controller
      */
     public function index()
     {
-        return view('BCA.Admin.student-layouts.dashboard.index');
+        $student = Student::where('student_id',Auth::guard('student')->user()->student_id)->first();
+        $father = Family::where('student_id',Auth::guard('student')->user()->student_id)->where('relationship_type','father')->first();
+        $mother = Family::where('student_id',Auth::guard('student')->user()->student_id)->where('relationship_type','mother')->first();
+        $guardian = Family::where('student_id',Auth::guard('student')->user()->student_id)->where('relationship_type','guardian')->first();
+        return view('BCA.Admin.student-layouts.enrollment.index',compact('student','father','mother','guardian'));
     }
 
     /**

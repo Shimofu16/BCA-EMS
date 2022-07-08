@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class StudentAccountLog extends Model
 {
     use HasFactory;
-    protected $table = 'admin_account_logs';
+    protected $table = 'student_account_logs';
     public $guarded = [];
 }

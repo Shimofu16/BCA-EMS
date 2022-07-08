@@ -1,4 +1,4 @@
-@extends('admin.student-layouts.layouts.index')
+@extends('BCA.Admin.student-layouts.layouts.index')
 @section('role')
     Student
 @endsection

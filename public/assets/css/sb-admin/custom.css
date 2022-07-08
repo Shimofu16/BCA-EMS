@@ -162,11 +162,10 @@ label:not(.gender)::after {
     padding-left: calc(var(--bs-gutter-x) * 0.5);
     margin-top: var(--bs-gutter-y);
 }
-.dropdown-item.active,
-.dropdown-item:active {
+.dropdown-item.active {
     color: white;
     text-decoration: none;
-    background-color: #36b9cc;
+    background-color: #0b2090;
 }
 .m-icons {
     font-size: 170px;
@@ -186,8 +185,7 @@ label:not(.gender)::after {
 }
 .btn-bca-outline {
     color: var(--bca) !important;
-    border-color: var(--bca) !important;
-    background-color: var(--bca) !important;
+    border: 1px solid var(--bca) !important;
 }
 .sidebar .nav-item.active {
     background-color: #fff;

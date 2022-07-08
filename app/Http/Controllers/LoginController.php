@@ -10,7 +10,6 @@ use App\Models\Registrar\RegistrarAccountLog;
 use App\Models\Student\StudentAccount;
 use App\Models\Student\StudentAccountLog;
 use App\Models\Teacher\TeacherAccount;
-use Illuminate\Contracts\Routing\Registrar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -100,7 +99,7 @@ class LoginController extends Controller
     public function studentLogin(Request $request)
     {
         $credentials =  $request->validate([
-            'student_id' => 'required|between:12,15',
+            'student_id' => 'required',
             'password' => 'required'
         ]);
         if (Auth::guard('student')->attempt($credentials)) {
@@ -155,7 +154,7 @@ class LoginController extends Controller
     public function registrarLogout(Request $request)
     {
         $id = request()->validate([
-            'id' => 'required|exists:registrars,id'
+            'id' => 'required|exists:registrar_accounts,id'
         ]);
         if ($id) {
             RegistrarAccount::where('id', '=', request()->id)->update(['active' => 0]);
@@ -171,7 +170,7 @@ class LoginController extends Controller
     public function cashierLogout(Request $request)
     {
         $id = request()->validate([
-            'id' => 'required|exists:registrars,id'
+            'id' => 'required|exists:registrar_accounts,id'
         ]);
         if ($id) {
             RegistrarAccount::where('id', '=', request()->id)->update(['active' => 0]);

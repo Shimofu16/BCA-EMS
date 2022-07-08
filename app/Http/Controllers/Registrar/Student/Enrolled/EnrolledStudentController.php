@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Registrar\Student\Enrolled;
 
 use App\Http\Controllers\Controller;
+use App\Models\Registrar\GradeLevel;
+use App\Models\Registrar\SchoolYear;
+use App\Models\Registrar\Section;
+use App\Models\Registrar\Student;
 use Illuminate\Http\Request;
 
 class EnrolledStudentController extends Controller
@@ -14,7 +18,16 @@ class EnrolledStudentController extends Controller
      */
     public function index()
     {
-        //
+        $currentSy = SchoolYear::where('isCurrent', '=', 1)->first();
+        $students = Student::with('section', 'gradeLevel')
+            ->where('status', 1)
+            ->where('sy_id', '=', $currentSy->id)
+            ->where('isDone', '=', 1)
+            ->orderBy('id', 'asc')
+            ->get();
+        $gradeLevels = GradeLevel::all();
+        $sections = Section::all();
+        return view('BCA.Admin.registrar-layouts.students.enrolled.index', compact('students', 'gradeLevels', 'sections'));
     }
 
     /**
