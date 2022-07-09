@@ -507,7 +507,7 @@ class Form extends Component
 
         $code = sha1(time() . $student_id);
         $recipient = $this->email;
-        $sy =SchoolYear::where('isCurrent','=',1)->first();
+        $sy = SchoolYear::where('isCurrent', '=', 1)->first();
 
         try {
             VerificationCode::create([
@@ -549,6 +549,7 @@ class Form extends Component
             ])->id;
             $payment_log = PaymentLog::create([
                 'payment_id' => $payment,
+                'sy_id' => $sy->id,
                 'mop' => $this->conPayment,
                 'payment_method' => $payment_method,
                 'amount' => ($this->payment != null) ? $this->payment :  0,

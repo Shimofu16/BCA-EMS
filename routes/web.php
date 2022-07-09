@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Cashier\CashierDashboardController;
+use App\Http\Controllers\Cashier\Payment\Pending\PendingController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Manage\MailController;
@@ -101,7 +102,7 @@ route::prefix('cashier')->name('cashier.')->group(function () {
         Route::post('/logout', [LoginController::class, 'cashierLogout'])->name('logout');
         /* Dashboard */
         Route::get('/dashboard', [CashierDashboardController::class, 'index'])->name('dashboard.index');
-        Route::name('payment.pending.')->controller(PendingPaymentsController::class)->group(function () {
+        Route::name('payment.pending.')->controller(PendingController::class)->group(function () {
             Route::get('/payment/pending', 'index')->name('index');
             Route::post('/payment/pending', 'store')->name('store');
             Route::post('/payment/pending/confirm/{id}', 'update')->name('update');
@@ -113,6 +114,11 @@ route::prefix('cashier')->name('cashier.')->group(function () {
             Route::get('/payment/{id}', 'index')->name('index');
             Route::get('/payment', 'create')->name('create.index');
         });
+        Route::post('/update/sy/{id}', function ($id) {
+            $current = SchoolYear::where('isCurrent', '=', 1)->first()->update(['isCurrent' => 0]);
+            $new = SchoolYear::where('id', '=', $id)->first()->update(['isCurrent' => 1]);
+            return back();
+        })->name('change.sy');
     });
 });
 

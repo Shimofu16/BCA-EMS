@@ -9,18 +9,18 @@
     <meta name="author" content="">
     <title> @yield('role') | @yield('page-title') </title>
     <!-- Custom fonts for this template-->
-    <link href="{{ asset('css/fontawesome-free-6.0.0-web/css/all.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/css/fontawesome-free-6.0.0-web/css/all.css') }}" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
     <!-- Custom styles for this template-->
     @yield('dashboard-css')
-    <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/sb-admin/sb-admin-2.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/sb-admin/custom.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/animate css/animate.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sb-admin/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sb-admin/custom.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/animate assets/css/animate css/animate.css') }}" rel="stylesheet">
     {{-- school logo --}}
-    <link rel="icon" href="{{ asset('./img/BCA-Logo.png') }}">
+    <link rel="icon" href="{{ asset('assets/img/BCA-Logo.png') }}">
 
 </head>
 
@@ -38,7 +38,7 @@
             <div id="content">
 
                 <!-- Topbar -->
-                @include('admin.cashier-layout.layouts._topbar')
+                @include('BCA.Admin.cashier-layout.layouts._topbar')
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -80,7 +80,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancel</button>
                     @if (Auth::guard('registrar')->user() !== null)
                         <form action="{{ route('cashier.logout') }}" method="POST">
                             @csrf
@@ -95,25 +95,17 @@
 
     <!-- Bootstrap core JavaScript-->
 
-    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Core plugin JavaScript-->
-    <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <!-- Custom scripts for all pages-->
-    <script src="{{ asset('js/sb-admin/sb-admin-2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/sb-admin/sb-admin-2.min.js') }}"></script>
     {{-- scripts for data tables --}}
-    <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
     @yield('dashboard-javascript')
-    <script>
-        $(document).ready(function() {
-            $("#success-alert").hide();
-            $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {
-                $("#success-alert").slideUp(500);
-            });
-        });
-    </script>
 </body>
 
 </html>

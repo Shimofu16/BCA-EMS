@@ -20,11 +20,6 @@ class CreatePaymentsTable extends Migration
                 ->references('id')
                 ->on('students')
                 ->onDelete('cascade');
-            $table->unsignedBigInteger('grade_level_id');
-            $table->foreign('grade_level_id')
-                ->references('id')
-                ->on('grade_levels')
-                ->onDelete('restrict')->onUpdate('cascade');
             $table->bigInteger('balance')->default(0);
             $table->date('reminder_at'); //Payment Schedule
             $table->string('updated_by')->nullable();

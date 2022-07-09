@@ -25,7 +25,7 @@
                                 <input type="number" class="form-control" id="amount" name="amount">
                             </div>
                             <div class="modal-footer pb-0">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancel</button>
                                 <button class="btn btn-success" type="submit">Accept</button>
                             </div>
                         </form>

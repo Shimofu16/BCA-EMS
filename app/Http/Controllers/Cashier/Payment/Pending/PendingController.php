@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Cashier;
+namespace App\Http\Controllers\Cashier\Payment\Pending;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cashier\PaymentLog;
 use App\Models\Registrar\SchoolYear;
 use Illuminate\Http\Request;
 
-class CashierDashboardController extends Controller
+class PendingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +17,8 @@ class CashierDashboardController extends Controller
     public function index()
     {
         $sy = SchoolYear::where('isCurrent', '=', 1)->first();
-        $pendingCount =PaymentLog::where('sy_id','=', $sy->id)->where('status','=',0)->count();
-        $confirmedCount =PaymentLog::where('sy_id','=', $sy->id)->where('status','=',1)->count();
-        return view('BCA.Admin.cashier-layout.dashboard.index',compact('pendingCount','confirmedCount'));
+        $payments = PaymentLog::where('sy_id','=', $sy->id)->where('status','=',0)->get();
+        return view('BCA.Admin.cashier-layout.payments.pending.index',compact('payments'));
     }
 
     /**

@@ -20,6 +20,16 @@ class CreatePaymentLogsTable extends Migration
                 ->references('id')
                 ->on('payments')
                 ->onDelete('cascade');
+            $table->unsignedBigInteger('sy_id');
+            $table->foreign('sy_id')
+                ->references('id')
+                ->on('school_years')
+                ->onDelete('restrict')->onUpdate('cascade');
+            $table->unsignedBigInteger('grade_level_id');
+            $table->foreign('grade_level_id')
+                ->references('id')
+                ->on('grade_levels')
+                ->onDelete('restrict')->onUpdate('cascade');
             $table->string('mop'); //mode of payment
             $table->string('payment_method');
             $table->bigInteger('amount')->default(0)->nullable(); //amount if the mop is cash

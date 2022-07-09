@@ -4,66 +4,70 @@
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
         <i class="fa fa-bars"></i>
     </button>
-    <div class="row flex-nowrap">
-        @php
-            $sy = DB::table('school_years')->get();
-            $current = DB::table('school_years')
-                ->where('isCurrent', '=', 1)
-                ->first();
-        @endphp
-        <div class="col px-0 mr-1">
-            <button class="btn" data-toggle="modal" data-target="#enrollment">
-                {{ $current->isEnrollment == 1 ? 'Close' : 'Open' }} Enrollment
-            </button>
-        </div>
-        <div class="col px-0">
-            @csrf
-            @method('post')
-            <div class="dropdown">
-                <button class="btn btn-bca-outline dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown" aria-expanded="false">
-                    SY {{ $current->school_year }}
+    @if (!Request::routeIs('registrar.enrolled.show') && !Request::routeIs('registrar.enrollees.show'))
+        <div class="row flex-nowrap">
+            @php
+                $sy = DB::table('school_years')->get();
+                $current = DB::table('school_years')
+                    ->where('isCurrent', '=', 1)
+                    ->first();
+            @endphp
+            <div class="col px-0 mr-1">
+                <button class="btn" data-toggle="modal" data-target="#enrollment">
+                    {{ $current->isEnrollment == 1 ? 'Close' : 'Open' }} Enrollment
                 </button>
-                <div class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton">
-                    @foreach ($sy as $item)
-                        @if ($item->isCurrent != 1)
-                            <form action="{{ route('registrar.change.sy', $item->id) }}" method="post">
+            </div>
+            <div class="col px-0">
+                @csrf
+                @method('post')
+                <div class="dropdown">
+                    <button class="btn btn-bca-outline dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-expanded="false">
+                        SY {{ $current->school_year }}
+                    </button>
+                    <div class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton">
+                        @foreach ($sy as $item)
+                            @if ($item->isCurrent != 1)
+                                <form action="{{ route('registrar.change.sy', $item->id) }}" method="post">
+                                    @csrf
+                                    <button class="dropdown-item" type="submit">{{ $item->school_year }}</button>
+                                </form>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="enrollment" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary">
+                            <h5 class="modal-title text-white" id="exampleModalLongTitle">Students information</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true" class="text-white">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h5 class="text-center">
+                                {{ $current->isEnrollment == 1 ? 'Close' : 'Open' }} Enrollment for SY
+                                {{ $current->school_year }}?
+                            </h5>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-secondary" type="button"
+                                data-dismiss="modal">Cancel</button>
+                            <form action="{{ route('registrar.change.sy.enrollment') }}" method="get">
                                 @csrf
-                                <button class="dropdown-item" type="submit">{{ $item->school_year }}</button>
-                            </form>
-                        @endif
-                    @endforeach
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="enrollment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary">
-                        <h5 class="modal-title text-white" id="exampleModalLongTitle">Students information</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true" class="text-white">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <h5 class="text-center">
-                            {{ $current->isEnrollment == 1 ? 'Close' : 'Open' }} Enrollment for SY
-                            {{ $current->school_year }}?
-                        </h5>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <form action="{{ route('registrar.change.sy.enrollment') }}" method="get">
-                            @csrf
-                            <button class="btn btn-primary" type="submit">Yes</button>
+                                <button class="btn btn-primary" type="submit">Yes</button>
 
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
+    @endif
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
         <!-- Nav Item - Messages -->

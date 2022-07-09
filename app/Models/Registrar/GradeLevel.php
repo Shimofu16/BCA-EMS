@@ -3,6 +3,7 @@
 namespace App\Models\Registrar;
 
 use App\Models\Cashier\Payment;
+use App\Models\Cashier\PaymentLog;
 use App\Models\Registrar\Student;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +27,6 @@ class GradeLevel extends Model
     }
     public function payments()
     {
-        return $this->hasMany(Payment::class, 'grade_level_id');
+        return $this->hasMany(PaymentLog::class, 'grade_level_id');
     }
 }
