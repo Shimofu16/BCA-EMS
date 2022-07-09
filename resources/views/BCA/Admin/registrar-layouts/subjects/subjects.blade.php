@@ -1,19 +1,19 @@
 @extends('BCA.Admin.registrar-layouts.index')
 
 @section('page-title')
-    Grade Level
+    Grade levels
 @endsection
 @section('contents')
     <div class="row shadow align-items-center justify-content-between mb-3">
         <div class="col">
-            <h1 class="h3 text-gray-800 py-3 mb-0">{{ $gradeLevel->grade_name }}</h1>
+            <h1 class="h3 text-gray-800 py-3  mb-0">@yield('page-title')</h1>
         </div>
         <div class="col">
-            <div class="d-flex justify-content-end align-items-">
-                <a href="{{ route('registrar.subject.index')  }}"
-                    class="btn btn-primary mr-2">
-                    <span class="d-flex align-items-center"><i class="fas fa-chevron-circle-left"></i>&#160; Back</span>
+            <div class="d-flex justify-content-end">
+                <a class="btn btn-outline-primary" data-toggle="modal" data-target="#add">
+                    <span class="d-flex align-items-center"><i class="fas fa-plus-circle"></i>&#160; Add Subject</span>
                 </a>
+                @include('BCA.Admin.registrar-layouts.subjects.modal._modal-subject')
             </div>
         </div>
     </div>
@@ -23,22 +23,23 @@
                 <table class="table table-bordered table-hover" id="subject-table">
                     <thead class="thead-light">
                         <tr>
-                            <th class="text-center">Subject</th>
+                            <th class="text-center">Grade Level</th>
+                            <th class="text-center">Number of Subjects</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($subjects as $subject)
-                            <tr>
-                                <td class="text-center"> {{ $subject->subject }}</td>
-                                <td class="text-center">
-                                    <a class="btn btn-primary" data-toggle="modal" data-target="#edit{{ $subject->id }}">Edit</a>
-                                    <a class="btn btn-danger" data-toggle="modal" data-target="#delete{{ $subject->id }}">Delete</a>
+                        @foreach ($gradeLevels as $gradeLevel)
+                            <tr class="text-center">
+                                <td>{{ $gradeLevel->grade_name }}</td>
+                                <td>{{ $gradeLevel->subjects->count() }}</td>
+                                <td class="d-flex justify-content-center align-items-center">
+                                    <a class="btn btn-sm btn-outline-info mr-1"
+                                        href="{{ route('registrar.subject.index', $gradeLevel->id) }}">View</a>
                                 </td>
-                                @include('BCA.Admin.registrar-layouts.subjects.modal._modal-edit')
-                                @include('BCA.Admin.registrar-layouts.subjects.modal._modal-delete')
                             </tr>
                         @endforeach
+
                     </tbody>
                 </table>
             </div>

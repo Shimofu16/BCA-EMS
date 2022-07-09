@@ -1,10 +1,10 @@
-<div class="modal fade" id="edit{{ $section->id }}" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+<div class="modal fade" id="edit{{ $section->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-dark" id="exampleModalLongTitle">Edit Section</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit Section</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -24,20 +24,19 @@
                                 {{ $section->teacher_id == null ? '-- Select Adviser --' : $section->teacher->name }}
                             </option>
                             @foreach ($teachers as $teacher)
-                                @if ($teacher->sections == null)
+                                @if ($teacher->sections->count() == 0)
                                     <option value="{{ $teacher->id }}">
                                         {{ $teacher->name }}</option>
                                 @endif
                             @endforeach
                             @if ($section->teacher_id != null)
-                            <option value="delete">Delete Adviser</option>
-
+                                <option value="delete">Delete Adviser</option>
                             @endif
                         </select>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-primary" type="submit">Update Section</button>
+                        <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" type="submit">Update</button>
                     </div>
                 </form>
 

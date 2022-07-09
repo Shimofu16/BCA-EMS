@@ -1,7 +1,7 @@
 <div>
     <div class="row shadow align-items-center mb-3">
         <div class="col">
-            <h1 class="h3 text-gray-800 m-0 py-3">Enrolled Student</h1>
+            <h1 class="h3 text-gray-800 m-0 py-3">Enrolled Students</h1>
         </div>
         <div class="col">
             <div class="d-flex justify-content-end">
@@ -88,12 +88,12 @@
                                     <td>{{ $student->gradeLevel->grade_name }}</td>
                                     <td>
                                         <div class="d-flex justify-content-center">
-                                            <button type="submit" class="btn btn-primary btn-sm mr-1"
+                                            <button type="submit" class="btn btn-outline-primary btn-sm mr-1"
                                                 data-toggle="modal"
                                                 data-target="#edit{{ $student->id }}">Edit</button>
                                             @include('BCA.Admin.registrar-layouts.students.enrolled.modal._modal-edit')
                                             <a href="{{ route('registrar.enrolled.show', $student->id) }}"
-                                                class="btn btn-sm btn-info">More Details</a>
+                                                class="btn btn-sm btn-outline-info">More Details</a>
                                         </div>
 
                                     </td>
@@ -142,12 +142,12 @@
                                     <td>{{ $student->section->section_name }}</td>
                                     <td>
                                         <div class="d-flex justify-content-center">
-                                            <button type="submit" class="btn btn-primary btn-sm mr-1"
+                                            <button type="submit" class="btn btn-outline-primary btn-sm mr-1"
                                                 data-toggle="modal"
                                                 data-target="#edit{{ $student->id }}">Edit</button>
                                             @include('BCA.Admin.registrar-layouts.students.enrolled.modal._modal-edit')
                                             <a href="{{ route('registrar.enrolled.show', $student->id) }}"
-                                                class="btn btn-sm btn-info">More Details</a>
+                                                class="btn btn-sm btn-outline-info">More Details</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -202,12 +202,12 @@
                                     <td>{{ $student->gradeLevel->grade_name }}</td>
                                     <td>
                                         <div class="d-flex justify-content-center">
-                                            <button type="submit" class="btn btn-primary btn-sm mr-1"
+                                            <button type="submit" class="btn btn-outline-primary btn-sm mr-1"
                                                 data-toggle="modal"
                                                 data-target="#edit{{ $student->id }}">Edit</button>
                                             @include('BCA.Admin.registrar-layouts.students.enrolled.modal._modal-edit')
                                             <a href="{{ route('registrar.enrolled.show', $student->id) }}"
-                                                class="btn btn-sm btn-info">More Details</a>
+                                                class="btn btn-sm btn-outline-info">More Details</a>
                                         </div>
                                     </td>
                                 </tr>

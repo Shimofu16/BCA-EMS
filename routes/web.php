@@ -7,8 +7,11 @@ use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Manage\MailController;
 use App\Http\Controllers\Registrar\RegistrarDashboardController;
+use App\Http\Controllers\Registrar\Section\SectionController;
 use App\Http\Controllers\Registrar\Student\Enrolled\EnrolledStudentController;
-use App\Http\Controllers\Registrar\Student\Enrollee\EnrolleController;
+use App\Http\Controllers\Registrar\Student\Enrollee\EnrolleeController;
+use App\Http\Controllers\Registrar\Subject\SubjectController;
+use App\Http\Controllers\Registrar\Teacher\TeacherController;
 use App\Http\Controllers\Student\EnrollmentController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Models\Registrar\GradeLevel;
@@ -122,6 +125,20 @@ Route::prefix('registrar')->name('registrar.')->group(function () {
         Route::post('/logout', [LoginController::class, 'registrarLogout'])->name('logout');
         /* Dashboard */
         Route::get('/dashboard', [RegistrarDashboardController::class, 'index'])->name('dashboard.index');
+        Route::post('/update/sy/{id}', function ($id) {
+            $current = SchoolYear::where('isCurrent', '=', 1)->first()->update(['isCurrent' => 0]);
+            $new = SchoolYear::where('id', '=', $id)->first()->update(['isCurrent' => 1]);
+            return back();
+        })->name('change.sy');
+        Route::get('/update/sy/enrollment', function () {
+            try {
+                $current = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->first()->update(['isEnrollment' => 0]);
+            } catch (\Throwable $th) {
+                $current = SchoolYear::where('isCurrent', '=', 1)->first()->update(['isEnrollment' => 1]);
+            }
+            toast()->success('SYSTEM MESSAGE', 'Updated successfully.')->autoClose(6000)->width('400px')->padding('10px')->background('#f8f9fc')->animation('animate__fadeInRight', 'animate__fadeOutDown')->timerProgressBar();
+            return back();
+        })->name('change.sy.enrollment');
         /* registrar|student */
         //Enrollee
         route::name('enrollees.')->controller(EnrolleeController::class)->group(function () {
@@ -150,12 +167,8 @@ Route::prefix('registrar')->name('registrar.')->group(function () {
         });
         /* Registrar|section */
         route::name('section.')->controller(SectionController::class)->group(function () {
-            Route::get('/section/grade levels', 'section')->name('index');
-            $gradeLevels = GradeLevel::all();
-            foreach ($gradeLevels as $gradeLevel) {
-                $grade = str_replace(' ', '', strtolower($gradeLevel->grade_name));
-                Route::get('/section/' . $grade . '/{id}', 'index')->name($grade . '.index');
-            }
+            Route::get('/section/grade/levels', 'section')->name('index.grade.levels');
+            Route::get('/section/{id}', 'index')->name('index');
             Route::get('/section/{id}/show', 'show')->name('show');
             Route::post('/section', 'store')->name('store');
             Route::put('/section/{id}/update', 'update')->name('update');
@@ -166,13 +179,9 @@ Route::prefix('registrar')->name('registrar.')->group(function () {
 
         /* Registrar|subject */
         route::name('subject.')->controller(SubjectController::class)->group(function () {
-            Route::get('/subjects', 'index')->name('index');
+            Route::get('/subjects/grade/levels', 'subjects')->name('index.grade.levels');
+            Route::get('/subjects/{id}', 'index')->name('index');
             Route::post('/subjects', 'store')->name('store');
-            $gradeLevels = GradeLevel::all();
-            foreach ($gradeLevels as $gradeLevel) {
-                $grade = str_replace(' ', '', strtolower($gradeLevel->grade_name));
-                Route::get('/subject/' . $grade . '/{id}', 'show')->name($grade . '.index');
-            }
             Route::put('/subjects/{id}', 'update')->name('update');
             Route::delete('/subjects/{id}', 'destroy')->name('destroy');
         });
@@ -203,9 +212,5 @@ route::prefix('student')->name('student.')->group(function () {
         });
     });
 });
-Route::post('/update/sy/{id}', function ($id) {
-    $current = SchoolYear::where('isCurrent', '=', 1)->first()->update(['isCurrent' => 0]);
-    $new = SchoolYear::where('id', '=', $id)->first()->update(['isCurrent' => 1]);
-    return back();
-})->name('change.sy');
+
 Route::get('download/pdf', [Downloadables::class, 'PDF'])->name('download.pdf');

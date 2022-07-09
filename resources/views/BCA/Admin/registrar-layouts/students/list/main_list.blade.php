@@ -26,7 +26,7 @@
     <!-- navigation bar -->
     <div class="titles">
         <center class="d-flex justify-content-center mt-5 mb-4">
-            <img src="{{ asset('img/BCA-Logo.png') }}" alt="bca logo" class="myLogo me-0">
+            <img src="{{ asset('assets/img/BCA-Logo.png') }}" alt="bca logo" class="myLogo me-0">
             <div class="col-md-5 col-lg-7">
                     <h3>BREAKTHROUGH CHRISTIAN ACADEMY</h3>
                     <h4>9006 Eagle St., Area 3, Sitio Veterans, Brgy. Bagong Silangan, Quezon City</h4>

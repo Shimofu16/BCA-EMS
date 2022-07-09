@@ -1,22 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Registrar\Student\Enrolled;
+namespace App\Http\Controllers\Registrar\Student\Enrollee;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Manage\MailController;
 use App\Models\Registrar\Family;
 use App\Models\Registrar\GradeLevel;
 use App\Models\Registrar\SchoolYear;
-use App\Models\Registrar\Section;
 use App\Models\Registrar\requirements as Requirement;
+use App\Models\Registrar\Section;
 use App\Models\Registrar\Student;
-use Carbon\Carbon;
+use App\Models\Student\StudentAccount;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Str;
-use RealRashid\SweetAlert\Facades\Alert;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
-class EnrolledStudentController extends Controller
+class EnrolleeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,14 +28,13 @@ class EnrolledStudentController extends Controller
     {
         $currentSy = SchoolYear::where('isCurrent', '=', 1)->first();
         $students = Student::with('section', 'gradeLevel')
-            ->where('status', 1)
+            ->where('status', 0)
             ->where('sy_id', '=', $currentSy->id)
             ->where('isDone', '=', 1)
             ->orderBy('id', 'asc')
             ->get();
         $gradeLevels = GradeLevel::all();
-        $sections = Section::all();
-        return view('BCA.Admin.registrar-layouts.students.enrolled.index', compact('students', 'gradeLevels', 'sections'));
+        return view('BCA.Admin.registrar-layouts.students.enrollees.index', compact('students', 'gradeLevels'));
     }
 
     /**
@@ -46,16 +46,128 @@ class EnrolledStudentController extends Controller
     {
         //
     }
-
+    private function updateStudent($id, $section_id)
+    {
+        Student::where('id', $id)->update([
+            'section_id' => $section_id,
+            'status' => 1,
+            'updated_by' => Auth::guard('registrar')->user()->name
+        ]);
+    }
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        //
+        if ($request->input('section_id') == null) {
+            alert()->info('SYSTEM MESSAGE', 'Section is required')->autoClose(6000)->width('400px')->padding('10px')->background('#f8f9fc')->animation('animate__zoomIn', 'animate__zoomOutDown')->timerProgressBar();
+            return back();
+        }
+        $enrollee = Student::find($id);
+
+        try {
+            $psa = Requirement::where('student_id', $enrollee->student_id)
+                ->where('filename', 'psa')
+                ->where('isSubmitted', 1)
+                ->firstOrFail();
+            $hasFilePsa = true;
+        } catch (ModelNotFoundException $e) {
+            $hasFilePsa = false;
+        }
+        try {
+            $form137 = Requirement::where('student_id', $enrollee->student_id)
+                ->where('filename', 'form 137')
+                ->where('isSubmitted', 1)
+                ->firstOrFail();
+            $hasFileForm137 = true;
+        } catch (ModelNotFoundException $e) {
+            $hasFileForm137 = false;
+        }
+        try {
+            $goodMoral = Requirement::where('student_id', $enrollee->student_id)
+                ->where('filename', 'good moral')
+                ->where('isSubmitted', 1)
+                ->firstOrFail();
+            $hasFileGoodMoral = true;
+        } catch (ModelNotFoundException $e) {
+            $hasFileGoodMoral = false;
+        }
+        try {
+            $studentPhoto = Requirement::where('student_id', $enrollee->student_id)
+                ->where('filename', 'photo')
+                ->where('isSubmitted', 1)
+                ->firstOrFail();
+            $hasFilePhoto = true;
+        } catch (ModelNotFoundException $e) {
+            $hasFilePhoto = false;
+        }
+        if ($enrollee->student_type == 'Old Student') {
+            if ($enrollee->hasPromissoryNote == 0 && $hasFileForm137 == true) {
+                try {
+                    $this->updateStudent($enrollee->id, $request->input('section_id'));
+                    $name = Str::ucfirst($enrollee->first_name) . ' ' . Str::ucfirst(Str::substr($enrollee->middle_name, 0, 1)) . ' ' . Str::ucfirst($enrollee->last_name);
+                    toast()->success('SYSTEM MESSAGE', 'Successfully Enrolled ' . $name)->autoClose(6000)->width('400px')->padding('10px')->background('#f8f9fc')->animation('animate__fadeInRight', 'animate__fadeOutDown')->timerProgressBar();
+                    return redirect()->route('registrar.enrolled.index');
+                } catch (\Throwable $th) {
+                    alert()->info('SYSTEM MESSAGE', $th->getMessage())->autoClose(6000)->width('400px')->animation('animate__zoomIn', 'animate__zoomOutDown')->timerProgressBar();
+
+                    return back();
+                }
+            } elseif ($enrollee->hasPromissoryNote == 1 || $hasFileForm137 == true) {
+                try {
+                    $this->updateStudent($enrollee->id, $request->input('section_id'));
+                    $name = Str::ucfirst($enrollee->first_name) . ' ' . Str::ucfirst(Str::substr($enrollee->middle_name, 0, 1)) . ' ' . Str::ucfirst($enrollee->last_name);
+                    toast()->success('SYSTEM MESSAGE', 'Successfully Enrolled Student ' . $name)->autoClose(6000)->width('400px')->padding('10px')->background('#f8f9fc')->animation('animate__fadeInRight', 'animate__fadeOutDown')->timerProgressBar();
+                    return redirect()->route('registrar.enrolled.index');
+                } catch (\Throwable $th) {
+                    alert()->info('SYSTEM MESSAGE', $th->getMessage())->autoClose(6000)->width('400px')->animation('animate__zoomIn', 'animate__zoomOutDown')->timerProgressBar();
+                    return back();
+                }
+            }
+            toast()->error('ERROR MESSAGE', $enrollee->first_name . '`s requirements is emptry')->autoClose(6000)->width('400px')->padding('10px')->background('#f8f9fc')->animation('animate__fadeInRight', 'animate__fadeOutDown')->timerProgressBar();
+            return back();
+        } else {
+            if ($hasFileForm137 == true || $hasFilePsa == true || $hasFileGoodMoral == true || $hasFilePhoto == true) {
+                $name = Str::ucfirst($enrollee->first_name) . ' ' . Str::ucfirst(Str::substr($enrollee->middle_name, 0, 1)) . ' ' . Str::ucfirst($enrollee->last_name);
+                $firstName = Str::ucfirst($enrollee->first_name);
+                $recipient = $enrollee->email;
+                $password = 'bca1234';
+                $account = new StudentAccount();
+                $account->student_id = $enrollee->student_id;
+                $account->name = $name;
+                $account->email = $enrollee->email;
+                $account->password = Hash::make($password);
+                $account->gender = $enrollee->gender;
+                $account->updated_by = Auth::guard('registrar')->user()->name;
+                $account->setCreatedAt(now());
+                if ($enrollee !== null) {
+                    if ($enrollee->hasVerifiedEmail == 1) {
+                        try {
+                            $this->updateStudent($enrollee->id, $request->input('section_id'));
+                            $enrollee->save();
+                            MailController::sendAcceptedMail($firstName, $recipient, $password);
+                            toast()->success('SYSTEM MESSAGE', 'Successfully Enrolled Student ' . $name)->autoClose(6000)->width('400px')->padding('10px')->background('#f8f9fc')->animation('animate__fadeInRight', 'animate__fadeOutDown')->timerProgressBar();
+                            return redirect()->route('registrar.enrolled.index');
+                        } catch (\Throwable $th) {
+                            alert()->info('SYSTEM MESSAGE', $th->getMessage())->autoClose(6000)->width('400px')->animation('animate__zoomIn', 'animate__zoomOutDown')->timerProgressBar();
+
+                            return back();
+                        }
+                    }
+                    toast()->error('ERROR MESSAGE', '<strong class="text-black"> Student`s Email is not verifie')->autoClose(6000)->width('400px')->padding('10px')->background('#f8f9fc')->animation('animate__fadeInRight', 'animate__fadeOutDown')->timerProgressBar();
+                    return back();
+                }
+
+                /*   Mail::send('admin.registrar-layouts.students.mails.accepted', $details, function ($message) use ($details) {
+                    $message->to($details['to'])->subject('Message from BCA');
+                }); */
+            }
+            toast()->error('ERROR MESSAGE', $enrollee->first_name . '`s requirements is emptry')->autoClose(6000)->width('400px')->padding('10px')->background('#f8f9fc')->animation('animate__fadeInRight', 'animate__fadeOutDown')->timerProgressBar();
+            return back();
+        }
     }
 
     /**
@@ -66,11 +178,9 @@ class EnrolledStudentController extends Controller
      */
     public function show($id)
     {
-        $student = Student::with('gradeLevel')
-            ->where('status', 1)
-            ->findOrFail($id);
+        $student = Student::find($id);
         $student_id = $student->student_id;
-        $name =  Str::ucfirst($student->first_name) . ' ' . Str::ucfirst(Str::substr($student->middle_name, 0, 1)) . ' ' . Str::ucfirst($student->last_name);
+        $name = Str::ucfirst($student->first_name) . ' ' . Str::ucfirst(Str::substr($student->middle_name, 0, 1)) . ' ' . Str::ucfirst($student->last_name);
         $path = 'uploads/requirements/' . $name;
         $psaFile = '';
         $form137File = '';
@@ -233,6 +343,7 @@ class EnrolledStudentController extends Controller
                             ->where('filename', 'photo')
                             ->where('isSubmitted', 1)
                             ->firstOrFail();
+
                         $hasFilePhoto = true;
                         break;
                     }
@@ -246,9 +357,9 @@ class EnrolledStudentController extends Controller
         $guardian = Family::where('student_id', $student->student_id)->where('relationship_type', 'guardian')->first();
         $sections = Section::all();
         $gradeLevels = GradeLevel::all();
-        return view('BCA.Admin.registrar-layouts.students.enrolled.show', compact('sections', 'gradeLevels', 'student', 'father', 'mother', 'guardian', 'studentPhoto',  'goodMoral', 'form137File', 'psaFile', 'hasFilePsa', 'hasFileForm137', 'hasFileGoodMoral', 'hasFilePhoto'));
-    }
 
+        return view('BCA.Admin.registrar-layouts.students.enrollees.show', compact('sections', 'gradeLevels', 'student','father','mother','guardian', 'studentPhoto', 'goodMoral', 'form137File', 'psaFile', 'hasFilePsa', 'hasFileForm137', 'hasFileGoodMoral', 'hasFilePhoto'));
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -270,32 +381,7 @@ class EnrolledStudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {
-            $student = Student::findOrFail($id);
-            $age = Carbon::parse($request->input('birthdate'))->diff(Carbon::now());
-            $student->student_lrn = $request->input('student_lrn');
-            $student->first_name = $request->input('first_name');
-            $student->middle_name = $request->input('middle_name');
-            $student->last_name = $request->input('last_name');
-            $student->gender = $request->input('gender');
-            $student->age = $age->y;
-            $student->email = $request->input('email');
-            $student->birthdate = $request->input('birthdate');
-            $student->birthplace = $request->input('birthplace');
-            $student->address = $request->input('address');
-            $student->section_id = $request->input('section_id');
-            $student->grade_level_id = $request->input('grade_level_id');
-            if ($student->isDirty()) {
-                $student->update();
-                toast()->success('SYSTEM MESSAGE', 'Updated successfully.')->autoClose(6000)->width('400px')->padding('10px')->background('#f8f9fc')->animation('animate__fadeInRight', 'animate__fadeOutDown')->timerProgressBar();
-                return redirect()->back();
-            }
-            toast()->info('SYSTEM MESSAGE', ' Nothing changed')->autoClose(6000)->width('400px')->padding('10px')->background('#f8f9fc')->animation('animate__fadeInRight', 'animate__fadeOutDown')->timerProgressBar();
-            return redirect()->back();
-        } catch (\Throwable $th) {
-            alert()->info('SYSTEM MESSAGE', $th->getMessage())->autoClose(6000)->width('400px')->animation('animate__zoomIn', 'animate__zoomOutDown')->timerProgressBar();
-            return redirect()->back();
-        }
+        //
     }
 
     /**

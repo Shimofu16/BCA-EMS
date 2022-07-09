@@ -13,7 +13,8 @@
                     @csrf
                     <div class="form-group">
                         <label for="Subject" class="text-dark text-black font-weight-bold">Subject:</label>
-                        <input class="form-control w-50" type="text" name="subject" id="Subject" placeholder="Subject">
+                        <input class="form-control w-50" type="text" name="subject" id="Subject"
+                            placeholder="Subject">
                     </div>
                     <div class="form-group">
                         <label for="grade_level_id" class="text-dark text-black font-weight-bold">Grade level:</label>
@@ -25,8 +26,9 @@
                         </select>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-primary" type="submit">Add Subject</button>
+                        <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancel</button>
+
+                        <button class="btn btn-primary" type="submit">Add</button>
                     </div>
                 </form>
             </div>

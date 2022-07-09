@@ -4,25 +4,30 @@
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
         <i class="fa fa-bars"></i>
     </button>
-    <div class="row">
-        <div class="col-md-12">
-            @php
-                $sy = DB::table('school_years')->get();
-                $current = DB::table('school_years')
-                    ->where('isCurrent', '=', 1)
-                    ->first()->school_year;
-            @endphp
+    <div class="row flex-nowrap">
+        @php
+            $sy = DB::table('school_years')->get();
+            $current = DB::table('school_years')
+                ->where('isCurrent', '=', 1)
+                ->first();
+        @endphp
+        <div class="col px-0 mr-1">
+            <button class="btn" data-toggle="modal" data-target="#enrollment">
+                {{ $current->isEnrollment == 1 ? 'Close' : 'Open' }} Enrollment
+            </button>
+        </div>
+        <div class="col px-0">
             @csrf
             @method('post')
             <div class="dropdown">
                 <button class="btn btn-bca-outline dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-toggle="dropdown" aria-expanded="false">
-                    SY {{ $current }}
+                    SY {{ $current->school_year }}
                 </button>
                 <div class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton">
                     @foreach ($sy as $item)
                         @if ($item->isCurrent != 1)
-                            <form action="{{ route('change.sy', $item->id) }}" method="post">
+                            <form action="{{ route('registrar.change.sy', $item->id) }}" method="post">
                                 @csrf
                                 <button class="dropdown-item" type="submit">{{ $item->school_year }}</button>
                             </form>
@@ -31,61 +36,36 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Topbar Search -->
-    {{-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-        <div class="input-group">
-            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                aria-label="Search" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                    <i class="fas fa-search fa-sm"></i>
-                </button>
+        <div class="modal fade" id="enrollment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <h5 class="modal-title text-white" id="exampleModalLongTitle">Students information</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="text-white">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5 class="text-center">
+                            {{ $current->isEnrollment == 1 ? 'Close' : 'Open' }} Enrollment for SY
+                            {{ $current->school_year }}?
+                        </h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <form action="{{ route('registrar.change.sy.enrollment') }}" method="get">
+                            @csrf
+                            <button class="btn btn-primary" type="submit">Yes</button>
+
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-    </form> --}}
-
+    </div>
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
-
-        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-        <!-- Nav Item - Alerts -->
-        {{-- <li class="nav-item dropdown no-arrow mx-1">
-            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell fa-fw"></i>
-                <span class="badge badge-danger badge-counter">
-                 @if ($unregStudentCount > 10)
-                        {{ $unregStudentCount }}+
-                    @else
-                        {{ $unregStudentCount }}
-                    @endif
-                </span>
-            </a>
-        <!-- Dropdown - Alerts -->
-            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="alertsDropdown">
-                <h6 class="dropdown-header">
-                    Notifications
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                        <div class="icon-circle bg-primary">
-                            <i class="fas fa-file-alt text-white"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <span class="font-weight-bold">Donation</span>
-                        <hr class="my-0">
-                        <span class="font-weight-bold pt-3">Sender: Roy Joseph Latayan</span>
-                        <div class="small text-gray-500">December 23, 2021</div>
-                    </div>
-                </a>
-
-                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-            </div>
-        </li> --}}
-
         <!-- Nav Item - Messages -->
         <div class="topbar-divider d-none d-sm-block"></div>
         <!-- Nav Item - User Information -->

@@ -1,4 +1,4 @@
-@extends('admin.registrar-layouts.index')
+@extends('BCA.Admin.registrar-layouts.index')
 @section('page-title')
     Teachers
 @endsection
@@ -10,46 +10,58 @@
         </div>
         <div class="col">
             <div class="d-flex justify-content-end">
-                <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#add">
+                <a type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#add">
                     <span class="d-flex align-items-center"><i class="fas fa-plus-circle"></i>&#160; Add Teacher</span>
                 </a>
-                @include('admin.registrar-layouts.teacher.modal._modal-add')
+                @include('BCA.Admin.registrar-layouts.teacher.modal._modal-add')
             </div>
         </div>
     </div>
-    @include('admin.alert-msgs._success')
     <div class="row">
         <div class="col-12">
             <div class="table-responsive">
                 <table class="table table-bordered table-hover" id="teachers-table">
                     <thead class="thead-light">
                         <tr>
-                            <th class="text-center">Name</th>
-                            <th class="text-center">Gender</th>
-                            <th class="text-center">Age</th>
-                            <th class="text-center">Phone No.</th>
-                            <th class="text-center">Email</th>
-                            <th class="text-center">Action</td>
+                            <th scope="col" class="text-center">Id</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Age</th>
+                            <th scope="col">Phone No.</th>
+                            <th scope="col" class="text-center">Action</td>
 
                         </tr>
                     </thead>
                     <tbody>
-
                         @foreach ($teachers as $teacher)
                             <tr>
-                                <td class="text-center">{{ $teacher->name }}</td>
-                                <td class="text-center">{{ $teacher->gender }}</td>
-                                <td class="text-center">{{ $teacher->age }}</td>
-                                <td class="text-center">{{ $teacher->contact }}</td>
-                                <td class="text-center">{{ $teacher->email }}</td>
-                                <td class="text-center">
-                                    <a class="btn btn-sm btn-primary" data-toggle="modal"
-                                        data-target="#edit{{ $teacher->id }}">
-                                        Edit
-                                    </a>
+                                <td>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <h6 class="fw-bold">{{ $teacher->id }}</h6>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column px-2 py-1">
+                                        <h5 class="mb-0 text-sm">{{ $teacher->name }}
+                                        </h5>
+                                        <p class="text-sm text-secondary mb-0">
+                                            {{ $teacher->email }}
+                                        </p>
+                                    </div>
+                                </td>
+                                <td>{{ $teacher->gender }}</td>
+                                <td>{{ $teacher->age }}</td>
+                                <td>{{ $teacher->contact }}</td>
+                                <td>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <a class="btn btn-sm btn-outline-primary" data-toggle="modal"
+                                            data-target="#edit{{ $teacher->id }}">
+                                            Edit
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
-                            @include('admin.registrar-layouts.teacher.modal._modal-edit')
+                            @include('BCA.Admin.registrar-layouts.teacher.modal._modal-edit')
                         @endforeach
                     </tbody>
                 </table>

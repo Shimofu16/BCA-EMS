@@ -1,4 +1,4 @@
-@extends('admin.registrar-layouts.index')
+@extends('BCA.Admin.registrar-layouts.index')
 @section('page-title')
     Grade levels
 @endsection
@@ -9,12 +9,10 @@
         </div>
         <div class="col">
             <div class="d-flex justify-content-end">
-                <a class="btn btn-primary " data-toggle="modal" data-target="#add">
+                <a class="btn btn-outline-primary " data-toggle="modal" data-target="#add">
                     <span class="d-flex align-items-center"><i class="fas fa-plus-circle"></i>&#160; Add Section</span>
                 </a>
-                @include(
-                    'admin.registrar-layouts.section.modal._modal-section'
-                )
+                @include('BCA.Admin.registrar-layouts.section.modal._modal-section')
                 {{-- For future purposes
                     can add and update grade level --}}
                 {{-- <div class="btn-group" role="group">
@@ -38,19 +36,30 @@
                 <table class="table table-bordered table-hover" id="section-table">
                     <thead class="thead-light">
                         <tr>
-                            <th class="text-center">Grade Level</th>
-                            <th class="text-center">Number of Sections</th>
-                            <th class="text-center">Action</th>
+                            <th scope="col">Grade Level</th>
+                            <th scope="col">Number of Sections</th>
+                            <th scope="col" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($gradeLevels as $gradeLevel)
-                            <tr class="text-center">
-                                <td>{{ $gradeLevel->grade_name }}</td>
-                                <td>{{ $gradeLevel->sections->count() }}</td>
-                                <td class="d-flex justify-content-center align-items-center">
-                                    <a class="btn btn-sm btn-info mr-1"
-                                        href="{{ route('registrar.section.' . str_replace(' ', '', Str::lower($gradeLevel->grade_name)) . '.index', $gradeLevel->id) }}">View</a>
+                            <tr>
+                                <td>
+                                    <div class="px-2">
+                                        {{ $gradeLevel->grade_name }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="px-2">
+                                        {{ $gradeLevel->sections->count() }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <a class="btn btn-sm btn-outline-info mr-1"
+                                            href="{{ route('registrar.section.index', $gradeLevel->id) }}">View</a>
+
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

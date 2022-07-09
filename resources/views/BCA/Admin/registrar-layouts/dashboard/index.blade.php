@@ -53,7 +53,7 @@
 
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-warning shadow h-100 py-2">
-                    <a href="{{ route('registrar.section.index') }}"
+                    <a href="{{ route('registrar.section.index.grade.levels') }}"
                         class="card-body link-primary text-decoration-none d-hover-warning">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
@@ -139,7 +139,7 @@
                                     <td class="text-center">{{ $student->gradeLevel->grade_name }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('registrar.enrollees.show', $student->id) }}"
-                                            class="btn btn-sm btn-info">View</a>
+                                            class="btn btn-sm btn-outline-info">View</a>
                                     </td>
                                 </tr>
                             @empty
@@ -195,7 +195,7 @@
                                     <td class="text-center">{{ $student->gradeLevel->grade_name }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('registrar.enrollees.show', $student->id) }}"
-                                            class="btn btn-sm btn-info">View</a>
+                                            class="btn btn-sm btn-outline-info">View</a>
                                     </td>
                                 </tr>
                             @empty
@@ -238,7 +238,7 @@
                                     <td class="text-center">{{ $student->gradeLevel->grade_name }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('registrar.enrollees.show', $student->id) }}"
-                                            class="btn btn-sm btn-info">View</a>
+                                            class="btn btn-sm btn-outline-info">View</a>
                                     </td>
                                 </tr>
                             @empty
@@ -279,7 +279,7 @@
                                     <td class="text-center">{{ $student->email }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('registrar.enrollees.show', $student->id) }}"
-                                            class="btn btn-sm btn-primary"><i class="fa-solid fa-paper-plane"></i>
+                                            class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-paper-plane"></i>
                                             Resend
                                             Code</a>
                                     </td>

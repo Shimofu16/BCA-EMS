@@ -1,19 +1,19 @@
-@extends('admin.registrar-layouts.index')
+@extends('BCA.Admin.registrar-layouts.index')
 @section('page-title')
     Sections
 @endsection
 @section('contents')
     <div class="row shadow align-items-center mb-3">
         <div class="col">
-            <h1 class="h3 text-gray-800 py-3 mb-0">{{ $title->grade_name }} </h1>
+            <h1 class="h3 text-gray-800 py-3 mb-0">{{ $title->grade_name }}</h1>
         </div>
         <div class="col">
             <div class="d-flex justify-content-end">
-                <a href="{{ route('registrar.section.index') }}" class="btn btn-primary">
+                <a href="{{ url()->previous()  }}" class="btn btn-outline-primary">
                     <i class="fa-solid fa-chevron-left"></i>
                     <span>Back</span>
                 </a>
-               {{--  <button class="btn btn-primary" data-toggle="modal" data-target="#add">
+                {{-- <button class="btn btn-primary" data-toggle="modal" data-target="#add">
                     <span class="d-flex align-items-center"><i class="fas fa-plus-circle"></i>&#160; Add Section</span>
                 </button>
                 @include(
@@ -49,18 +49,14 @@
                                     <td class="text-center">{{ $section->teacher->name }}</td>
                                 @endif
                                 <td class="d-flex justify-content-center align-items-center">
-                                    <a class="btn btn-sm btn-info mr-1"
+                                    <a class="btn btn-sm btn-outline-info mr-1"
                                         href="{{ route('registrar.section.show', $section->id) }}">View</a>
-                                    <button type="button" class="btn btn-primary btn-sm mr-1" data-toggle="modal"
+                                    <button type="button" class="btn btn-outline-primary btn-sm mr-1" data-toggle="modal"
                                         data-target="#edit{{ $section->id }}">Edit</button>
-                                    <button type="button" class="btn btn-danger btn-sm " data-toggle="modal"
+                                    <button type="button" class="btn btn-outline-danger btn-sm " data-toggle="modal"
                                         data-target="#delete{{ $section->id }}">Delete</button>
-                                    @include(
-                                        'admin.registrar-layouts.section.modal._modal-edit'
-                                    )
-                                    @include(
-                                        'admin.registrar-layouts.section.modal._modal-delete'
-                                    )
+                                    @include('BCA.Admin.registrar-layouts.section.modal._modal-edit')
+                                    @include('BCA.Admin.registrar-layouts.section.modal._modal-delete')
                                 </td>
                             </tr>
                         @endforeach

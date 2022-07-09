@@ -137,7 +137,8 @@
                     @if ($student->student_type == 'Transferee')
                         @if ($hasFilePsa == false || $hasFileForm137 == false || $hasFileGoodMoral == false || $hasFilePhoto == false)
                             <div class="modal-footer pb-0 mb-0 py-1">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                <button class="btn btn-outline-secondary" type="button"
+                                    data-dismiss="modal">Cancel</button>
                                 <button type="submit" name="submit" class="btn btn-primary">Upload</button>
                             </div>
                         @endif
@@ -145,7 +146,8 @@
                     @if ($student->student_type == 'New Student')
                         @if ($hasFilePsa == false || $hasFilePhoto == false)
                             <div class="modal-footer pb-0 mb-0 py-1">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                <button class="btn btn-outline-secondary" type="button"
+                                    data-dismiss="modal">Cancel</button>
                                 <button type="submit" name="submit" class="btn btn-primary">Upload</button>
                             </div>
                         @endif
@@ -153,7 +155,8 @@
                     @if ($student->student_type == 'Old Student')
                         @if ($hasFileForm137 == false)
                             <div class="modal-footer pb-0 mb-0 py-1">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                <button class="btn btn-outline-secondary" type="button"
+                                    data-dismiss="modal">Cancel</button>
                                 <button type="submit" name="submit" class="btn btn-primary">Upload</button>
                             </div>
                         @endif

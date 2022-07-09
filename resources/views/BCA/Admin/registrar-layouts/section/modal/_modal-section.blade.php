@@ -30,7 +30,7 @@
                         <select class="custom-select" id="teacher_id" name="teacher_id">
                             <option selected>-- Select Adviser --</option>
                             @foreach ($teachers as $teacher)
-                                @if ($teacher->sections == null)
+                                @if ($teacher->sections->count() == 0)
                                     <option value="{{ $teacher->id }}">
                                         {{ $teacher->name }}</option>
                                 @endif
@@ -38,7 +38,7 @@
                         </select>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancel</button>
                         <button class="btn btn-primary" type="submit">Add Section</button>
                     </div>
                 </form>

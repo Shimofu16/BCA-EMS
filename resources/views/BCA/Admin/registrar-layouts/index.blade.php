@@ -30,8 +30,8 @@
 
         <!-- Nav Item - Students Collapse Menu -->
         <li class="nav-item {{ Request::is('registrar/students/*') ? 'active' : '' }}">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                aria-controls="collapseOne">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
+                aria-expanded="true" aria-controls="collapseOne">
                 <i class="fas fa-fw fa-users"></i>
                 <span>Students</span>
             </a>
@@ -69,23 +69,37 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
+
                         @foreach ($gradeLevels as $gradeLevel)
-                                @if ($gradeLevel->sections->count() != 0)
-                                    <a class="collapse-item mb-1 {{ Request::is('registrar/section/' . str_replace(' ', '', Str::lower($gradeLevel->grade_name)).'/*') ? 'active-collapse-item' : '' }}"
-                                        href="{{ route('registrar.section.' . str_replace(' ', '', Str::lower($gradeLevel->grade_name)) . '.index',$gradeLevel->id) }}">{{ $gradeLevel->grade_name }}</a>
-                                @endif
+                            @if ($gradeLevel->sections->count() != 0)
+                                <a class="collapse-item mb-1"
+                                    href="{{ route('registrar.section.index', $gradeLevel->id) }}">{{ $gradeLevel->grade_name }}</a>
+                            @endif
                         @endforeach
-                        <a class="collapse-item {{ Request::is('registrar/sections') ? 'active-collapse-item' : '' }}"
-                            href="{{ route('registrar.section.index') }}">Grade Levels</a>
+                        <a class="collapse-item {{ Request::routeIs('registrar.section.index.grade.levels') ? 'active-collapse-item' : '' }}"
+                            href="{{ route('registrar.section.index.grade.levels') }}">Grade Levels</a>
                     </div>
                 </div>
             </li>
 
             <li class="nav-item {{ Request::is('registrar/subjects') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('registrar.subject.index') }}">
-                    <i class="fa-fw fas fa-book"></i>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+                    aria-expanded="true" aria-controls="collapseThree">
+                    <i class="fas fa-fw fa-object-ungroup"></i>
                     <span>Subjects</span>
                 </a>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        @foreach ($gradeLevels as $gradeLevel)
+                            @if ($gradeLevel->subjects->count() != 0)
+                                <a class="collapse-item mb-1"
+                                    href="{{ route('registrar.subject.index', $gradeLevel->id) }}">{{ $gradeLevel->grade_name }}</a>
+                            @endif
+                        @endforeach
+                        <a class="collapse-item {{ Request::routeIs('registrar.section.index.grade.levels') ? 'active-collapse-item' : '' }}"
+                            href="{{ route('registrar.subject.index.grade.levels') }}">Grade Levels</a>
+                    </div>
+                </div>
             </li>
         @endif
         <!-- Nav Item - Teachers Collapse Me -->

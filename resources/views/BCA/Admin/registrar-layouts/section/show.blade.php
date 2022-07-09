@@ -1,4 +1,4 @@
-@extends('admin.registrar-layouts.index')
+@extends('BCA.Admin.registrar-layouts.index')
 @section('page-title')
     Sections
 @endsection
@@ -10,13 +10,13 @@
         <div class="col">
             <div class="d-flex justify-content-end align-items-">
                 <a href="{{ url()->previous()  }}"
-                    class="btn btn-primary mr-2">
+                    class="btn btn-outline-primary mr-2">
                     <span class="d-flex align-items-center"><i class="fas fa-chevron-circle-left"></i>&#160;Back</span>
                 </a>
-                <a href="{{ route('registrar.section.student.list', $section->id) }}" class="btn btn-primary"
+                {{-- <a href="{{ route('registrar.section.student.list', $section->id) }}" class="btn btn-primary"
                     target="__blank">
                     <span class="d-flex align-items-center"><i class="fa-solid fa-download"></i>&#160; Download Student
-                        List</span>
+                        List</span> --}}
                 </a>
             </div>
         </div>

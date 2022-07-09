@@ -1,16 +1,19 @@
-@extends('admin.registrar-layouts.index')
-@section('page-title')Grade levels @endsection
+@extends('BCA.Admin.registrar-layouts.index')
+
+@section('page-title')
+    Grade Level
+@endsection
 @section('contents')
     <div class="row shadow align-items-center justify-content-between mb-3">
         <div class="col">
-            <h1 class="h3 text-gray-800 py-3  mb-0">@yield('page-title')</h1>
+            <h1 class="h3 text-gray-800 py-3 mb-0">{{ $gradeLevel->grade_name }}</h1>
         </div>
         <div class="col">
-            <div class="d-flex justify-content-end">
-                <a  class="btn btn-primary " data-toggle="modal" data-target="#add">
-                    <span class="d-flex align-items-center"><i class="fas fa-plus-circle"></i>&#160; Add Subject</span>
+            <div class="d-flex justify-content-end align-items-">
+                <a href="{{ route('registrar.subject.index.grade.levels')  }}"
+                    class="btn btn-outline-primary mr-2">
+                    <span class="d-flex align-items-center"><i class="fas fa-chevron-circle-left"></i>&#160; Back</span>
                 </a>
-                @include('admin.registrar-layouts.subjects.modal._modal-subject')
             </div>
         </div>
     </div>
@@ -20,34 +23,29 @@
                 <table class="table table-bordered table-hover" id="subject-table">
                     <thead class="thead-light">
                         <tr>
-                            <th class="text-center">Grade Level</th>
-                            <th class="text-center">Number of Subjects</th>
+                            <th class="text-center">Subject</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($gradeLevels as $gradeLevel)
-                            <tr class="text-center">
-                                <td>{{ $gradeLevel->grade_name }}</td>
-                                <td>{{ $gradeLevel->subjects->count() }}</td>
-                                <td class="d-flex justify-content-center align-items-center">
-                                    <a class="btn btn-sm btn-info mr-1"
-                                        href="{{ route('registrar.subject.' . str_replace(' ', '', Str::lower($gradeLevel->grade_name)) . '.index',$gradeLevel->id) }}">View</a>
+                        @foreach ($subjects as $subject)
+                            <tr>
+                                <td class="text-center"> {{ $subject->subject }}</td>
+                                <td class="text-center">
+                                    <a class="btn btn-outline-primary" data-toggle="modal" data-target="#edit{{ $subject->id }}">Edit</a>
+                                    <a class="btn btn-outline-danger" data-toggle="modal" data-target="#delete{{ $subject->id }}">Delete</a>
                                 </td>
+                                @include('BCA.Admin.registrar-layouts.subjects.modal._modal-edit')
+                                @include('BCA.Admin.registrar-layouts.subjects.modal._modal-delete')
                             </tr>
                         @endforeach
-
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
-
 @endsection
 @section('dashboard-javascript')
-    <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <script type="text/javascript">
         // Call the dataTables jQuery plugin
         $(document).ready(function() {

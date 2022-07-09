@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary">
-                <h5 class="modal-title text-white" id="exampleModalLongTitle">Edit Section</h5>
+                <h5 class="modal-title text-white" id="exampleModalLongTitle">Edit Subject</h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -18,8 +18,9 @@
                             value="{{ $subject->subject }}">
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-primary" type="submit">Update Section</button>
+                        <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancel</button>
+
+                        <button class="btn btn-primary" type="submit">Update</button>
                     </div>
                 </form>
             </div>
