@@ -497,7 +497,7 @@
                         </div>
                     </div>
                     <center>
-                        <h4 class="card-title">Thank you for registering!</h4>
+                        <h4 class="card-title">Thank you for enrolling!</h4>
                         @if ($new || $transferee)
                             <p class="card-text">Please proceed to your email and download the enrollment form
                                 before going back..</p>

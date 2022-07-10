@@ -21,7 +21,7 @@ class NullPositioner extends AbstractPositioner
     /**
      * @param AbstractFrameDecorator $frame
      */
-    function position(AbstractFrameDecorator $frame): void
+    function position(AbstractFrameDecorator $frame)
     {
         return;
     }

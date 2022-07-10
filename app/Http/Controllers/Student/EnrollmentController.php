@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Registrar\Family;
+use App\Models\Registrar\SchoolYear;
 use App\Models\Registrar\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,11 +18,17 @@ class EnrollmentController extends Controller
      */
     public function index()
     {
-        $student = Student::where('student_id',Auth::guard('student')->user()->student_id)->first();
-        $father = Family::where('student_id',Auth::guard('student')->user()->student_id)->where('relationship_type','father')->first();
-        $mother = Family::where('student_id',Auth::guard('student')->user()->student_id)->where('relationship_type','mother')->first();
-        $guardian = Family::where('student_id',Auth::guard('student')->user()->student_id)->where('relationship_type','guardian')->first();
-        return view('BCA.Admin.student-layouts.enrollment.index',compact('student','father','mother','guardian'));
+        try {
+            $sy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->firstOrFail();
+            $isEnrollment = true;
+        } catch (\Throwable $th) {
+            $isEnrollment = false;
+        }
+        $student = Student::where('student_id', Auth::guard('student')->user()->student_id)->first();
+        $father = Family::where('student_id', Auth::guard('student')->user()->student_id)->where('relationship_type', 'father')->first();
+        $mother = Family::where('student_id', Auth::guard('student')->user()->student_id)->where('relationship_type', 'mother')->first();
+        $guardian = Family::where('student_id', Auth::guard('student')->user()->student_id)->where('relationship_type', 'guardian')->first();
+        return view('BCA.Admin.student-layouts.enrollment.index', compact('student', 'father', 'mother', 'guardian', 'isEnrollment'));
     }
 
     /**

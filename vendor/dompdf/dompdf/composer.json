@@ -35,7 +35,6 @@
         "php": "^7.1 || ^8.0",
         "ext-dom": "*",
         "ext-mbstring": "*",
-        "masterminds/html5": "^2.0",
         "phenx/php-font-lib": "^0.5.4",
         "phenx/php-svg-lib": "^0.3.3 || ^0.4.0"
     },

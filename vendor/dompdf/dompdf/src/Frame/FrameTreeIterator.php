@@ -70,7 +70,10 @@ class FrameTreeIterator implements Iterator
 
     public function next(): void
     {
-        $b = array_pop($this->_stack);
+        $b = end($this->_stack);
+
+        // Pop last element
+        unset($this->_stack[key($this->_stack)]);
         $this->_num++;
 
         // Push all children onto the stack in reverse order

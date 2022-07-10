@@ -266,7 +266,7 @@ class LineBox
     /**
      * @param AbstractFrameDecorator $frame
      */
-    public function add_frame(Frame $frame): void
+    public function add_frame(Frame $frame)
     {
         $this->_frames[] = $frame;
 
@@ -377,7 +377,7 @@ class LineBox
      *
      * @return float
      */
-    public function recalculate_width(): float
+    public function recalculate_width()
     {
         $width = 0.0;
 
@@ -391,7 +391,7 @@ class LineBox
     /**
      * @return string
      */
-    public function __toString(): string
+    public function __toString()
     {
         $props = ["wc", "y", "w", "h", "left", "right", "br"];
         $s = "";

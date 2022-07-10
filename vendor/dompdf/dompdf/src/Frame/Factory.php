@@ -190,7 +190,7 @@ class Factory
 
         // Handle nodeName
         if ($node->nodeName === "img") {
-            $style->set_prop("display", "-dompdf-image");
+            $style->display = "-dompdf-image";
             $decorator = "Image";
             $reflower = "Image";
         }
@@ -239,7 +239,7 @@ class Factory
             }
 
             $new_style = $dompdf->getCss()->create_style();
-            $new_style->set_prop("display", "-dompdf-list-bullet");
+            $new_style->display = "-dompdf-list-bullet";
             $new_style->inherit($style);
             $b_f->set_style($new_style);
 

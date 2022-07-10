@@ -20,12 +20,9 @@ use Dompdf\Frame;
  */
 class Table extends AbstractFrameDecorator
 {
-    public const VALID_CHILDREN = Style::TABLE_INTERNAL_TYPES;
+    public static $VALID_CHILDREN = Style::TABLE_INTERNAL_TYPES;
 
-    /**
-     * List of all row-group display types.
-     */
-    public const ROW_GROUPS = [
+    public static $ROW_GROUPS = [
         "table-row-group",
         "table-header-group",
         "table-footer-group"
@@ -38,6 +35,20 @@ class Table extends AbstractFrameDecorator
      * @var Cellmap
      */
     protected $_cellmap;
+
+    /**
+     * The minimum width of the table, in pt
+     *
+     * @var float
+     */
+    protected $_min_width;
+
+    /**
+     * The maximum width of the table, in pt
+     *
+     * @var float
+     */
+    protected $_max_width;
 
     /**
      * Table header rows.  Each table header is duplicated when a table
@@ -70,6 +81,8 @@ class Table extends AbstractFrameDecorator
             $this->_cellmap->set_layout_fixed(true);
         }
 
+        $this->_min_width = null;
+        $this->_max_width = null;
         $this->_headers = [];
         $this->_footers = [];
     }
@@ -78,6 +91,8 @@ class Table extends AbstractFrameDecorator
     {
         parent::reset();
         $this->_cellmap->reset();
+        $this->_min_width = null;
+        $this->_max_width = null;
         $this->_headers = [];
         $this->_footers = [];
         $this->_reflower->reset();
@@ -119,7 +134,7 @@ class Table extends AbstractFrameDecorator
 
             parent::split($first_header, $page_break, $forced);
 
-        } elseif (in_array($child->get_style()->display, self::ROW_GROUPS, true)) {
+        } elseif (in_array($child->get_style()->display, self::$ROW_GROUPS, true)) {
 
             // Individual rows should have already been handled
             parent::split($child, $page_break, $forced);
@@ -176,6 +191,46 @@ class Table extends AbstractFrameDecorator
         return $this->_cellmap;
     }
 
+    /**
+     * Return the minimum width of this table
+     *
+     * @return float
+     */
+    public function get_min_width()
+    {
+        return $this->_min_width;
+    }
+
+    /**
+     * Return the maximum width of this table
+     *
+     * @return float
+     */
+    public function get_max_width()
+    {
+        return $this->_max_width;
+    }
+
+    /**
+     * Set the minimum width of the table
+     *
+     * @param float $width the new minimum width
+     */
+    public function set_min_width($width)
+    {
+        $this->_min_width = $width;
+    }
+
+    /**
+     * Set the maximum width of the table
+     *
+     * @param float $width the new maximum width
+     */
+    public function set_max_width($width)
+    {
+        $this->_max_width = $width;
+    }
+
     //........................................................................
 
     /**
@@ -193,7 +248,7 @@ class Table extends AbstractFrameDecorator
         $wsPattern = '/^[^\S\xA0\x{202F}\x{2007}]*$/u';
         $validChildOrNull = function ($frame) {
             return $frame === null
-                || in_array($frame->get_style()->display, self::VALID_CHILDREN, true);
+                || in_array($frame->get_style()->display, self::$VALID_CHILDREN, true);
         };
 
         return $frame->is_text_node() && !$frame->is_pre()
@@ -218,7 +273,7 @@ class Table extends AbstractFrameDecorator
         foreach ($children as $child) {
             $display = $child->get_style()->display;
 
-            if (in_array($display, self::ROW_GROUPS, true)) {
+            if (in_array($display, self::$ROW_GROUPS, true)) {
                 // Reset anonymous tbody
                 $tbody = null;
 
@@ -259,7 +314,7 @@ class Table extends AbstractFrameDecorator
         foreach ($this->get_children() as $child) {
             $display = $child->get_style()->display;
 
-            if (in_array($display, self::ROW_GROUPS, true)) {
+            if (in_array($display, self::$ROW_GROUPS, true)) {
                 $this->normalizeRowGroup($child);
             }
         }
@@ -339,5 +394,27 @@ class Table extends AbstractFrameDecorator
             $td = $frame->create_anonymous_child("td", "table-cell");
             $frame->append_child($td);
         }
+    }
+
+    //........................................................................
+
+    /**
+     * @deprecated
+     */
+    public function normalise()
+    {
+        $this->normalize();
+    }
+
+    /**
+     * Moves the specified frame and it's corresponding node outside of
+     * the table.
+     *
+     * @deprecated
+     * @param Frame $frame the frame to move
+     */
+    public function move_after(Frame $frame)
+    {
+        $this->get_parent()->insert_child_after($frame, $this);
     }
 }

@@ -29,10 +29,10 @@
         <div class="sidebar-heading">
             Menu
         </div>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('student.enrolment.index') }}">
+        <li class="nav-item {{ Request::routeIs('student.enrolment.index') ? 'active' : '' }}">
+            <a class="nav-link " href="{{ route('student.enrolment.index') }}">
                 <i class="fas fa-fw fa-address-card"></i>
-                <span>Enrolment</span>
+                <span>Enrollment</span>
             </a>
         </li>
         <!-- Nav Item - Utilities Collapse Menu -->

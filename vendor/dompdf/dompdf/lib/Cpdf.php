@@ -1048,7 +1048,7 @@ class Cpdf
             }
         }
 
-        return 'SUB' . str_pad($base_26, 3, 'A', STR_PAD_LEFT);
+        return 'SUB' . str_pad($base_26, 3 , 'A', STR_PAD_LEFT);
     }
 
     /**
@@ -1381,7 +1381,7 @@ EOT;
 
                 $res = "\n$id 0 obj\n";
                 $res .= "<</Length " . mb_strlen($stream, '8bit') . " >>\n";
-                $res .= "stream\n" . $stream . "\nendstream" . "\nendobj";
+                $res .= "stream\n" . $stream . "\nendstream" . "\nendobj";;
 
                 return $res;
         }
@@ -2423,7 +2423,8 @@ EOT;
                 $res = "\n$id 0 obj\n<< /Type /XObject\n";
 
                 foreach ($o["info"] as $k => $v) {
-                    switch ($k) {
+                    switch($k)
+                    {
                         case 'Subtype':
                             $res .= "/Subtype /$v\n";
                             break;
@@ -2476,7 +2477,7 @@ EOT;
                 }
 
                 $res .= "/Length " . mb_strlen($tmp, '8bit') . " >>\n";
-                $res .= "stream\n" . $tmp . "\nendstream" . "\nendobj";
+                $res .= "stream\n" . $tmp . "\nendstream" . "\nendobj";;
 
                 return $res;
         }
@@ -2514,7 +2515,7 @@ EOT;
                 $res = "\n$id 0 obj\n<<";
 
                 foreach ($o["info"] as $k => $v) {
-                    switch ($k) {
+                    switch($k) {
                         case 'Fields':
                             $res .= " /Fields [";
                             foreach ($v as $i) {
@@ -2618,7 +2619,7 @@ EOT;
                             $res .= ">>\n";
                             break;
                         case 'T':
-                            if ($encrypted) {
+                            if($encrypted) {
                                 $v = $this->filterText($this->ARC4($v), false, false);
                             }
                             $res .= "/T ($v)\n";
@@ -2661,7 +2662,7 @@ EOT;
                 $pos = strpos($content, sprintf("/ByteRange [ %'.010d", $id));
                 $len = strlen('/ByteRange [ ********** ********** ********** ********** ]');
                 $rangeStartPos = $pos + $len + 1 + 10; // before '<'
-                $content = substr_replace($content, str_pad(sprintf('/ByteRange [ 0 %u %u %u ]', $rangeStartPos, $rangeStartPos + $sign_maxlen + 2, $content_len - 2 - $sign_maxlen - $rangeStartPos), $len, ' ', STR_PAD_RIGHT), $pos, $len);
+                $content = substr_replace($content, str_pad(sprintf('/ByteRange [ 0 %u %u %u ]', $rangeStartPos, $rangeStartPos + $sign_maxlen + 2, $content_len - 2 - $sign_maxlen - $rangeStartPos ), $len, ' ', STR_PAD_RIGHT), $pos, $len);
 
                 $fuid = uniqid();
                 $tmpInput = $this->tmp . "/pkcs7.tmp." . $fuid . '.in';
@@ -2725,7 +2726,7 @@ EOT;
 
                 $o = &$this->objects[$id];
                 foreach ($o['info'] as $k => $v) {
-                    switch ($k) {
+                    switch($k) {
                         case 'Name':
                         case 'Location':
                         case 'Reason':
@@ -2851,7 +2852,7 @@ EOT;
             case 'out':
                 $res = "\n$id 0 obj << ";
 
-                foreach ($this->objects[$id]['info'] as $referenceObjName => $referenceObjId) {
+                foreach($this->objects[$id]['info'] as $referenceObjName => $referenceObjId) {
                     $res .= "/$referenceObjName $referenceObjId 0 R ";
                 }
 
@@ -3309,11 +3310,11 @@ EOT;
     {
         // assume that $font contains the path and file but not the extension
         $name = basename($font);
-        $dir = dirname($font);
+        $dir = dirname($font) . '/';
 
         $fontcache = $this->fontcache;
         if ($fontcache == '') {
-            $fontcache = $dir;
+            $fontcache = rtrim($dir, DIRECTORY_SEPARATOR."/\\");
         }
 
         //$name       filename without folder and extension of font metrics
@@ -3330,22 +3331,36 @@ EOT;
             $metrics_name = "$name.ufm";
         }
 
-        $cache_name = "$metrics_name.json";
+        $cache_name = "$metrics_name.php";
         $this->addMessage("metrics: $metrics_name, cache: $cache_name");
-        
+
         if (file_exists($fontcache . '/' . $cache_name)) {
-            $this->addMessage("openFont: json metrics file exists $fontcache/$cache_name");
-            $cached_font_info = json_decode(file_get_contents($fontcache . '/' . $cache_name), true);
-            if (!isset($cached_font_info['_version_']) || $cached_font_info['_version_'] != $this->fontcacheVersion) {
-                $this->addMessage('openFont: font cache is out of date, regenerating');
-            } else {
-                $this->fonts[$font] = $cached_font_info;
+            $this->addMessage("openFont: php file exists $fontcache/$cache_name");
+            $this->fonts[$font] = require($fontcache . '/' . $cache_name);
+
+            if (!isset($this->fonts[$font]['_version_']) || $this->fonts[$font]['_version_'] != $this->fontcacheVersion) {
+                // if the font file is old, then clear it out and prepare for re-creation
+                $this->addMessage('openFont: clear out, make way for new version.');
+                $this->fonts[$font] = null;
+                unset($this->fonts[$font]);
+            }
+        } else {
+            $old_cache_name = "php_$metrics_name";
+            if (file_exists($fontcache . '/' . $old_cache_name)) {
+                $this->addMessage(
+                    "openFont: php file doesn't exist $fontcache/$cache_name, creating it from the old format"
+                );
+                $old_cache = file_get_contents($fontcache . '/' . $old_cache_name);
+                file_put_contents($fontcache . '/' . $cache_name, '<?php return ' . $old_cache . ';');
+
+                $this->openFont($font);
+                return;
             }
         }
 
-        if (!isset($this->fonts[$font]) && file_exists("$dir/$metrics_name")) {
+        if (!isset($this->fonts[$font]) && file_exists($dir . $metrics_name)) {
             // then rebuild the php_<font>.afm file from the <font>.afm file
-            $this->addMessage("openFont: build php file from $dir/$metrics_name");
+            $this->addMessage("openFont: build php file from $dir$metrics_name");
             $data = [];
 
             // 20 => 'space'
@@ -3360,7 +3375,7 @@ EOT;
                 $cidtogid = str_pad('', 256 * 256 * 2, "\x00");
             }
 
-            $file = file("$dir/$metrics_name");
+            $file = file($dir . $metrics_name);
 
             foreach ($file as $rowA) {
                 $row = trim($rowA);
@@ -3514,7 +3529,7 @@ EOT;
             //Because of potential trouble with php safe mode, expect that the folder already exists.
             //If not existing, this will hit performance because of missing cached results.
             if (is_dir($fontcache) && is_writable($fontcache)) {
-                file_put_contents("$fontcache/$cache_name", json_encode($data, JSON_PRETTY_PRINT));
+                file_put_contents($fontcache . '/' . $cache_name, '<?php return ' . var_export($data, true) . ';');
             }
             $data = null;
         }
@@ -3522,6 +3537,8 @@ EOT;
         if (!isset($this->fonts[$font])) {
             $this->addMessage("openFont: no font file found for $font. Do you need to run load_font.php?");
         }
+
+        //pre_r($this->messages);
     }
 
     /**
@@ -3531,7 +3548,7 @@ EOT;
      * note that encoding='none' will need to be used for symbolic fonts
      * and 'differences' => an array of mappings between numbers 0->255 and character names.
      *
-     * @param string $fontName
+     * @param $fontName
      * @param string $encoding
      * @param bool $set
      * @param bool $isSubsetting
@@ -3679,8 +3696,8 @@ EOT;
     /**
      * sets the color for fill operations
      *
-     * @param array $color
-     * @param bool  $force
+     * @param $color
+     * @param bool $force
      */
     function setColor($color, $force = false)
     {
@@ -3702,7 +3719,9 @@ EOT;
     }
 
     /**
-     * @param string $fillRule
+     * sets the color for fill operations
+     *
+     * @param $fillRule
      */
     function setFillRule($fillRule)
     {
@@ -3716,8 +3735,8 @@ EOT;
     /**
      * sets the color for stroke operations
      *
-     * @param array $color
-     * @param bool  $force
+     * @param $color
+     * @param bool $force
      */
     function setStrokeColor($color, $force = false)
     {
@@ -3868,11 +3887,11 @@ EOT;
     /**
      * draw a line from one set of coordinates to another
      *
-     * @param float $x1
-     * @param float $y1
-     * @param float $x2
-     * @param float $y2
-     * @param bool  $stroke
+     * @param $x1
+     * @param $y1
+     * @param $x2
+     * @param $y2
+     * @param bool $stroke
      */
     function line($x1, $y1, $x2, $y2, $stroke = true)
     {
@@ -3886,14 +3905,14 @@ EOT;
     /**
      * draw a bezier curve based on 4 control points
      *
-     * @param float $x0
-     * @param float $y0
-     * @param float $x1
-     * @param float $y1
-     * @param float $x2
-     * @param float $y2
-     * @param float $x3
-     * @param float $y3
+     * @param $x0
+     * @param $y0
+     * @param $x1
+     * @param $y1
+     * @param $x2
+     * @param $y2
+     * @param $x3
+     * @param $y3
      */
     function curve($x0, $y0, $x1, $y1, $x2, $y2, $x3, $y3)
     {
@@ -3907,13 +3926,13 @@ EOT;
     /**
      * draw a part of an ellipse
      *
-     * @param float $x0
-     * @param float $y0
-     * @param float $astart
-     * @param float $afinish
-     * @param float $r1
-     * @param float $r2
-     * @param float $angle
+     * @param $x0
+     * @param $y0
+     * @param $astart
+     * @param $afinish
+     * @param $r1
+     * @param int $r2
+     * @param int $angle
      * @param int $nSeg
      */
     function partEllipse($x0, $y0, $astart, $afinish, $r1, $r2 = 0, $angle = 0, $nSeg = 8)
@@ -3924,14 +3943,14 @@ EOT;
     /**
      * draw a filled ellipse
      *
-     * @param float $x0
-     * @param float $y0
-     * @param float $r1
-     * @param float $r2
-     * @param float $angle
+     * @param $x0
+     * @param $y0
+     * @param $r1
+     * @param int $r2
+     * @param int $angle
      * @param int $nSeg
-     * @param float $astart
-     * @param float $afinish
+     * @param int $astart
+     * @param int $afinish
      */
     function filledEllipse($x0, $y0, $r1, $r2 = 0, $angle = 0, $nSeg = 8, $astart = 0, $afinish = 360)
     {
@@ -3939,8 +3958,8 @@ EOT;
     }
 
     /**
-     * @param float $x
-     * @param float $y
+     * @param $x
+     * @param $y
      */
     function lineTo($x, $y)
     {
@@ -3948,8 +3967,8 @@ EOT;
     }
 
     /**
-     * @param float $x
-     * @param float $y
+     * @param $x
+     * @param $y
      */
     function moveTo($x, $y)
     {
@@ -3959,12 +3978,12 @@ EOT;
     /**
      * draw a bezier curve based on 4 control points
      *
-     * @param float $x1
-     * @param float $y1
-     * @param float $x2
-     * @param float $y2
-     * @param float $x3
-     * @param float $y3
+     * @param $x1
+     * @param $y1
+     * @param $x2
+     * @param $y2
+     * @param $x3
+     * @param $y3
      */
     function curveTo($x1, $y1, $x2, $y2, $x3, $y3)
     {
@@ -3973,11 +3992,6 @@ EOT;
 
     /**
      * draw a bezier curve based on 4 control points
-     *
-     * @param float $cpx
-     * @param float $cpy
-     * @param float $x
-     * @param float $y
      */
     function quadTo($cpx, $cpy, $x, $y)
     {
@@ -4005,18 +4019,18 @@ EOT;
      * nSeg is not allowed to be less than 2, as this will simply draw a line (and will even draw a
      * pretty crappy shape at 2, as we are approximating with bezier curves.
      *
-     * @param float $x0
-     * @param float $y0
-     * @param float $r1
-     * @param float $r2
-     * @param float $angle
-     * @param int   $nSeg
-     * @param float $astart
-     * @param float $afinish
-     * @param bool  $close
-     * @param bool  $fill
-     * @param bool  $stroke
-     * @param bool  $incomplete
+     * @param $x0
+     * @param $y0
+     * @param $r1
+     * @param int $r2
+     * @param int $angle
+     * @param int $nSeg
+     * @param int $astart
+     * @param int $afinish
+     * @param bool $close
+     * @param bool $fill
+     * @param bool $stroke
+     * @param bool $incomplete
      */
     function ellipse(
         $x0,
@@ -4130,11 +4144,11 @@ EOT;
      *   (2,1) is 2 on, 1 off, 2 on, 1 off.. etc
      * phase is a modifier on the dash pattern which is used to shift the point at which the pattern starts.
      *
-     * @param float  $width
+     * @param int $width
      * @param string $cap
      * @param string $join
-     * @param array  $dash
-     * @param int    $phase
+     * @param string $dash
+     * @param int $phase
      */
     function setLineStyle($width = 1, $cap = '', $join = '', $dash = '', $phase = 0)
     {
@@ -4168,19 +4182,19 @@ EOT;
     /**
      * draw a polygon, the syntax for this is similar to the GD polygon command
      *
-     * @param float[] $p
-     * @param bool    $fill
+     * @param $p
+     * @param $np
+     * @param bool $f
      */
-    public function polygon(array $p, bool $fill = false): void
+    function polygon($p, $np, $f = false)
     {
         $this->addContent(sprintf("\n%.3F %.3F m ", $p[0], $p[1]));
 
-        $n = count($p);
-        for ($i = 2; $i < $n; $i = $i + 2) {
+        for ($i = 2; $i < $np * 2; $i = $i + 2) {
             $this->addContent(sprintf("%.3F %.3F l ", $p[$i], $p[$i + 1]));
         }
 
-        if ($fill) {
+        if ($f) {
             $this->addContent(' f');
         } else {
             $this->addContent(' S');
@@ -4191,10 +4205,10 @@ EOT;
      * a filled rectangle, note that it is the width and height of the rectangle which are the secondary parameters, not
      * the coordinates of the upper-right corner
      *
-     * @param float $x1
-     * @param float $y1
-     * @param float $width
-     * @param float $height
+     * @param $x1
+     * @param $y1
+     * @param $width
+     * @param $height
      */
     function filledRectangle($x1, $y1, $width, $height)
     {
@@ -4205,10 +4219,10 @@ EOT;
      * draw a rectangle, note that it is the width and height of the rectangle which are the secondary parameters, not
      * the coordinates of the upper-right corner
      *
-     * @param float $x1
-     * @param float $y1
-     * @param float $width
-     * @param float $height
+     * @param $x1
+     * @param $y1
+     * @param $width
+     * @param $height
      */
     function rectangle($x1, $y1, $width, $height)
     {
@@ -4219,10 +4233,10 @@ EOT;
      * draw a rectangle, note that it is the width and height of the rectangle which are the secondary parameters, not
      * the coordinates of the upper-right corner
      *
-     * @param float $x1
-     * @param float $y1
-     * @param float $width
-     * @param float $height
+     * @param $x1
+     * @param $y1
+     * @param $width
+     * @param $height
      */
     function rect($x1, $y1, $width, $height)
     {
@@ -4334,10 +4348,8 @@ EOT;
         $color = implode(' ', $color) . ' rg';
 
         $currentFontNum = $this->currentFontNum;
-        $font = array_filter(
-            $this->objects[$this->currentNode]['info']['fonts'],
-            function ($item) use ($currentFontNum) { return $item['fontNum'] == $currentFontNum; }
-        );
+        $font = array_filter($this->objects[$this->currentNode]['info']['fonts'],
+          function($item) use ($currentFontNum) { return $item['fontNum'] == $currentFontNum; });
 
         $this->o_acroform($this->acroFormId, 'font',
           ['objNum' => $font[0]['objNum'], 'fontNum' => $font[0]['fontNum']]);
@@ -4452,10 +4464,10 @@ EOT;
     /**
      * draw a clipping rectangle, all the elements added after this will be clipped
      *
-     * @param float $x1
-     * @param float $y1
-     * @param float $width
-     * @param float $height
+     * @param $x1
+     * @param $y1
+     * @param $width
+     * @param $height
      */
     function clippingRectangle($x1, $y1, $width, $height)
     {
@@ -4466,14 +4478,14 @@ EOT;
     /**
      * draw a clipping rounded rectangle, all the elements added after this will be clipped
      *
-     * @param float $x1
-     * @param float $y1
-     * @param float $w
-     * @param float $h
-     * @param float $rTL
-     * @param float $rTR
-     * @param float $rBR
-     * @param float $rBL
+     * @param $x1
+     * @param $y1
+     * @param $w
+     * @param $h
+     * @param $rTL
+     * @param $rTR
+     * @param $rBR
+     * @param $rBL
      */
     function clippingRectangleRounded($x1, $y1, $w, $h, $rTL, $rTR, $rBR, $rBL)
     {
@@ -4511,25 +4523,6 @@ EOT;
 
         // Close & clip
         $this->addContent(" W n");
-    }
-
-    /**
-     * draw a clipping polygon, the syntax for this is similar to the GD polygon command
-     *
-     * @param float[] $p
-     */
-    public function clippingPolygon(array $p): void
-    {
-        $this->save();
-
-        $this->addContent(sprintf("\n%.3F %.3F m ", $p[0], $p[1]));
-
-        $n = count($p);
-        for ($i = 2; $i < $n; $i = $i + 2) {
-            $this->addContent(sprintf("%.3F %.3F l ", $p[$i], $p[$i + 1]));
-        }
-
-        $this->addContent("W n");
     }
 
     /**
@@ -4748,11 +4741,10 @@ EOT;
     /**
      * return the height in units of the current font in the given size
      *
-     * @param float $size
-     *
-     * @return float
+     * @param $size
+     * @return float|int
      */
-    public function getFontHeight(float $size): float
+    function getFontHeight($size)
     {
         if (!$this->numFonts) {
             $this->selectFont($this->defaultFont);
@@ -4784,11 +4776,10 @@ EOT;
     }
 
     /**
-     * @param float $size
-     *
-     * @return float
+     * @param $size
+     * @return float|int
      */
-    public function getFontXHeight(float $size): float
+    function getFontXHeight($size)
     {
         if (!$this->numFonts) {
             $this->selectFont($this->defaultFont);
@@ -4811,11 +4802,10 @@ EOT;
      * if you add this number to the baseline, you get the level of the bottom of the font
      * it is in the pdf user units
      *
-     * @param float $size
-     *
-     * @return float
+     * @param $size
+     * @return float|int
      */
-    public function getFontDescender(float $size): float
+    function getFontDescender($size)
     {
         // note that this will most likely return a negative value
         if (!$this->numFonts) {
@@ -4853,7 +4843,7 @@ EOT;
                 //$text = html_entity_decode($text, ENT_QUOTES);
                 $text = mb_convert_encoding($text, self::$targetEncoding, 'UTF-8');
             }
-        } elseif ($bom) {
+        } else if ($bom) {
             $text = $this->utf8toUtf16BE($text, $bom);
         }
 
@@ -5024,8 +5014,8 @@ EOT;
     /**
      * register text for font subsetting
      *
-     * @param string $font
-     * @param string $text
+     * @param $font
+     * @param $text
      */
     function registerText($font, $text)
     {
@@ -5045,14 +5035,14 @@ EOT;
     /**
      * add text to the document, at a specified location, size and angle on the page
      *
-     * @param float  $x
-     * @param float  $y
-     * @param float  $size
-     * @param string $text
-     * @param float  $angle
-     * @param float  $wordSpaceAdjust
-     * @param float  $charSpaceAdjust
-     * @param bool   $smallCaps
+     * @param $x
+     * @param $y
+     * @param $size
+     * @param $text
+     * @param int $angle
+     * @param int $wordSpaceAdjust
+     * @param int $charSpaceAdjust
+     * @param bool $smallCaps
      */
     function addText($x, $y, $size, $text, $angle = 0, $wordSpaceAdjust = 0, $charSpaceAdjust = 0, $smallCaps = false)
     {
@@ -5165,14 +5155,13 @@ EOT;
      * calculate how wide a given text string will be on a page, at a given size.
      * this can be called externally, but is also used by the other class functions
      *
-     * @param float  $size
+     * @param float $size
      * @param string $text
-     * @param float  $wordSpacing
-     * @param float  $charSpacing
-     *
+     * @param float $word_spacing
+     * @param float $char_spacing
      * @return float
      */
-    public function getTextWidth(float $size, string $text, float $wordSpacing = 0.0, float $charSpacing = 0.0): float
+    function getTextWidth($size, $text, $word_spacing = 0, $char_spacing = 0)
     {
         static $ord_cache = [];
 
@@ -5186,6 +5175,9 @@ EOT;
         }
 
         $text = str_replace(["\r", "\n"], "", $text);
+
+        // converts a number or a float to a string so it can get the width
+        $text = "$text";
 
         // hmm, this is where it all starts to get tricky - use the font information to
         // calculate the width of each character, add them up and convert to user units
@@ -5213,14 +5205,14 @@ EOT;
 
                     // add additional padding for space
                     if (isset($current_font['codeToName'][$char]) && $current_font['codeToName'][$char] === 'space') {  // Space
-                        $w += $wordSpacing * $space_scale;
+                        $w += $word_spacing * $space_scale;
                     }
                 }
             }
 
             // add additional char spacing
-            if ($charSpacing != 0) {
-                $w += $charSpacing * $space_scale * count($unicode);
+            if ($char_spacing != 0) {
+                $w += $char_spacing * $space_scale * count($unicode);
             }
 
         } else {
@@ -5248,14 +5240,14 @@ EOT;
 
                     // add additional padding for space
                     if (isset($current_font['codeToName'][$char]) && $current_font['codeToName'][$char] === 'space') {  // Space
-                        $w += $wordSpacing * $space_scale;
+                        $w += $word_spacing * $space_scale;
                     }
                 }
             }
 
             // add additional char spacing
-            if ($charSpacing != 0) {
-                $w += $charSpacing * $space_scale * $len;
+            if ($char_spacing != 0) {
+                $w += $char_spacing * $space_scale * $len;
             }
         }
 
@@ -5495,12 +5487,12 @@ EOT;
     }
 
     /**
-     * Add content to the documents info object
+     * add content to the documents info object
      *
-     * @param string|array $label
-     * @param string       $value
+     * @param $label
+     * @param int $value
      */
-    public function addInfo($label, string $value = ""): void
+    function addInfo($label, $value = 0)
     {
         // this will only work if the label is one of the valid ones.
         // modify this so that arrays can be passed as well.
@@ -5508,7 +5500,7 @@ EOT;
         // else assume that they are both scalar, anything else will probably error
         if (is_array($label)) {
             foreach ($label as $l => $v) {
-                $this->o_info($this->infoObject, $l, (string) $v);
+                $this->o_info($this->infoObject, $l, $v);
             }
         } else {
             $this->o_info($this->infoObject, $label, $value);

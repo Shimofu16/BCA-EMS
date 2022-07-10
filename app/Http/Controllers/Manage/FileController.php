@@ -156,18 +156,18 @@ class FileController extends Controller
                     $form_137extention = $form_137->getClientOriginalExtension();
                     //rename file to form_137
                     $form_137filename = 'form 137' . '.' . $form_137extention;
-                    $form_137Requirement = [
+                    /*       $form_137Requirement = [
                         'student_id' => $student_id,
                         'filename' => 'form 137',
                         'filepath' =>  $path . '/' . $form_137filename,
                         'isSubmitted' => 1,
-                    ];
-                    //check if file is in folder /uploads/requirements/ + student full name
+                    ]; */
                     if (!file_exists(storage_path('app/' . $path . '/' . $form_137filename))) {
                         //if not exist move file with name of form_137 in folder /uploads/requirements/ + student full name
-                        $form_137->storeAs($path, $form_137filename);
+                        Storage::delete('app/'.$path . '/' . $form_137filename);
                     }
-                    Requirement::create($form_137Requirement);
+                    //if not exist move file with name of form_137 in folder /uploads/requirements/ + student full name
+                    $form_137->storeAs($path, $form_137filename);
                 }
             }
             return 1;
@@ -176,20 +176,21 @@ class FileController extends Controller
             return 0;
         }
     }
-    public static function pop($path, $payment_id, $pop)
+    public static function pop($path, $payment_id, $pop, $sy)
     {
         try {
             $payment = PaymentLog::where('payment_id', '=', $payment_id)->latest('id')->first();
-            $proof = 'proof-of-payment.' . $pop->getClientOriginalExtension();
+            $proof = 'proof-of-payment-' . $sy . '.' . $pop->getClientOriginalExtension();
             if (!file_exists(storage_path('app/' . $path . '/' . $proof))) {
-                $pop->storeAs($path, $proof);
+                //if not exist move file with name of form_137 in folder /uploads/requirements/ + student full name
+                Storage::delete('app/'.$path . '/' . $proof);
             }
+            $pop->storeAs($path, $proof);
             $payment->pop = 'proof-of-payment';
             $payment->path = $path . '/' . $proof;
             $payment->save();
         } catch (\Throwable $th) {
             alert()->error('Error', $th->getMessage());
-            dd($th);
             return 0;
         }
     }

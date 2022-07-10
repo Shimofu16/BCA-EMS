@@ -114,7 +114,7 @@ class Block extends AbstractFrameDecorator
      * @param Frame $frame
      * @return LineBox|null
      */
-    public function add_frame_to_line(Frame $frame): ?LineBox
+    public function add_frame_to_line(Frame $frame)
     {
         $current_line = $this->_line_boxes[$this->_cl];
         $frame->set_containing_line($current_line);
@@ -203,7 +203,7 @@ class Block extends AbstractFrameDecorator
     /**
      * @param float $w
      */
-    public function increase_line_width(float $w): void
+    function increase_line_width($w)
     {
         $this->_line_boxes[$this->_cl]->w += $w;
     }
@@ -212,7 +212,7 @@ class Block extends AbstractFrameDecorator
      * @param float $val
      * @param Frame $frame
      */
-    public function maximize_line_height(float $val, Frame $frame): void
+    function maximize_line_height($val, Frame $frame)
     {
         if ($val > $this->_line_boxes[$this->_cl]->h) {
             $this->_line_boxes[$this->_cl]->tallest_frame = $frame;
@@ -223,7 +223,7 @@ class Block extends AbstractFrameDecorator
     /**
      * @param bool $br
      */
-    public function add_line(bool $br = false): void
+    function add_line(bool $br = false)
     {
         $line = $this->_line_boxes[$this->_cl];
 

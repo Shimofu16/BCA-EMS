@@ -1,11 +1,13 @@
 <?php
 
+use App\Exports\EnrollmentFormExport;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Cashier\CashierDashboardController;
 use App\Http\Controllers\Cashier\Payment\Pending\PendingController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Manage\ExportController;
 use App\Http\Controllers\Manage\MailController;
 use App\Http\Controllers\Registrar\RegistrarDashboardController;
 use App\Http\Controllers\Registrar\Section\SectionController;
@@ -18,6 +20,7 @@ use App\Http\Controllers\Student\StudentDashboardController;
 use App\Models\Registrar\GradeLevel;
 use App\Models\Registrar\SchoolYear;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 /*
 |--------------------------------------------------------------------------
@@ -219,4 +222,11 @@ route::prefix('student')->name('student.')->group(function () {
     });
 });
 
-Route::get('download/pdf', [Downloadables::class, 'PDF'])->name('download.pdf');
+Route::get('download/pdf', function(){
+    try {
+
+        ExportController::exportForm('2022-00003-CL-0');
+    } catch (\Throwable $th) {
+        dd($th);
+    }
+})->name('download.pdf');

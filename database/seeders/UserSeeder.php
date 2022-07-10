@@ -47,13 +47,21 @@ class UserSeeder extends Seeder
                 'created_at' => now()
             ],
             [
-                'student_id' => '2022-00002-CL-0',
+                'student_id' => '2022-00003-CL-0',
                 'name' => 'Ma. Moureen L. Pontanoza',
                 'email' => 'mamoureenpontanoza@gmail.com',
                 'password' => Hash::make('password'),
+                'gender' => 'Female',
+                'created_at' => now()
+            ],
+            [
+                'student_id' => '2022-00004-CL-0',
+                'name' => 'Roy Joseph Latayan',
+                'email' => 'royjosephlatayan0816@gmail.com',
+                'password' => Hash::make('password'),
                 'gender' => 'Male',
                 'created_at' => now()
-            ]
+            ],
             ];
             foreach ($students as $student) {
                 StudentAccount::create($student);

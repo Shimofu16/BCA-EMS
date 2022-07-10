@@ -37,6 +37,7 @@ class CreateStudentsTable extends Migration
                 ->references('id')
                 ->on('grade_levels')
                 ->onDelete('restrict')->onUpdate('cascade');
+            $table->string('enrollment_sy')->nullable();
             $table->unsignedBigInteger('sy_id');
             $table->foreign('sy_id')
                 ->references('id')

@@ -6,6 +6,7 @@ use App\Http\Controllers\Manage\FileController;
 use App\Models\Cashier\Payment;
 use App\Models\Cashier\PaymentLog;
 use App\Models\Registrar\GradeLevel;
+use App\Models\Registrar\SchoolYear;
 use App\Models\Registrar\Student;
 use Carbon\Carbon;
 use Livewire\Component;
@@ -15,7 +16,7 @@ use Livewire\WithFileUploads;
 class Form extends Component
 {
     use WithFileUploads;
-
+    public $isEnrollment;
     public $student;
     public $father;
     public $mother;
@@ -84,7 +85,7 @@ class Form extends Component
     public $ecopies = ['STUDENT', 'HEAD TEACHER', 'ADMIN'];
     public $pcopies = ['STUDENT', 'ADMIN'];
 
-    public $totalSteps = 6;
+    public $totalSteps = 4;
     public $currentStep = 1;
 
     public $old = true;
@@ -207,8 +208,7 @@ class Form extends Component
             $this->validate([
                 'conPayment' => 'required',
                 'payment_method' =>  'required',
-                /* 'payment' => (($this->conPayment == 'Cash') ? 'required|'  : '') . 'numeric|digits_between:4,5', */
-                'payment_proof' => (($this->conPayment == 'Bank Deposit') ? 'required|'  : '') . 'mimes:jpg,jpeg,png|max:2192',
+                'payment_proof' => (($this->conPayment == 'Bank Deposit') ? 'required|mimes:jpg,jpeg,png|max:2192'  : ''),
             ]);
         }
     }
@@ -235,7 +235,7 @@ class Form extends Component
             $this->validateOnly($propertyName, [
                 'conPayment' => 'required',
                 'payment_method' =>  'required',
-                'payment_proof' => (($this->conPayment == 'Bank Deposit') ? 'required|'  : '') . 'mimes:jpg,jpeg,png|max:2192',
+                'payment_proof' => (($this->conPayment == 'Bank Deposit') ? 'required|mimes:jpg,jpeg,png|max:2192'  : ''),
             ]);
         }
     }
@@ -305,7 +305,7 @@ class Form extends Component
                 # code...
                 break;
         }
-        $this->sy = Carbon::now()->format('Y') . '-' . Carbon::now()->addYear()->format('Y');
+        $this->sy = SchoolYear::where('isCurrent', '=', 1)->first();
     }
     public function clearForm()
     {
@@ -320,6 +320,7 @@ class Form extends Component
         $this->validateData();
         $this->resetErrorBag();
         /* update the sy to current sy  */
+        $sy = SchoolYear::where('isCurrent', '=', 1)->first();
         $age = Carbon::parse($this->birthdate)->diff(Carbon::now());
         $name = Str::ucfirst($this->first_name) . ' ' . Str::ucfirst(Str::substr($this->middle_name, 0, 1)) . ' ' . Str::ucfirst($this->last_name);
         $grade = $this->grade_level_id + 1;
@@ -352,18 +353,21 @@ class Form extends Component
             $payment = Payment::where('student_id', '=', $this->student->id)->firstOrFail();
             $payment->balance = $payment->balance + $balance;
             $payment->reminder_at = $payment_reminder;
-            $payment->grade_level_id  = $grade;
             $payment_log = PaymentLog::create([
                 'payment_id' => $payment->id,
+                'sy_id' => $sy->id,
+                'grade_level_id' => $grade,
                 'mop' => $this->conPayment,
                 'payment_method' => $payment_method,
                 'amount' => ($this->payment != null) ? $this->payment :  0,
             ]);
             if ($this->payment_proof != null) {
-                FileController::pop($path, $payment->id, $this->payment_proof);
+                FileController::pop($path, $payment->id, $this->payment_proof, $sy->school_year);
             }
+            FileController::old($path,$this->student->student_id,$this->form_137);
             $student->age = $age->y;
             $student->grade_level_id = $grade;
+            $student->enrollment_sy = $sy->school_year;
             $student->isDone = 1;
             $student->save();
             $payment->save();
@@ -374,6 +378,6 @@ class Form extends Component
     }
     public function render()
     {
-        return view('livewire.student.enrollment.form',['gradelevels' => GradeLevel::all()]);
+        return view('livewire.student.enrollment.form', ['gradelevels' => GradeLevel::all()]);
     }
 }

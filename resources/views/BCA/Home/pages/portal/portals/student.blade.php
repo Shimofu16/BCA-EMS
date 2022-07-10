@@ -12,7 +12,7 @@ Student Portal
         @csrf
         <div class="form-group">
             <label for="student_id" class="col-form-label text-md-end text-dark">Student ID</label>
-            <input id="student_id" type="student_id" class="form-control @error('student_id') is-invalid @enderror"
+            <input id="student_id" type="text" class="form-control @error('student_id') is-invalid @enderror"
                 name="student_id" value="{{ old('student_id') }}" required autofocus>
             @error('student_id')
                 <span class="invalid-feedback" role="alert">

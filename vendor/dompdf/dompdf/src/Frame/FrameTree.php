@@ -9,7 +9,6 @@ use DOMXPath;
 
 use Dompdf\Exception;
 use Dompdf\Frame;
-use IteratorAggregate;
 
 /**
  * @package dompdf
@@ -28,7 +27,7 @@ use IteratorAggregate;
  *
  * @package dompdf
  */
-class FrameTree implements IteratorAggregate
+class FrameTree
 {
     /**
      * Tags to ignore while parsing the tree
@@ -125,22 +124,11 @@ class FrameTree implements IteratorAggregate
     /**
      * Returns a post-order iterator for all frames in the tree
      *
-     * @deprecated Iterate the tree directly instead
-     * @return FrameTreeIterator
+     * @return FrameTreeList|Frame[]
      */
-    public function get_frames(): FrameTreeIterator
+    public function get_frames()
     {
-        return new FrameTreeIterator($this->_root);
-    }
-
-    /**
-     * Returns a post-order iterator for all frames in the tree
-     *
-     * @return FrameTreeIterator
-     */
-    public function getIterator(): FrameTreeIterator
-    {
-        return new FrameTreeIterator($this->_root);
+        return new FrameTreeList($this->_root);
     }
 
     /**

@@ -10,17 +10,19 @@
         <meta name="author" content="">
         <title> @yield('role') | @yield('page-title') </title>
         <!-- Custom fonts for this template-->
-        <link href="{{ asset('css/fontawesome-free-6.0.0-web/css/all.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('assets/css/fontawesome-free-6.0.0-web/css/all.css') }}" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
         <!-- Custom styles for this template-->
         @yield('dashboard-css')
+    <link rel="stylesheet" href="{{ asset('assets/css/hover.css') }}" />
+
         <link href="{{ asset('assets/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/css/sb-admin/sb-admin-2.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/css/sb-admin/custom.css') }}" rel="stylesheet">
         {{-- school logo --}}
-        <link rel="icon" href="{{ asset('./img/BCA-Logo.png') }}">
+        <link rel="icon" href="{{ asset('assets/img/BCA-Logo.png') }}">
 
     </head>
 

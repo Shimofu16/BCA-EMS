@@ -327,71 +327,7 @@ class Form extends Component
     }
     public function downloadEForm()
     {
-
-        if ($this->downloadFiles == false) {
-            $this->downloadFiles = true;
-        } else {
-            $this->downloadFiles = false;
-        }
-        // if yung value ng grade level id ay between 1 - 3 pre school yun
-        if ($this->grade_level_id >= 1 && $this->grade_level_id <= 3) {
-            $this->preschool = true;
-        }
-        // if yung value ng grade level id ay between 4 - 9  thats Elementary
-        if ($this->grade_level_id >= 4 && $this->grade_level_id <= 9) {
-            $this->elem = true;
-        }
-        // and if yung value ng grade level id ay between 10 - 13  Junior High School
-        if ($this->grade_level_id >= 10 && $this->grade_level_id <= 13) {
-            $this->jhs = true;
-        }
-
-        switch ($this->grade_level_id) {
-            case 1:
-                $this->grade_level = 'Nursery';
-                break;
-            case 2:
-                $this->grade_level = 'Kindergarten';
-                break;
-            case 3:
-                $this->grade_level = 'Preparatory';
-                break;
-            case 4:
-                $this->grade_level = 'Grade 1';
-                break;
-            case 5:
-                $this->grade_level = 'Grade 2';
-                break;
-            case 6:
-                $this->grade_level = 'Grade 3';
-                break;
-            case 7:
-                $this->grade_level = 'Grade 4';
-                break;
-            case 8:
-                $this->grade_level = 'Grade 5';
-                break;
-            case 9:
-                $this->grade_level = 'Grade 6';
-                break;
-            case 10:
-                $this->grade_level = 'Grade 7';
-                break;
-            case 11:
-                $this->grade_level = 'Grade 8';
-                break;
-            case 12:
-                $this->grade_level = 'Grade 9';
-                break;
-            case 13:
-                $this->grade_level = 'Grade 10';
-                break;
-
-            default:
-                # code...
-                break;
-        }
-        $this->sy = Carbon::now()->format('Y') . '-' . Carbon::now()->addYear()->format('Y');
+        
     }
     public function clearForm()
     {
@@ -537,6 +473,7 @@ class Form extends Component
                 'grade_level_id' => $this->grade_level_id,
                 'student_type' => $student_type,
                 'hasPromissoryNote' => $pn,
+                'enrollment_sy' => $sy->school_year,
                 'sy_id' => $sy->id,
                 'isDone' => 1,
                 'created_at' => now(),
@@ -544,18 +481,18 @@ class Form extends Component
             $payment = Payment::create([
                 'student_id' => $studentID,
                 'balance' => $balance,
-                'grade_level_id' => $this->grade_level_id,
                 'reminder_at' => $payment_reminder,
             ])->id;
             $payment_log = PaymentLog::create([
                 'payment_id' => $payment,
                 'sy_id' => $sy->id,
+                'grade_level_id' => $this->grade_level_id,
                 'mop' => $this->conPayment,
                 'payment_method' => $payment_method,
                 'amount' => ($this->payment != null) ? $this->payment :  0,
             ]);
             if ($this->payment_proof != null) {
-                FileController::pop($path, $payment, $this->payment_proof);
+                FileController::pop($path, $payment, $this->payment_proof,$sy->school_year);
             }
 
             $this->currentStep = 0;

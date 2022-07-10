@@ -25,7 +25,7 @@ use FontLib\Font;
 class FontMetrics
 {
     /**
-     * Name of the user font families file
+     * Name of the font cache file
      *
      * This file must be writable by the webserver process only to update it
      * with save_font_families() after adding the .afm file references of a new font family
@@ -33,8 +33,13 @@ class FontMetrics
      * This is typically done only from command line with load_font.php on converting
      * ttf fonts to ufm with php-font-lib.
      */
-    const USER_FONTS_FILE = "installed-fonts.json";
+    const CACHE_FILE = "dompdf_font_family_cache.php";
 
+    /**
+     * @var Canvas
+     * @deprecated
+     */
+    protected $pdf;
 
     /**
      * Underlying {@link Canvas} object to perform text size calculations
@@ -44,25 +49,13 @@ class FontMetrics
     protected $canvas;
 
     /**
-     * Array of bundled font family names to variants
+     * Array of font family names to font files
+     *
+     * Usually cached by the {@link load_font.php} script
      *
      * @var array
      */
-    protected $bundledFonts = [];
-
-    /**
-     * Array of user defined font family names to variants
-     *
-     * @var array
-     */
-    protected $userFonts = [];
-
-    /**
-     * combined list of all font families with absolute paths
-     *
-     * @var array
-     */
-    protected $fontFamilies;
+    protected $fontLookup = [];
 
     /**
      * @var Options
@@ -91,14 +84,29 @@ class FontMetrics
      * Saves the stored font family cache
      *
      * The name and location of the cache file are determined by {@link
-     * FontMetrics::USER_FONTS_FILE}. This file should be writable by the
+     * FontMetrics::CACHE_FILE}. This file should be writable by the
      * webserver process.
      *
      * @see FontMetrics::loadFontFamilies()
      */
     public function saveFontFamilies()
     {
-        file_put_contents($this->getUserFontsFilePath(), json_encode($this->userFonts, JSON_PRETTY_PRINT));
+        // replace the path to the DOMPDF font directories with the corresponding constants (allows for more portability)
+        $cacheData = sprintf("<?php return function (%s, %s) {%s", '$fontDir', '$rootDir', PHP_EOL);
+        $cacheData .= sprintf("return array (%s", PHP_EOL);
+        foreach ($this->fontLookup as $family => $variants) {
+            $cacheData .= sprintf("  '%s' => array(%s", addslashes($family), PHP_EOL);
+            foreach ($variants as $variant => $path) {
+                $path = sprintf("'%s'", $path);
+                $path = str_replace('\'' . $this->options->getFontDir(), '$fontDir . \'', $path);
+                $path = str_replace('\'' . $this->options->getRootDir(), '$rootDir . \'', $path);
+                $cacheData .= sprintf("    '%s' => %s,%s", $variant, $path, PHP_EOL);
+            }
+            $cacheData .= sprintf("  ),%s", PHP_EOL);
+        }
+        $cacheData .= ");" . PHP_EOL;
+        $cacheData .= "}; ?>";
+        file_put_contents($this->getCacheFile(), $cacheData);
     }
 
     /**
@@ -116,45 +124,33 @@ class FontMetrics
      */
     public function loadFontFamilies()
     {
-        $file = $this->options->getRootDir() . "/lib/fonts/installed-fonts.dist.json";
-        $this->bundledFonts = json_decode(file_get_contents($file), true);
+        $fontDir = $this->options->getFontDir();
+        $rootDir = $this->options->getRootDir();
 
-        if (is_readable($this->getUserFontsFilePath())) {
-            $this->userFonts = json_decode(file_get_contents($this->getUserFontsFilePath()), true);
-        } else {
-            $this->loadFontFamiliesLegacy();
+        // FIXME: temporarily define constants for cache files <= v0.6.2
+        if (!defined("DOMPDF_DIR")) { define("DOMPDF_DIR", $rootDir); }
+        if (!defined("DOMPDF_FONT_DIR")) { define("DOMPDF_FONT_DIR", $fontDir); }
+
+        $file = $rootDir . "/lib/fonts/dompdf_font_family_cache.dist.php";
+        $distFontsClosure = require $file;
+        $distFonts = is_array($distFontsClosure) ? $distFontsClosure : $distFontsClosure($rootDir);
+        if (!is_readable($this->getCacheFile())) {
+            $this->fontLookup = $distFonts;
+            return;
         }
-    }
 
-    private function loadFontFamiliesLegacy()
-    {
-        $legacyCacheFile = $this->options->getFontDir() . '/dompdf_font_family_cache.php';
-        if (is_readable($legacyCacheFile)) {
-            $fontDir = $this->options->getFontDir();
-            $rootDir = $this->options->getRootDir();
-    
-            if (!defined("DOMPDF_DIR")) { define("DOMPDF_DIR", $rootDir); }
-            if (!defined("DOMPDF_FONT_DIR")) { define("DOMPDF_FONT_DIR", $fontDir); }
-    
-            $cacheDataClosure = require $legacyCacheFile;
-            $cacheData = is_array($cacheDataClosure) ? $cacheDataClosure : $cacheDataClosure($fontDir, $rootDir);
-            if (is_array($cacheData)) {
-                foreach ($cacheData as $family => $variants) {
-                    if (!isset($this->bundledFonts[$family]) && is_array($variants)) {
-                        foreach ($variants as $variant => $variantPath) {
-                            $variantName = basename($variantPath);
-                            $variantDir = dirname($variantPath);
-                            if ($variantDir == $fontDir) {
-                                $this->userFonts[$family][$variant] = $variantName;
-                            } else {
-                                $this->userFonts[$family][$variant] = $variantPath;
-                            }
-                        }
-                    }
-                }
-                $this->saveFontFamilies();
+        $cacheDataClosure = require $this->getCacheFile();
+        $cacheData = is_array($cacheDataClosure) ? $cacheDataClosure : $cacheDataClosure($fontDir, $rootDir);
+
+        $this->fontLookup = [];
+        if (is_array($this->fontLookup)) {
+            foreach ($cacheData as $key => $value) {
+                $this->fontLookup[stripslashes($key)] = $value;
             }
         }
+
+        // Merge provided fonts
+        $this->fontLookup += $distFonts;
     }
 
     /**
@@ -187,6 +183,7 @@ class FontMetrics
 
         $styleString = $this->getType("{$style['weight']} {$style['style']}");
 
+        $fontDir = $this->options->getFontDir();
         $remoteHash = md5($remoteFile);
 
         $prefix = $fontname . "_" . $styleString;
@@ -202,30 +199,49 @@ class FontMetrics
         $prefix = preg_replace("[\W]", "_", $prefix);
         $prefix = preg_replace("/[^-_\w]+/", "", $prefix);
 
-        $localFile = $prefix . "_" . $remoteHash;
-        $localFilePath = $this->getOptions()->getFontDir() . "/" . $localFile;
+        $localFile = $fontDir . "/" . $prefix . "_" . $remoteHash;
 
-        if (isset($entry[$styleString]) && $localFilePath == $entry[$styleString]) {
+        if (isset($entry[$styleString]) && $localFile == $entry[$styleString]) {
             return true;
         }
 
+        $cacheEntry = $localFile;
 
-        $entry[$styleString] = $localFile;
+        $entry[$styleString] = $cacheEntry;
 
         // Download the remote file
         [$protocol] = Helpers::explode_url($remoteFile);
-        $allowed_protocols = $this->options->getAllowedProtocols();
-        if (!array_key_exists($protocol, $allowed_protocols)) {
-            Helpers::record_warnings(E_USER_WARNING, "Permission denied on $remoteFile. The communication protocol is not supported.", __FILE__, __LINE__);
+        if (!$this->options->isRemoteEnabled() && ($protocol !== "" && $protocol !== "file://")) {
+            Helpers::record_warnings(E_USER_WARNING, "Remote font resource $remoteFile referenced, but remote file download is disabled.", __FILE__, __LINE__);
+            return false;
         }
+        if ($protocol === "" || $protocol === "file://") {
+            $realfile = realpath($remoteFile);
 
-        foreach ($allowed_protocols[$protocol]["rules"] as $rule) {
-            [$result, $message] = $rule($remoteFile);
-            if ($result !== true) {
-                Helpers::record_warnings(E_USER_WARNING, "Error loading $remoteFile: $message", __FILE__, __LINE__);
+            $rootDir = realpath($this->options->getRootDir());
+            if (strpos($realfile, $rootDir) !== 0) {
+                $chroot = $this->options->getChroot();
+                $chrootValid = false;
+                foreach ($chroot as $chrootPath) {
+                    $chrootPath = realpath($chrootPath);
+                    if ($chrootPath !== false && strpos($realfile, $chrootPath) === 0) {
+                        $chrootValid = true;
+                        break;
+                    }
+                }
+                if ($chrootValid !== true) {
+                    Helpers::record_warnings(E_USER_WARNING, "Permission denied on $remoteFile. The file could not be found under the paths specified by Options::chroot.", __FILE__, __LINE__);
+                    return false;
+                }
             }
-        }
 
+            if (!$realfile) {
+                Helpers::record_warnings(E_USER_WARNING, "File '$realfile' not found.", __FILE__, __LINE__);
+                return false;
+            }
+
+            $remoteFile = $realfile;
+        }
         list($remoteFileContent, $http_response_header) = @Helpers::getFileContent($remoteFile, $context);
         if ($remoteFileContent === null) {
             return false;
@@ -241,33 +257,33 @@ class FontMetrics
             return false;
         }
 
+        switch ($font->getFontType()) {
+            case "TrueType":
+            default:
+                $localFile .= ".ttf";
+                break;
+        }
+
         $font->parse();
-        $font->saveAdobeFontMetrics("$localFilePath.ufm");
+        $font->saveAdobeFontMetrics("$cacheEntry.ufm");
         $font->close();
 
         unlink($localTempFile);
 
-        if ( !file_exists("$localFilePath.ufm") ) {
+        if ( !file_exists("$cacheEntry.ufm") ) {
             return false;
         }
 
-        $fontExtension = ".ttf";
-        switch ($font->getFontType()) {
-            case "TrueType":
-            default:
-                $fontExtension = ".ttf";
-                break;
-        }
-
         // Save the changes
-        file_put_contents($localFilePath.$fontExtension, $remoteFileContent);
+        file_put_contents($localFile, $remoteFileContent);
 
-        if ( !file_exists($localFilePath.$fontExtension) ) {
-            unlink("$localFilePath.ufm");
+        if ( !file_exists($localFile) ) {
+            unlink("$cacheEntry.ufm");
             return false;
         }
 
         $this->setFontFamily($fontname, $entry);
+        $this->saveFontFamilies();
 
         return true;
     }
@@ -290,15 +306,16 @@ class FontMetrics
     /**
      * Calculates text size, in points
      *
-     * @param string $text        The text to be sized
-     * @param string $font        The font file to use
-     * @param float  $size        The font size, in points
-     * @param float  $wordSpacing Word spacing, if any
-     * @param float  $charSpacing Char spacing, if any
+     * @param string $text the text to be sized
+     * @param string $font the desired font
+     * @param float $size  the desired font size
+     * @param float $wordSpacing
+     * @param float $charSpacing
      *
+     * @internal param float $spacing word spacing, if any
      * @return float
      */
-    public function getTextWidth(string $text, $font, float $size, float $wordSpacing = 0.0, float $charSpacing = 0.0): float
+    public function getTextWidth($text, $font, $size, $wordSpacing = 0.0, $charSpacing = 0.0)
     {
         // @todo Make sure this cache is efficient before enabling it
         static $cache = [];
@@ -342,12 +359,12 @@ class FontMetrics
     /**
      * Calculates font height, in points
      *
-     * @param string $font The font file to use
-     * @param float  $size The font size, in points
+     * @param string $font
+     * @param float $size
      *
      * @return float
      */
-    public function getFontHeight($font, float $size): float
+    public function getFontHeight($font, $size)
     {
         return $this->canvas->get_font_height($font, $size);
     }
@@ -355,12 +372,12 @@ class FontMetrics
     /**
      * Calculates font baseline, in points
      *
-     * @param string $font The font file to use
-     * @param float  $size The font size, in points
+     * @param string $font
+     * @param float $size
      *
      * @return float
      */
-    public function getFontBaseline($font, float $size): float
+    public function getFontBaseline($font, $size)
     {
         return $this->canvas->get_font_baseline($font, $size);
     }
@@ -383,10 +400,10 @@ class FontMetrics
      * ({@link Options::defaultFont}) is used.  The font file returned
      * is the absolute pathname to the font file on the system.
      *
-     * @param string|null $familyRaw
-     * @param string      $subtypeRaw
+     * @param string $familyRaw
+     * @param string $subtypeRaw
      *
-     * @return string|null
+     * @return string
      */
     public function getFont($familyRaw, $subtypeRaw = "normal")
     {
@@ -406,12 +423,11 @@ class FontMetrics
 
         $subtype = strtolower($subtypeRaw);
 
-        $families = $this->getFontFamilies();
         if ($familyRaw) {
             $family = str_replace(["'", '"'], "", strtolower($familyRaw));
 
-            if (isset($families[$family][$subtype])) {
-                return $cache[$familyRaw][$subtypeRaw] = $families[$family][$subtype];
+            if (isset($this->fontLookup[$family][$subtype])) {
+                return $cache[$familyRaw][$subtypeRaw] = $this->fontLookup[$family][$subtype];
             }
 
             return null;
@@ -419,15 +435,15 @@ class FontMetrics
 
         $fallback_families = [strtolower($this->options->getDefaultFont()), "serif"];
         foreach ($fallback_families as $family) {
-            if (isset($families[$family][$subtype])) {
-                return $cache[$familyRaw][$subtypeRaw] = $families[$family][$subtype];
+            if (isset($this->fontLookup[$family][$subtype])) {
+                return $cache[$familyRaw][$subtypeRaw] = $this->fontLookup[$family][$subtype];
             }
     
-            if (!isset($families[$family])) {
+            if (!isset($this->fontLookup[$family])) {
                 continue;
             }
     
-            $family = $families[$family];
+            $family = $this->fontLookup[$family];
     
             foreach ($family as $sub => $font) {
                 if (strpos($subtype, $sub) !== false) {
@@ -470,10 +486,9 @@ class FontMetrics
     public function getFamily($family)
     {
         $family = str_replace(["'", '"'], "", mb_strtolower($family));
-        $families = $this->getFontFamilies();
 
-        if (isset($families[$family])) {
-            return $families[$family];
+        if (isset($this->fontLookup[$family])) {
+            return $this->fontLookup[$family];
         }
 
         return null;
@@ -532,41 +547,7 @@ class FontMetrics
      */
     public function getFontFamilies()
     {
-        if (!isset($this->fontFamilies)) {
-            $this->setFontFamilies();
-        }
-        return $this->fontFamilies;
-    }
-
-    /**
-     * Convert loaded fonts to font lookup table
-     *
-     * @return array
-     */
-    public function setFontFamilies()
-    {
-        $fontFamilies = [];
-        if (isset($this->bundledFonts) && is_array($this->bundledFonts)) {
-            foreach ($this->bundledFonts as $family => $variants) {
-                if (!isset($fontFamilies[$family])) {
-                    $fontFamilies[$family] = array_map(function ($variant) {
-                        return $this->getOptions()->getRootDir() . '/lib/fonts/' . $variant;
-                    }, $variants);
-                }
-            }
-        }
-        if (isset($this->userFonts) && is_array($this->userFonts)) {
-            foreach ($this->userFonts as $family => $variants) {
-                $fontFamilies[$family] = array_map(function ($variant) {
-                    $variantName = basename($variant);
-                    if ($variantName === $variant) {
-                        return $this->getOptions()->getFontDir() . '/' . $variant;
-                    }
-                    return $variant;
-                }, $variants);
-            }
-        }
-        $this->fontFamilies = $fontFamilies;
+        return $this->fontLookup;
     }
 
     /**
@@ -585,17 +566,15 @@ class FontMetrics
      */
     public function setFontFamily($fontname, $entry)
     {
-        $this->userFonts[mb_strtolower($fontname)] = $entry;
-        $this->saveFontFamilies();
-        unset($this->fontFamilies);
+        $this->fontLookup[mb_strtolower($fontname)] = $entry;
     }
 
     /**
      * @return string
      */
-    public function getUserFontsFilePath()
+    public function getCacheFile()
     {
-        return $this->options->getFontDir() . '/' . self::USER_FONTS_FILE;
+        return $this->options->getFontDir() . '/' . self::CACHE_FILE;
     }
 
     /**
@@ -605,7 +584,6 @@ class FontMetrics
     public function setOptions(Options $options)
     {
         $this->options = $options;
-        unset($this->fontFamilies);
         return $this;
     }
 
@@ -624,6 +602,8 @@ class FontMetrics
     public function setCanvas(Canvas $canvas)
     {
         $this->canvas = $canvas;
+        // Still write deprecated pdf for now. It might be used by a parent class.
+        $this->pdf = $canvas;
         return $this;
     }
 
