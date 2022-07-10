@@ -637,6 +637,7 @@ class ComposerStaticInit26d3199bd166660ee931051fdfc47cb0
         'App\\Http\\Livewire\\Cashier\\Payment\\Confirmed\\Index' => __DIR__ . '/../..' . '/app/Http/Livewire/Cashier/Payment/Confirmed/Index.php',
         'App\\Http\\Livewire\\Cashier\\Payment\\Pending\\Index' => __DIR__ . '/../..' . '/app/Http/Livewire/Cashier/Payment/Pending/Index.php',
         'App\\Http\\Livewire\\Enrollment\\Form' => __DIR__ . '/../..' . '/app/Http/Livewire/Enrollment/Form.php',
+        'App\\Http\\Livewire\\Registrar\\Manage\\SchoolYear' => __DIR__ . '/../..' . '/app/Http/Livewire/Registrar/Manage/SchoolYear.php',
         'App\\Http\\Livewire\\Registrar\\Student\\Enrolled\\Index' => __DIR__ . '/../..' . '/app/Http/Livewire/Registrar/Student/Enrolled/Index.php',
         'App\\Http\\Livewire\\Registrar\\Student\\Enrollee\\Index' => __DIR__ . '/../..' . '/app/Http/Livewire/Registrar/Student/Enrollee/Index.php',
         'App\\Http\\Livewire\\Registrar\\Student\\Show' => __DIR__ . '/../..' . '/app/Http/Livewire/Registrar/Student/Show.php',

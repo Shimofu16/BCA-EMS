@@ -2,15 +2,21 @@
 
 namespace App\Http\Livewire\Cashier\Payment\Pending;
 
+use App\Models\Cashier\Payment;
 use App\Models\Cashier\PaymentLog;
 use App\Models\Registrar\GradeLevel;
 use App\Models\Registrar\SchoolYear;
-use App\Models\Registrar\Section;
 use App\Models\Registrar\Student;
+use App\Models\User;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use WithPagination;
+    /*     public $search = '';
+    protected $queryString = ['search'];
+ */
     public $payments;
     public $grade_name;
     public $byGrade = false;
@@ -18,11 +24,10 @@ class Index extends Component
     public function filterByGradeLevel($id)
     {
         try {
-            $currentSy = SchoolYear::where('isCurrent', '=', 1)->first();
-            $this->payments = Student::where('status', '=', 0)
+            $currentSy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->first();
+            $this->payments = PaymentLog::where('status', '=', 0)
                 ->where('grade_level_id', '=', $id)
                 ->where('sy_id', '=', $currentSy->id)
-                ->where('isDone', '=', 1)
                 ->orderBy('id', 'asc')
                 ->get();
             $this->grade_name = GradeLevel::where('id', '=', $id)
@@ -35,7 +40,7 @@ class Index extends Component
     }
     public function resetFilters()
     {
-        $currentSy = SchoolYear::where('isCurrent', '=', 1)->first();
+        $currentSy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->first();
         $this->gradeLevels = GradeLevel::all();
         $this->payments = PaymentLog::where('status', 0)
             ->where('sy_id', '=', $currentSy->id)
@@ -47,8 +52,8 @@ class Index extends Component
     }
     public function render()
     {
-        return view('livewire.cashier.payment.pending.index',[
-            'gradeLevels'=>GradeLevel::all()
+        return view('livewire.cashier.payment.pending.index', [
+            'gradeLevels' => GradeLevel::all(),
         ]);
     }
 }

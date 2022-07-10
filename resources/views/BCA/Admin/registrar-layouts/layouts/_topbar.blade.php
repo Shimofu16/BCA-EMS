@@ -9,7 +9,7 @@
             @php
                 $sy = DB::table('school_years')->get();
                 $current = DB::table('school_years')
-                    ->where('isCurrent', '=', 1)
+                    ->where('isCurrentViewByRegistrar', '=', 1)
                     ->first();
             @endphp
             <div class="col px-0 mr-1">
@@ -27,7 +27,7 @@
                     </button>
                     <div class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton">
                         @foreach ($sy as $item)
-                            @if ($item->isCurrent != 1)
+                            @if ($item->isCurrentViewByRegistrar != 1)
                                 <form action="{{ route('registrar.change.sy', $item->id) }}" method="post">
                                     @csrf
                                     <button class="dropdown-item" type="submit">{{ $item->school_year }}</button>

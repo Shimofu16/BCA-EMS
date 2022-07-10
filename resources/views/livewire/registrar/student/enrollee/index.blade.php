@@ -26,7 +26,6 @@
         </div>
     </div>
     @if ($default)
-
         <div class="row">
             <div class="col-12">
                 <div class="table-responsive">
@@ -38,7 +37,7 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Gender</th>
                                 <th scope="col">Age</th>
-                                <th scope="col">Year level</th>
+                                <th scope="col">Grade Level</th>
                                 <th scope="col" class="text-center">Actions</th>
 
                             </tr>

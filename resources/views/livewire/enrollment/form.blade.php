@@ -227,7 +227,7 @@
                                     <div
                                         class="d-flex justify-content-center align-items-center bg-white border-0 text-center mt-3 position-relative">
                                         <div class="left">
-                                            <img src="{{ asset('img/BCA-Logo.png') }}" alt="BCA LOGO"
+                                            <img src="{{ asset('assets/img/BCA-Logo.png') }}" alt="BCA LOGO"
                                                 class="myLogo">
                                         </div>
                                         <div class="text-center">

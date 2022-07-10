@@ -364,7 +364,7 @@ class Form extends Component
             if ($this->payment_proof != null) {
                 FileController::pop($path, $payment->id, $this->payment_proof, $sy->school_year);
             }
-            FileController::old($path,$this->student->student_id,$this->form_137);
+            FileController::old($path, $this->student->student_id, $this->form_137);
             $student->age = $age->y;
             $student->grade_level_id = $grade;
             $student->enrollment_sy = $sy->school_year;

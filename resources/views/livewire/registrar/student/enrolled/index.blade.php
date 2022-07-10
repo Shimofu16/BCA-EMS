@@ -60,7 +60,7 @@
                                 <th scope="col">Gender</th>
                                 <th scope="col">Age</th>
                                 <th scope="col">Section</th>
-                                <th scope="col">Year level</th>
+                                <th scope="col">Grade Level</th>
                                 <th scope="col" class="text-center">Actions</th>
 
                             </tr>

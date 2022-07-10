@@ -17,6 +17,8 @@ class CreateSchoolYearsTable extends Migration
             $table->id();
             $table->string('school_year');
             $table->boolean('isCurrent')->default(0);
+            $table->boolean('isCurrentViewByRegistrar')->default(0);
+            $table->boolean('isCurrentViewByCashier')->default(0);
             $table->boolean('isEnrollment')->default(0);
             $table->string('updated_by_user')->nullable();
             $table->timestamps();

@@ -26,7 +26,7 @@ class EnrolleeController extends Controller
      */
     public function index()
     {
-        $currentSy = SchoolYear::where('isCurrent', '=', 1)->first();
+        $currentSy = SchoolYear::where('isCurrentViewByRegistrar', '=', 1)->first();
         $students = Student::with('section', 'gradeLevel')
             ->where('status', 0)
             ->where('sy_id', '=', $currentSy->id)

@@ -4,34 +4,29 @@
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
         <i class="fa fa-bars"></i>
     </button>
-    <div class="row flex-nowrap">
+    <div class="row">
         @php
             $sy = DB::table('school_years')->get();
             $current = DB::table('school_years')
-                ->where('isCurrent', '=', 1)
+                ->where('isCurrentViewByCashier', '=', 1)
                 ->first();
         @endphp
-        <div class="col px-0">
-            @csrf
-            @method('post')
-            <div class="dropdown">
-                <button class="btn btn-bca-outline dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown" aria-expanded="false">
-                    SY {{ $current->school_year }}
-                </button>
-                <div class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton">
-                    @foreach ($sy as $item)
-                        @if ($item->isCurrent != 1)
-                            <form action="{{ route('cashier.change.sy', $item->id) }}" method="post">
-                                @csrf
-                                <button class="dropdown-item" type="submit">{{ $item->school_year }}</button>
-                            </form>
-                        @endif
-                    @endforeach
-                </div>
+        <div class="dropdown">
+            <button class="btn btn-bca-outline dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-expanded="false">
+                SY {{ $current->school_year }}
+            </button>
+            <div class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton">
+                @foreach ($sy as $item)
+                    @if ($item->isCurrentViewByCashier != 1)
+                        <form action="{{ route('cashier.change.sy', $item->id) }}" method="post">
+                            @csrf
+                            <button class="dropdown-item" type="submit">{{ $item->school_year }}</button>
+                        </form>
+                    @endif
+                @endforeach
             </div>
         </div>
-
     </div>
 
     <!-- Topbar Navbar -->

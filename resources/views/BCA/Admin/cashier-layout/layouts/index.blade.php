@@ -23,7 +23,7 @@
     <link rel="icon" href="{{ asset('assets/img/BCA-Logo.png') }}">
 
 </head>
-
+@livewireStyles
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -92,7 +92,7 @@
             </div>
         </div>
     </div>
-
+@livewireScripts
     <!-- Bootstrap core JavaScript-->
 
     <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>

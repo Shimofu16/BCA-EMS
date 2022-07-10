@@ -39,6 +39,7 @@ return array(
     'App\\Http\\Livewire\\Cashier\\Payment\\Confirmed\\Index' => $baseDir . '/app/Http/Livewire/Cashier/Payment/Confirmed/Index.php',
     'App\\Http\\Livewire\\Cashier\\Payment\\Pending\\Index' => $baseDir . '/app/Http/Livewire/Cashier/Payment/Pending/Index.php',
     'App\\Http\\Livewire\\Enrollment\\Form' => $baseDir . '/app/Http/Livewire/Enrollment/Form.php',
+    'App\\Http\\Livewire\\Registrar\\Manage\\SchoolYear' => $baseDir . '/app/Http/Livewire/Registrar/Manage/SchoolYear.php',
     'App\\Http\\Livewire\\Registrar\\Student\\Enrolled\\Index' => $baseDir . '/app/Http/Livewire/Registrar/Student/Enrolled/Index.php',
     'App\\Http\\Livewire\\Registrar\\Student\\Enrollee\\Index' => $baseDir . '/app/Http/Livewire/Registrar/Student/Enrollee/Index.php',
     'App\\Http\\Livewire\\Registrar\\Student\\Show' => $baseDir . '/app/Http/Livewire/Registrar/Student/Show.php',

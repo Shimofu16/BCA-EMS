@@ -11,10 +11,12 @@ class Payment extends Model
     use HasFactory;
     protected $table = 'payments';
     public $guarded = [];
-    public function student(){
-        return $this->belongsTo(Student::class,'student_id');
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id');
     }
-    public function payments(){
-        return $this->hasMany(PaymentLog::class,'payment_id');
+    public function payments()
+    {
+        return $this->hasMany(PaymentLog::class, 'payment_id');
     }
 }

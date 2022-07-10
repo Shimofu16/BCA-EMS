@@ -37,12 +37,12 @@
             </a>
             <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item mb-1 {{ Request::routeIs('cashier.payment.pending.index') ? 'active-collapse-item' : '' }}"
-                        href="{{ route('cashier.payment.pending.index') }}">Pending</a>
                     <a class="collapse-item mb-1 {{ Request::routeIs('cashier.payment.confirmed.index') ? 'active-collapse-item' : '' }}"
                         href="{{ route('cashier.payment.confirmed.index') }}">Confirmed</a>
-                    {{-- <a class="collapse-item mb-1 {{ Request::routeIs('cashier.payment.confirmed.index') ? 'active-collapse-item' : '' }}"
-                        href="{{ route('cashier.payment.create.index') }}">Payment form</a> --}}
+                    <a class="collapse-item mb-1 {{ Request::routeIs('cashier.payment.pending.index') ? 'active-collapse-item' : '' }}"
+                        href="{{ route('cashier.payment.pending.index') }}">Pending</a>
+                    <a class="collapse-item mb-1 {{ Request::routeIs('cashier.payment.student.index') ? 'active-collapse-item' : '' }}"
+                        href="{{ route('cashier.payment.student.index') }}">Students</a>
                 </div>
             </div>
         </li>

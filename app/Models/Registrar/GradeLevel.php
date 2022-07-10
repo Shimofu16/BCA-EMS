@@ -25,8 +25,9 @@ class GradeLevel extends Model
     {
         return $this->hasMany(Section::class);
     }
-    public function payments()
+    public function paymentlogs()
     {
         return $this->hasMany(PaymentLog::class, 'grade_level_id');
     }
+
 }

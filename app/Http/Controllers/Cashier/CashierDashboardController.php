@@ -16,7 +16,7 @@ class CashierDashboardController extends Controller
      */
     public function index()
     {
-        $sy = SchoolYear::where('isCurrent', '=', 1)->first();
+        $sy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->first();
         $pendingCount =PaymentLog::where('sy_id','=', $sy->id)->where('status','=',0)->count();
         $confirmedCount =PaymentLog::where('sy_id','=', $sy->id)->where('status','=',1)->count();
         return view('BCA.Admin.cashier-layout.dashboard.index',compact('pendingCount','confirmedCount'));

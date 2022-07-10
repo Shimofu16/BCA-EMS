@@ -4,7 +4,9 @@ use App\Exports\EnrollmentFormExport;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Cashier\CashierDashboardController;
+use App\Http\Controllers\Cashier\Payment\Confirmed\ConfirmedController;
 use App\Http\Controllers\Cashier\Payment\Pending\PendingController;
+use App\Http\Controllers\Cashier\Payment\Student\StudentPaymentController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Manage\ExportController;
@@ -110,16 +112,15 @@ route::prefix('cashier')->name('cashier.')->group(function () {
             Route::post('/payment/pending', 'store')->name('store');
             Route::post('/payment/pending/confirm/{id}', 'update')->name('update');
         });
-        Route::name('payment.confirmed.')->controller(ConfirmedPaymentsController::class)->group(function () {
+        Route::name('payment.confirmed.')->controller(ConfirmedController::class)->group(function () {
             Route::get('/payment/confirmed', 'index')->name('index');
         });
-        Route::name('payment.')->controller(PaymentController::class)->group(function () {
-            Route::get('/payment/{id}', 'index')->name('index');
-            Route::get('/payment', 'create')->name('create.index');
+        Route::name('payment.student.')->controller(StudentPaymentController::class)->group(function () {
+            Route::get('/payment/student/index', 'index')->name('index');
         });
         Route::post('/update/sy/{id}', function ($id) {
-            $current = SchoolYear::where('isCurrent', '=', 1)->first()->update(['isCurrent' => 0]);
-            $new = SchoolYear::where('id', '=', $id)->first()->update(['isCurrent' => 1]);
+            $current = SchoolYear::where('isCurrentViewByCashier', '=', 1)->first()->update(['isCurrentViewByCashier' => 0]);
+            $new = SchoolYear::where('id', '=', $id)->first()->update(['isCurrentViewByCashier' => 1]);
             return back();
         })->name('change.sy');
     });
@@ -135,15 +136,16 @@ Route::prefix('registrar')->name('registrar.')->group(function () {
         /* Dashboard */
         Route::get('/dashboard', [RegistrarDashboardController::class, 'index'])->name('dashboard.index');
         Route::post('/update/sy/{id}', function ($id) {
-            $current = SchoolYear::where('isCurrent', '=', 1)->first()->update(['isCurrent' => 0]);
-            $new = SchoolYear::where('id', '=', $id)->first()->update(['isCurrent' => 1]);
+            $current = SchoolYear::where('isCurrentViewByRegistrar', '=', 1)->first()->update(['isCurrentViewByRegistrar' => 0]);
+            $new = SchoolYear::where('id', '=', $id)->first()->update(['isCurrentViewByRegistrar' => 1]);
             return back();
         })->name('change.sy');
         Route::get('/update/sy/enrollment', function () {
             try {
-                $current = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->first()->update(['isEnrollment' => 0]);
+                $current = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->first()->update(['isEnrollment' => 0, 'isCurrent' => 0]);
+                $new = SchoolYear::where('isCurrentViewByRegistrar', '=', 1)->first()->update(['isEnrollment' => 1, 'isCurrent' => 1]);
             } catch (\Throwable $th) {
-                $current = SchoolYear::where('isCurrent', '=', 1)->first()->update(['isEnrollment' => 1]);
+                $current = SchoolYear::where('isCurrentViewByRegistrar', '=', 1)->first()->update(['isEnrollment' => 1, 'isCurrent' => 1]);
             }
             toast()->success('SYSTEM MESSAGE', 'Updated successfully.')->autoClose(6000)->width('400px')->padding('10px')->background('#f8f9fc')->animation('animate__fadeInRight', 'animate__fadeOutDown')->timerProgressBar();
             return back();
@@ -222,7 +224,7 @@ route::prefix('student')->name('student.')->group(function () {
     });
 });
 
-Route::get('download/pdf', function(){
+Route::get('download/pdf', function () {
     try {
 
         ExportController::exportForm('2022-00003-CL-0');
