@@ -328,6 +328,70 @@ class Form extends Component
     public function downloadEForm()
     {
 
+        if ($this->downloadFiles == false) {
+            $this->downloadFiles = true;
+        } else {
+            $this->downloadFiles = false;
+        }
+        // if yung value ng grade level id ay between 1 - 3 pre school yun
+        if ($this->grade_level_id >= 1 && $this->grade_level_id <= 3) {
+            $this->preschool = true;
+        }
+        // if yung value ng grade level id ay between 4 - 9  thats Elementary
+        if ($this->grade_level_id >= 4 && $this->grade_level_id <= 9) {
+            $this->elem = true;
+        }
+        // and if yung value ng grade level id ay between 10 - 13  Junior High School
+        if ($this->grade_level_id >= 10 && $this->grade_level_id <= 13) {
+            $this->jhs = true;
+        }
+
+        switch ($this->grade_level_id) {
+            case 1:
+                $this->grade_level = 'Nursery';
+                break;
+            case 2:
+                $this->grade_level = 'Kindergarten';
+                break;
+            case 3:
+                $this->grade_level = 'Preparatory';
+                break;
+            case 4:
+                $this->grade_level = 'Grade 1';
+                break;
+            case 5:
+                $this->grade_level = 'Grade 2';
+                break;
+            case 6:
+                $this->grade_level = 'Grade 3';
+                break;
+            case 7:
+                $this->grade_level = 'Grade 4';
+                break;
+            case 8:
+                $this->grade_level = 'Grade 5';
+                break;
+            case 9:
+                $this->grade_level = 'Grade 6';
+                break;
+            case 10:
+                $this->grade_level = 'Grade 7';
+                break;
+            case 11:
+                $this->grade_level = 'Grade 8';
+                break;
+            case 12:
+                $this->grade_level = 'Grade 9';
+                break;
+            case 13:
+                $this->grade_level = 'Grade 10';
+                break;
+
+            default:
+                # code...
+                break;
+        }
+        $this->sy = SchoolYear::where('isCurrent', '=', 1)->first()->school_year;
     }
     public function clearForm()
     {

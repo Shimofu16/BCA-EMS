@@ -671,20 +671,23 @@ label:not(.gender)::after {
 .w-min-content {
     width: min-content !important;
 }
+.text-darkc{
+    color: #212529 !important;
+}
 .border-dark{
-    border: #000 2px solid ;
+    border: #000 2px solid !important;
 }
 .border-start-dark {
-    border-left: 2px solid #000;
+    border-left: 2px solid #000 !important;
 }
 .border-end-dark {
-    border-right: 2px solid #000;
+    border-right: 2px solid #000 !important;
 }
 .border-top-dark {
-    border-top: 2px solid #000;
+    border-top: 2px solid #000 !important;
 }
 .border-bottom-dark {
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid #000 !important;
 }
 
 .border-dashed{

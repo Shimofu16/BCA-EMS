@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cashier\Payment;
+use App\Models\Cashier\PaymentLog;
+use App\Models\Registrar\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudentDashboardController extends Controller
 {
@@ -14,7 +18,12 @@ class StudentDashboardController extends Controller
      */
     public function index()
     {
-        return view('BCA.Admin.student-layouts.dashboard.index');
+       $student=  Student::where('student_id', Auth::guard('student')->user()->student_id)->first();
+        $payment = Payment::where('student_id','=',$student->id)->first();
+        $paymentLogs = PaymentLog::where('payment_id','=',$payment->id)->get();
+        $paymentCount1 = PaymentLog::where('payment_id','=',$payment->id)->where('status','=',1)->count();
+        $paymentCount0 = PaymentLog::where('payment_id','=',$payment->id)->where('status','=',0)->count();
+        return view('BCA.Admin.student-layouts.dashboard.index',compact('paymentLogs','paymentCount0','paymentCount1','payment'));
     }
 
     /**

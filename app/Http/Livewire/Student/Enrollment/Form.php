@@ -130,6 +130,7 @@ class Form extends Component
     public function mount()
     {
         $this->currentStep = 1;
+        $this->student_id = ($this->student->student_id == null) ? null : $this->student->student_id;
         $this->student_lrn = ($this->student->student_lrn == null) ? null : $this->student->student_lrn;
         $this->first_name = ($this->student->first_name == null) ? null : $this->student->first_name;
         $this->middle_name = ($this->student->middle_name == null) ? null : $this->student->middle_name;
@@ -163,12 +164,12 @@ class Form extends Component
         $this->mother_occupation = ($this->mother->occupation == null) ? null : $this->mother->occupation;
         $this->mother_office_address = ($this->mother->office_address == null) ? null : $this->mother->office_address;
         $this->mother_office_contact = ($this->mother->office_contact == null) ? null : $this->mother->office_contact;
-
+*/
         $this->guardian_name = ($this->guardian->name == null) ? null : $this->guardian->name;
         $this->guardian_contact = ($this->guardian->contact_no == null) ? null : $this->guardian->contact_no;
         $this->guardian_email = ($this->guardian->email == null) ? null : $this->guardian->email;
         $this->guardian_address = ($this->guardian->address == null) ? null : $this->guardian->address;
-        $this->guardian_relationship = ($this->guardian->relationship == null) ? null : $this->guardian->relationship; */
+        $this->guardian_relationship = ($this->guardian->relationship == null) ? null : $this->guardian->relationship;
     }
 
     public function increaseStep()
@@ -305,8 +306,9 @@ class Form extends Component
                 # code...
                 break;
         }
-        $this->sy = SchoolYear::where('isCurrent', '=', 1)->first();
+        $this->sy = SchoolYear::where('isCurrent', '=', 1)->first()->school_year;
     }
+
     public function clearForm()
     {
         $this->reset();
@@ -314,6 +316,11 @@ class Form extends Component
     public function download()
     {
         $this->dowloadForms  = true;
+        try {
+            $student = Student::where('student_id', '=', $this->student->student_id)->firstOrFail()->update(['isDone'=>1]);
+        } catch (\Throwable $th) {
+            $this->dowloadForms  = false;
+        }
     }
     public function registerOldStudent()
     {
@@ -332,6 +339,7 @@ class Form extends Component
             $path = 'uploads/requirements/' . $name;
             $balance = 20000;
             $payment_method = '';
+            $payment_reminder ='';
             switch ($this->payment_method) {
                 case 1:
                     $payment_reminder = now()->addYear(1);
@@ -368,10 +376,9 @@ class Form extends Component
             $student->age = $age->y;
             $student->grade_level_id = $grade;
             $student->enrollment_sy = $sy->school_year;
-            $student->isDone = 1;
             $student->save();
             $payment->save();
-            $this->increaseStep();
+            $this->currentStep = 0;
         } catch (\Throwable $th) {
             dd($th, $this->student->student_id);
         }

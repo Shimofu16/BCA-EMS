@@ -60,7 +60,7 @@
                                                 </p>
                                         </div>
                                     </td>
-                                    <td>{{ $payment->balance }}</td>
+                                    <td>₱ {{ number_format($payment->balance, 2, '.', ',') }}</td>
                                     <td>{{ $payment->student->gradeLevel->grade_name }}</td>
                                     <td>{{ date('m/d/Y', strtotime($payment->reminder_at)) }}
                                     </td>
@@ -99,8 +99,7 @@
                                                         {{ $payment->student->email }}
                                                     </p>
                                             </div>
-                                        </td>
-                                        <td>{{ $payment->balance }}</td>
+                                        <td>₱ {{ number_format($payment->balance, 2, '.', ',') }}</td>
                                         <td>{{ date('m/d/Y', strtotime($payment->reminder_at)) }}
                                         </td>
                                     </tr>

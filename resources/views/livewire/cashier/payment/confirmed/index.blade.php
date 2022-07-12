@@ -58,7 +58,8 @@
                                     </td>
                                     <td>{{ $payment->mop }}</td>
                                     <td>{{ $payment->payment_method }}</td>
-                                    <td>{{ $payment->amount }}</td>
+                                    <td>₱{{ number_format($payment->amount, 2, '.', ',') }}</td>
+
                                     <td>{{ $payment->gradeLevel->grade_name }}</td>
                                     <td>{{ date('m/d/Y', strtotime($payment->created_at)) }}</td>
                                 </tr>

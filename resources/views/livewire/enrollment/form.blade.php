@@ -2,485 +2,495 @@
     @if ($currentStep == 0)
         @if ($downloadFiles)
             <div class="bg-white" style="width: 756px;">
-                <div class="mt-2 d-flex justify-content-center">
+                <div class="py-3 d-flex justify-content-center">
                     <button class="btn btn-bca-outline text-bca hvr-sweep-to-bottom" type="button" id="rep"
                         wire:loading.attr="disabled" value="Print" onclick="donwload()" wire:click="download()"><i
                             class="fa-solid fa-download"></i>
                         Download</button>
                     <button class="btn btn-bca-outline text-bca hvr-sweep-to-bottom ms-2" wire:loading.attr="disabled"
-                        type="button" wire:click="downloadEForm"><i class="fa-solid fa-download"></i> Back</button>
+                        type="button" wire:click="downloadEForm"><i class="fa-solid fa-arrow-circle-left"></i>
+                        Back</button>
                 </div>
                 <hr>
                 <div class="mb-5 mt-3 d-flex justify-align-center">
                     <main class="px-5">
-                        <div id="donwload-content">
-                            @foreach ($ecopies as $item)
-                                <div class="student-copy">
-                                    <div
-                                        class="d-flex justify-content-center align-items-center bg-white border-0 text-center mt-3">
-                                        <div class="left">
-                                            <img src="{{ asset('assets/img/BCA-Logo.png') }}" alt="BCA LOGO"
-                                                class="myLogo">
+                        <div class="mb-5">
+                            <div id="donwload-content">
+                                @foreach ($ecopies as $item)
+                                    <div class="student-copy">
+                                        <div
+                                            class="d-flex justify-content-center align-items-center bg-white border-0 text-center mt-3">
+                                            <div class="left">
+                                                <img src="{{ asset('assets/img/BCA-Logo.png') }}" alt="BCA LOGO"
+                                                    class="myLogo">
+                                            </div>
+                                            <div class="text-center">
+                                                <h4 class="fw-bold mb-0 pt-3">BREAKTHROUGH CHRISTIAN ACADEMY</h4>
+                                                <p class="m-0 p-0">9006 Eagle St., Area 3, Sitio Veterans,
+                                                    Brgy.
+                                                    Bagong
+                                                    Silangan, Quezon
+                                                    City</p>
+                                                <p class="m-0 p-0 me-5">990 5970 </p>
+                                            </div>
                                         </div>
-                                        <div class="text-center">
-                                            <h4 class="fw-bold mb-0 pt-3">BREAKTHROUGH CHRISTIAN ACADEMY</h4>
-                                            <p class="m-0 p-0">9006 Eagle St., Area 3, Sitio Veterans,
-                                                Brgy.
-                                                Bagong
-                                                Silangan, Quezon
-                                                City</p>
-                                            <p class="m-0 p-0 me-5">990 5970 </p>
+                                        <div class=" d-flex flex-column justify-content-center align-content-center">
+                                            <h5 class="fw-bold text-center text-capitalize">ENROLMENT FORM -
+                                                {{ $item }} COPY</h5>
+                                            <div class="row justify-align-center">
+                                                <div class="col-3">
+                                                    <p>
+                                                        @if ($preschool)
+                                                            <span class="checkbox border-dark">&#160;<i
+                                                                    class="fa-solid fa-check"></i>&#160;</span>
+                                                        @else
+                                                            <span
+                                                                class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
+                                                        @endif
+                                                        <span>Preschool</span>
+                                                    </p>
+                                                </div>
+                                                <div class="col-3">
+                                                    <p>
+                                                        @if ($elem)
+                                                            <span class="checkbox border-dark">&#160;<i
+                                                                    class="fa-solid fa-check"></i>&#160;</span>
+                                                        @else
+                                                            <span
+                                                                class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
+                                                        @endif
+                                                        <span>Elementary</span>
+                                                    </p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p>
+                                                        @if ($jhs)
+                                                            <span class="checkbox border-dark">&#160;<i
+                                                                    class="fa-solid fa-check"></i>&#160;</span>
+                                                        @else
+                                                            <span
+                                                                class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
+                                                        @endif
+                                                        <span>Junior High School</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Student No. / LRN:</span>
+                                                </div>
+                                                <div class="w-30 border-bottom-dark">
+                                                    <span
+                                                        class="fontsize-17-fw-500">{{ $preschool ? $student_id : $student_lrn }}</span>
+                                                </div>
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Incoming Grade Level:</span>
+                                                </div>
+                                                <div class="w-max-content border-bottom-dark">
+                                                    <span class="fontsize-17-fw-500">{{ $grade_level }}</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">School Year:</span>
+                                                </div>
+                                                <div class="w-max-content border-bottom-dark">
+                                                    <span
+                                                        class="fontsize-17-fw-500 text-center">{{ $sy }}</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="row mt-2 name">
+                                                <div class="w-min-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Name:</span>
+                                                </div>
+                                                <div class="w-40 border-end-dark border-bottom-dark lastname">
+                                                    <span
+                                                        class="fontsize-17-fw-500 text-center">{{ Str::ucfirst($last_name) }}</span>
+                                                </div>
+                                                <div class="w-40 border-end-dark border-bottom-dark firstname">
+                                                    <span
+                                                        class="fontsize-17-fw-500 text-center">{{ Str::ucfirst($first_name) }}</span>
+                                                </div>
+                                                <div
+                                                    class="w-min-content  border-end-dark  border-bottom-dark middleinitial">
+                                                    <span
+                                                        class="fontsize-17-fw-500 text-center">{{ Str::ucfirst(Str::of($middle_name)->substr(0, 1)) }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-4">
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Address:</span>
+                                                </div>
+                                                <div class="w-80 border-bottom-dark">
+                                                    <span
+                                                        class="fontsize-17-fw-500 text-center">{{ $address }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Birthplace:</span>
+                                                </div>
+                                                <div class="w-40 border-bottom-dark">
+                                                    <span
+                                                        class="fontsize-17-fw-500">{{ Str::ucfirst($birthplace) }}</span>
+                                                </div>
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Birthday:</span>
+                                                </div>
+                                                <div class="w-max-content border-bottom-dark">
+                                                    <span
+                                                        class="fontsize-17-fw-500">{{ date('m/d/Y', strtotime($birthdate)) }}</span>
+                                                </div>
+
+                                            </div>
+                                            <h5 class="my-2 text-start">Guardian Details:</h5>
+                                            <div class="row mt-2">
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Name:</span>
+                                                </div>
+                                                <div class="w-40 border-bottom-dark">
+                                                    <span class="fontsize-17-fw-500">{{ $guardian_name }}</span>
+                                                </div>
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Contact Details:</span>
+                                                </div>
+                                                <div class="w-max-content border-bottom-dark">
+                                                    <span class="fontsize-17-fw-500">{{ $guardian_contact }}</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Address:</span>
+                                                </div>
+                                                <div class="w-45 border-bottom-dark">
+                                                    <span class="fontsize-17-fw-500">{{ $guardian_address }}</span>
+                                                </div>
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Email:</span>
+                                                </div>
+                                                <div class="w-max-content border-bottom-dark">
+                                                    <span class="fontsize-17-fw-500">{{ $guardian_email }}</span>
+                                                </div>
+
+                                            </div>
+                                            <h6 class="mt-2 text-start">I certify that the information above are
+                                                true
+                                                and
+                                                correct.</h6>
+                                            <div class="row mx-2 custom-border  custom-h-25">
+                                                <div class="w-40 border-end-dark">
+                                                    <div class="text-end custom-date-pos">
+                                                        <span class="h6">Date</span>
+                                                    </div>
+                                                </div>
+                                                <div class="w-30 border-end-dark">
+                                                    <div class="text-end custom-date-pos">
+                                                        <span class="h6">Date</span>
+                                                    </div>
+                                                </div>
+                                                <div class="w-30">
+                                                    <div class="text-end custom-date-pos">
+                                                        <span class="h6">Date</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row ">
+                                                <div class="w-40">
+                                                    <div class="text-center">
+                                                        <span class="h6">Parent / Guardian
+                                                            Signature</span>
+                                                    </div>
+                                                </div>
+                                                <div class="w-30">
+                                                    <div class="text-center">
+                                                        <span class="h6">Admin Officer</span>
+                                                    </div>
+                                                </div>
+                                                <div class="w-30">
+                                                    <div class="text-center">
+                                                        <span class="h6">Head Teacher</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h5 class="mt-2">NOTE: Reservation fee upon enrolment is
+                                                non-refundable.
+                                            </h5>
                                         </div>
                                     </div>
-                                    <div class=" d-flex flex-column justify-content-center align-content-center">
-                                        <h5 class="fw-bold text-center text-capitalize">ENROLMENT FORM -
-                                            {{ $item }} COPY</h5>
-                                        <div class="row justify-align-center">
-                                            <div class="col-3">
-                                                <p>
-                                                    @if ($preschool)
-                                                        <span class="checkbox border-dark">&#160;<i
-                                                                class="fa-solid fa-check"></i>&#160;</span>
-                                                    @else
-                                                        <span
-                                                            class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
-                                                    @endif
-                                                    <span>Preschool</span>
-                                                </p>
-                                            </div>
-                                            <div class="col-3">
-                                                <p>
-                                                    @if ($elem)
-                                                        <span class="checkbox border-dark">&#160;<i
-                                                                class="fa-solid fa-check"></i>&#160;</span>
-                                                    @else
-                                                        <span
-                                                            class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
-                                                    @endif
-                                                    <span>Elementary</span>
-                                                </p>
-                                            </div>
-                                            <div class="col-4">
-                                                <p>
-                                                    @if ($jhs)
-                                                        <span class="checkbox border-dark">&#160;<i
-                                                                class="fa-solid fa-check"></i>&#160;</span>
-                                                    @else
-                                                        <span
-                                                            class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
-                                                    @endif
-                                                    <span>Junior High School</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-2">
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Student No. / LRN:</span>
-                                            </div>
-                                            <div class="w-30 border-bottom-dark">
-                                                <span class="fontsize-17-fw-500">{{ $student_id }}</span>
-                                            </div>
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Incoming Grade Level:</span>
-                                            </div>
-                                            <div class="w-max-content border-bottom-dark">
-                                                <span class="fontsize-17-fw-500">{{ $grade_level }}</span>
-                                            </div>
-
-                                        </div>
-                                        <div class="row mt-2">
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">School Year:</span>
-                                            </div>
-                                            <div class="w-max-content border-bottom-dark">
-                                                <span class="fontsize-17-fw-500 text-center">{{ $sy }}</span>
-                                            </div>
-
-                                        </div>
-                                        <div class="row mt-2 name">
-                                            <div class="w-min-content pe-0">
-                                                <span class="fontsize-17-fw-500">Name:</span>
-                                            </div>
-                                            <div class="w-40 border-end-dark border-bottom-dark lastname">
-                                                <span
-                                                    class="fontsize-17-fw-500 text-center">{{ Str::ucfirst($last_name) }}</span>
-                                            </div>
-                                            <div class="w-40 border-end-dark border-bottom-dark firstname">
-                                                <span
-                                                    class="fontsize-17-fw-500 text-center">{{ Str::ucfirst($first_name) }}</span>
-                                            </div>
-                                            <div
-                                                class="w-min-content  border-end-dark  border-bottom-dark middleinitial">
-                                                <span
-                                                    class="fontsize-17-fw-500 text-center">{{ Str::ucfirst(Str::of($middle_name)->substr(0, 1)) }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-4">
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Address:</span>
-                                            </div>
-                                            <div class="w-80 border-bottom-dark">
-                                                <span class="fontsize-17-fw-500 text-center">{{ $address }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-2">
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Birthplace:</span>
-                                            </div>
-                                            <div class="w-40 border-bottom-dark">
-                                                <span
-                                                    class="fontsize-17-fw-500">{{ Str::ucfirst($birthplace) }}</span>
-                                            </div>
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Birthday:</span>
-                                            </div>
-                                            <div class="w-max-content border-bottom-dark">
-                                                <span
-                                                    class="fontsize-17-fw-500">{{ date('m/d/Y', strtotime($birthdate)) }}</span>
-                                            </div>
-
-                                        </div>
-                                        <h5 class="my-2 text-start">Guardian Details:</h5>
-                                        <div class="row mt-2">
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Name:</span>
-                                            </div>
-                                            <div class="w-40 border-bottom-dark">
-                                                <span class="fontsize-17-fw-500">{{ $guardian_name }}</span>
-                                            </div>
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Contact Details:</span>
-                                            </div>
-                                            <div class="w-max-content border-bottom-dark">
-                                                <span class="fontsize-17-fw-500">{{ $guardian_contact }}</span>
-                                            </div>
-
-                                        </div>
-                                        <div class="row mt-2">
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Address:</span>
-                                            </div>
-                                            <div class="w-45 border-bottom-dark">
-                                                <span class="fontsize-17-fw-500">{{ $guardian_address }}</span>
-                                            </div>
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Email:</span>
-                                            </div>
-                                            <div class="w-max-content border-bottom-dark">
-                                                <span class="fontsize-17-fw-500">{{ $guardian_email }}</span>
-                                            </div>
-
-                                        </div>
-                                        <h6 class="mt-2 text-start">I certify that the information above are
-                                            true
-                                            and
-                                            correct.</h6>
-                                        <div class="row mx-2 custom-border  custom-h-25">
-                                            <div class="w-40 border-end-dark">
-                                                <div class="text-end custom-date-pos">
-                                                    <span class="h6">Date</span>
-                                                </div>
-                                            </div>
-                                            <div class="w-30 border-end-dark">
-                                                <div class="text-end custom-date-pos">
-                                                    <span class="h6">Date</span>
-                                                </div>
-                                            </div>
-                                            <div class="w-30">
-                                                <div class="text-end custom-date-pos">
-                                                    <span class="h6">Date</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row ">
-                                            <div class="w-40">
-                                                <div class="text-center">
-                                                    <span class="h6">Parent / Guardian
-                                                        Signature</span>
-                                                </div>
-                                            </div>
-                                            <div class="w-30">
-                                                <div class="text-center">
-                                                    <span class="h6">Admin Officer</span>
-                                                </div>
-                                            </div>
-                                            <div class="w-30">
-                                                <div class="text-center">
-                                                    <span class="h6">Head Teacher</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <h5 class="mt-2">NOTE: Reservation fee upon enrolment is
-                                            non-refundable.
-                                        </h5>
+                                    <div class="d-flex justify-align-center" id="page-cut">
+                                        <i class="fa-solid fa-scissors"></i>
+                                        <div class="border-dashed w-100 h-0"></div>
                                     </div>
-                                </div>
-                                <div class="d-flex justify-align-center" id="page-cut">
-                                    <i class="fa-solid fa-scissors"></i>
-                                    <div class="border-dashed w-100 h-0"></div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
-                        <div id="donwload-content2">
-                            @foreach ($pcopies as $item)
-                                <div class="student-copy">
-                                    <div
-                                        class="d-flex justify-content-center align-items-center bg-white border-0 text-center mt-3 position-relative">
-                                        <div class="left">
-                                            <img src="{{ asset('assets/img/BCA-Logo.png') }}" alt="BCA LOGO"
-                                                class="myLogo">
+                        <hr>
+                        <div class="my-5">
+                            <div id="donwload-content2">
+                                @foreach ($pcopies as $item)
+                                    <div class="student-copy">
+                                        <div
+                                            class="d-flex justify-content-center align-items-center bg-white border-0 text-center mt-3 position-relative">
+                                            <div class="left">
+                                                <img src="{{ asset('assets/img/BCA-Logo.png') }}" alt="BCA LOGO"
+                                                    class="myLogo">
+                                            </div>
+                                            <div class="text-center">
+                                                <h4 class="fw-bold mb-0 pt-3">BREAKTHROUGH CHRISTIAN ACADEMY</h4>
+                                                <p class="m-0 p-0 mb-3">9006 Eagle St., Area 3, Sitio Veterans,
+                                                    Brgy.
+                                                    Bagong
+                                                    Silangan, Quezon
+                                                    City</p>
+                                            </div>
                                         </div>
-                                        <div class="text-center">
-                                            <h4 class="fw-bold mb-0 pt-3">BREAKTHROUGH CHRISTIAN ACADEMY</h4>
-                                            <p class="m-0 p-0 mb-3">9006 Eagle St., Area 3, Sitio Veterans,
-                                                Brgy.
-                                                Bagong
-                                                Silangan, Quezon
-                                                City</p>
+                                        <div class=" d-flex flex-column justify-content-center align-content-center">
+                                            <h5 class="fw-bold text-center">PAYMENT FORM - {{ $item }}
+                                                COPY
+                                            </h5>
+                                            <div class="row justify-align-center">
+                                                <div class="col-3">
+                                                    <p>
+                                                        @if ($new)
+                                                            <span class="checkbox border-dark">&#160;<i
+                                                                    class="fa-solid fa-check"></i>&#160;</span>
+                                                        @else
+                                                            <span
+                                                                class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
+                                                        @endif
+                                                        <span>New Learner</span>
+                                                    </p>
+                                                </div>
+                                                <div class="col-3">
+                                                    <p>
+                                                        @if ($old)
+                                                            <span class="checkbox border-dark">&#160;<i
+                                                                    class="fa-solid fa-check"></i>&#160;</span>
+                                                        @else
+                                                            <span
+                                                                class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
+                                                        @endif
+                                                        <span>Old Learner</span>
+                                                    </p>
+                                                </div>
+                                                <div class="col-3">
+                                                    <p>
+                                                        @if ($transferee)
+                                                            <span class="checkbox border-dark">&#160;<i
+                                                                    class="fa-solid fa-check"></i>&#160;</span>
+                                                        @else
+                                                            <span
+                                                                class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
+                                                        @endif
+                                                        <span>Transferee</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Student No. / LRN:</span>
+                                                </div>
+                                                <div class="w-30 border-bottom-dark">
+                                                    <span
+                                                        class="fontsize-17-fw-500">{{ $preschool ? $student_id : $student_lrn }}</span>
+                                                </div>
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Incoming Grade Level:</span>
+                                                </div>
+                                                <div class="w-max-content border-bottom-dark">
+                                                    <span class="fontsize-17-fw-500">{{ $grade_level }}</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">School Year:</span>
+                                                </div>
+                                                <div class="w-max-content border-bottom-dark">
+                                                    <span
+                                                        class="fontsize-17-fw-500 text-center">{{ $sy }}</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="row mt-2 name">
+                                                <div class="w-min-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Name:</span>
+                                                </div>
+                                                <div class="w-40 border-end-dark border-bottom-dark lastname">
+                                                    <span
+                                                        class="fontsize-17-fw-500 text-center">{{ Str::ucfirst($last_name) }}</span>
+                                                </div>
+                                                <div class="w-40 border-end-dark border-bottom-dark firstname">
+                                                    <span
+                                                        class="fontsize-17-fw-500 text-center">{{ Str::ucfirst($first_name) }}</span>
+                                                </div>
+                                                <div
+                                                    class="w-min-content  border-end-dark  border-bottom-dark middleinitial">
+                                                    <span
+                                                        class="fontsize-17-fw-500 text-center">{{ Str::ucfirst(Str::of($middle_name)->substr(0, 1)) }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-4">
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Address:</span>
+                                                </div>
+                                                <div class="w-80 border-bottom-dark">
+                                                    <span
+                                                        class="fontsize-17-fw-500 text-center">{{ $address }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Birthplace:</span>
+                                                </div>
+                                                <div class="w-40 border-bottom-dark">
+                                                    <span
+                                                        class="fontsize-17-fw-500">{{ Str::ucfirst($birthplace) }}</span>
+                                                </div>
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Birthday:</span>
+                                                </div>
+                                                <div class="w-max-content border-bottom-dark">
+                                                    <span
+                                                        class="fontsize-17-fw-500">{{ date('m/d/Y', strtotime($birthdate)) }}</span>
+                                                </div>
+
+                                            </div>
+                                            <h5 class="my-2 text-start">Guardian Details:</h5>
+                                            <div class="row mt-2">
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Name:</span>
+                                                </div>
+                                                <div class="w-40 border-bottom-dark">
+                                                    <span class="fontsize-17-fw-500">{{ $guardian_name }}</span>
+                                                </div>
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Contact Details:</span>
+                                                </div>
+                                                <div class="w-max-content border-bottom-dark">
+                                                    <span class="fontsize-17-fw-500">{{ $guardian_contact }}</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Address:</span>
+                                                </div>
+                                                <div class="w-45 border-bottom-dark">
+                                                    <span class="fontsize-17-fw-500">{{ $guardian_address }}</span>
+                                                </div>
+                                                <div class="w-max-content pe-0">
+                                                    <span class="fontsize-17-fw-500">Email:</span>
+                                                </div>
+                                                <div class="w-max-content border-bottom-dark">
+                                                    <span class="fontsize-17-fw-500">{{ $guardian_email }}</span>
+                                                </div>
+
+                                            </div>
+                                            <h5 class="my-2 text-start">Payment Method:</h5>
+                                            <div class="row justify-align-center">
+                                                <div class="col-3">
+                                                    <p>
+                                                        @if ($payment_method == 1)
+                                                            <span class="checkbox border-dark">&#160;<i
+                                                                    class="fa-solid fa-check"></i>&#160;</span>
+                                                        @else
+                                                            <span
+                                                                class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
+                                                        @endif
+                                                        <span>Annual</span>
+                                                    </p>
+                                                </div>
+                                                <div class="col-3">
+                                                    <p>
+                                                        @if ($payment_method == 2)
+                                                            <span class="checkbox border-dark">&#160;<i
+                                                                    class="fa-solid fa-check"></i>&#160;</span>
+                                                        @else
+                                                            <span
+                                                                class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
+                                                        @endif
+                                                        <span>Semi-Annual</span>
+                                                    </p>
+                                                </div>
+                                                <div class="col-3">
+                                                    <p>
+                                                        @if ($payment_method == 3)
+                                                            <span class="checkbox border-dark">&#160;<i
+                                                                    class="fa-solid fa-check"></i>&#160;</span>
+                                                        @else
+                                                            <span
+                                                                class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
+                                                        @endif
+                                                        <span>Quarterly</span>
+                                                    </p>
+                                                </div>
+                                                <div class="col-3">
+                                                    <p>
+                                                        @if ($payment_method == 4)
+                                                            <span class="checkbox border-dark">&#160;<i
+                                                                    class="fa-solid fa-check"></i>&#160;</span>
+                                                        @else
+                                                            <span
+                                                                class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
+                                                        @endif
+                                                        <span>Monthly</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <h6 class="mt-2 text-start">I certify that the information above are
+                                                true
+                                                and
+                                                correct.</h6>
+                                            <div class="row mx-2 custom-border  custom-h-25">
+                                                <div class="w-40 border-end-dark">
+                                                    <div class="text-end custom-date-pos">
+                                                        <span class="h6">Date</span>
+                                                    </div>
+                                                </div>
+                                                <div class="w-30 border-end-dark">
+                                                    <div class="text-end custom-date-pos">
+                                                        <span class="h6">Date</span>
+                                                    </div>
+                                                </div>
+                                                <div class="w-30">
+                                                    <div class="text-end custom-date-pos">
+                                                        <span class="h6">Date</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row ">
+                                                <div class="w-40">
+                                                    <div class="text-center">
+                                                        <span class="h6">Parent / Guardian
+                                                            Signature</span>
+                                                    </div>
+                                                </div>
+                                                <div class="w-30">
+                                                    <div class="text-center">
+                                                        <span class="h6">Admin Officer</span>
+                                                    </div>
+                                                </div>
+                                                <div class="w-30">
+                                                    <div class="text-center">
+                                                        <span class="h6">Head Teacher</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h5 class="mt-2">NOTE: Reservation fee upon enrolment is
+                                                non-refundable.
+                                            </h5>
                                         </div>
                                     </div>
-                                    <div class=" d-flex flex-column justify-content-center align-content-center">
-                                        <h5 class="fw-bold text-center">PAYMENT FORM - {{ $item }}
-                                            COPY
-                                        </h5>
-                                        <div class="row justify-align-center">
-                                            <div class="col-3">
-                                                <p>
-                                                    @if ($new)
-                                                        <span class="checkbox border-dark">&#160;<i
-                                                                class="fa-solid fa-check"></i>&#160;</span>
-                                                    @else
-                                                        <span
-                                                            class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
-                                                    @endif
-                                                    <span>New Learner</span>
-                                                </p>
-                                            </div>
-                                            <div class="col-3">
-                                                <p>
-                                                    @if ($old)
-                                                        <span class="checkbox border-dark">&#160;<i
-                                                                class="fa-solid fa-check"></i>&#160;</span>
-                                                    @else
-                                                        <span
-                                                            class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
-                                                    @endif
-                                                    <span>Old Learner</span>
-                                                </p>
-                                            </div>
-                                            <div class="col-3">
-                                                <p>
-                                                    @if ($transferee)
-                                                        <span class="checkbox border-dark">&#160;<i
-                                                                class="fa-solid fa-check"></i>&#160;</span>
-                                                    @else
-                                                        <span
-                                                            class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
-                                                    @endif
-                                                    <span>Transferee</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-2">
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Student No. / LRN:</span>
-                                            </div>
-                                            <div class="w-30 border-bottom-dark">
-                                                <span class="fontsize-17-fw-500">{{ $student_id }}</span>
-                                            </div>
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Incoming Grade Level:</span>
-                                            </div>
-                                            <div class="w-max-content border-bottom-dark">
-                                                <span class="fontsize-17-fw-500">{{ $grade_level }}</span>
-                                            </div>
-
-                                        </div>
-                                        <div class="row mt-2">
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">School Year:</span>
-                                            </div>
-                                            <div class="w-max-content border-bottom-dark">
-                                                <span
-                                                    class="fontsize-17-fw-500 text-center">{{ $sy }}</span>
-                                            </div>
-
-                                        </div>
-                                        <div class="row mt-2 name">
-                                            <div class="w-min-content pe-0">
-                                                <span class="fontsize-17-fw-500">Name:</span>
-                                            </div>
-                                            <div class="w-40 border-end-dark border-bottom-dark lastname">
-                                                <span
-                                                    class="fontsize-17-fw-500 text-center">{{ Str::ucfirst($last_name) }}</span>
-                                            </div>
-                                            <div class="w-40 border-end-dark border-bottom-dark firstname">
-                                                <span
-                                                    class="fontsize-17-fw-500 text-center">{{ Str::ucfirst($first_name) }}</span>
-                                            </div>
-                                            <div
-                                                class="w-min-content  border-end-dark  border-bottom-dark middleinitial">
-                                                <span
-                                                    class="fontsize-17-fw-500 text-center">{{ Str::ucfirst(Str::of($middle_name)->substr(0, 1)) }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-4">
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Address:</span>
-                                            </div>
-                                            <div class="w-80 border-bottom-dark">
-                                                <span
-                                                    class="fontsize-17-fw-500 text-center">{{ $address }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-2">
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Birthplace:</span>
-                                            </div>
-                                            <div class="w-40 border-bottom-dark">
-                                                <span
-                                                    class="fontsize-17-fw-500">{{ Str::ucfirst($birthplace) }}</span>
-                                            </div>
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Birthday:</span>
-                                            </div>
-                                            <div class="w-max-content border-bottom-dark">
-                                                <span
-                                                    class="fontsize-17-fw-500">{{ date('m/d/Y', strtotime($birthdate)) }}</span>
-                                            </div>
-
-                                        </div>
-                                        <h5 class="my-2 text-start">Guardian Details:</h5>
-                                        <div class="row mt-2">
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Name:</span>
-                                            </div>
-                                            <div class="w-40 border-bottom-dark">
-                                                <span class="fontsize-17-fw-500">{{ $guardian_name }}</span>
-                                            </div>
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Contact Details:</span>
-                                            </div>
-                                            <div class="w-max-content border-bottom-dark">
-                                                <span class="fontsize-17-fw-500">{{ $guardian_contact }}</span>
-                                            </div>
-
-                                        </div>
-                                        <div class="row mt-2">
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Address:</span>
-                                            </div>
-                                            <div class="w-45 border-bottom-dark">
-                                                <span class="fontsize-17-fw-500">{{ $guardian_address }}</span>
-                                            </div>
-                                            <div class="w-max-content pe-0">
-                                                <span class="fontsize-17-fw-500">Email:</span>
-                                            </div>
-                                            <div class="w-max-content border-bottom-dark">
-                                                <span class="fontsize-17-fw-500">{{ $guardian_email }}</span>
-                                            </div>
-
-                                        </div>
-                                        <h5 class="my-2 text-start">Payment Method:</h5>
-                                        <div class="row justify-align-center">
-                                            <div class="col-3">
-                                                <p>
-                                                    @if ($payment_method == 1)
-                                                        <span class="checkbox border-dark">&#160;<i
-                                                                class="fa-solid fa-check"></i>&#160;</span>
-                                                    @else
-                                                        <span
-                                                            class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
-                                                    @endif
-                                                    <span>Annual</span>
-                                                </p>
-                                            </div>
-                                            <div class="col-3">
-                                                <p>
-                                                    @if ($payment_method == 2)
-                                                        <span class="checkbox border-dark">&#160;<i
-                                                                class="fa-solid fa-check"></i>&#160;</span>
-                                                    @else
-                                                        <span
-                                                            class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
-                                                    @endif
-                                                    <span>Semi-Annual</span>
-                                                </p>
-                                            </div>
-                                            <div class="col-3">
-                                                <p>
-                                                    @if ($payment_method == 3)
-                                                        <span class="checkbox border-dark">&#160;<i
-                                                                class="fa-solid fa-check"></i>&#160;</span>
-                                                    @else
-                                                        <span
-                                                            class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
-                                                    @endif
-                                                    <span>Quarterly</span>
-                                                </p>
-                                            </div>
-                                            <div class="col-3">
-                                                <p>
-                                                    @if ($payment_method == 4)
-                                                        <span class="checkbox border-dark">&#160;<i
-                                                                class="fa-solid fa-check"></i>&#160;</span>
-                                                    @else
-                                                        <span
-                                                            class="checkbox border-dark">&#160;&#160;&#160;&#160;&#160;</span>
-                                                    @endif
-                                                    <span>Monthly</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <h6 class="mt-2 text-start">I certify that the information above are
-                                            true
-                                            and
-                                            correct.</h6>
-                                        <div class="row mx-2 custom-border  custom-h-25">
-                                            <div class="w-40 border-end-dark">
-                                                <div class="text-end custom-date-pos">
-                                                    <span class="h6">Date</span>
-                                                </div>
-                                            </div>
-                                            <div class="w-30 border-end-dark">
-                                                <div class="text-end custom-date-pos">
-                                                    <span class="h6">Date</span>
-                                                </div>
-                                            </div>
-                                            <div class="w-30">
-                                                <div class="text-end custom-date-pos">
-                                                    <span class="h6">Date</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row ">
-                                            <div class="w-40">
-                                                <div class="text-center">
-                                                    <span class="h6">Parent / Guardian
-                                                        Signature</span>
-                                                </div>
-                                            </div>
-                                            <div class="w-30">
-                                                <div class="text-center">
-                                                    <span class="h6">Admin Officer</span>
-                                                </div>
-                                            </div>
-                                            <div class="w-30">
-                                                <div class="text-center">
-                                                    <span class="h6">Head Teacher</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <h5 class="mt-2">NOTE: Reservation fee upon enrolment is
-                                            non-refundable.
-                                        </h5>
+                                    <div class="d-flex justify-align-center" id="page-cut">
+                                        <i class="fa-solid fa-scissors"></i>
+                                        <div class="border-dashed w-100 h-0"></div>
                                     </div>
-                                </div>
-                                <div class="d-flex justify-align-center" id="page-cut">
-                                    <i class="fa-solid fa-scissors"></i>
-                                    <div class="border-dashed w-100 h-0"></div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
                     </main>
                 </div>
@@ -500,18 +510,13 @@
                         <h4 class="card-title">Thank you for enrolling!</h4>
                         @if ($new || $transferee)
                             <p class="card-text">Please proceed to your email and download the enrollment form
-                                before going back..</p>
-                        @else
-                            <p class="card-text">Please download the enrollment form
-                                before going back..</p>
+                                before going back.</p>
                         @endif
                         <div class="col-sm-2 col-md-5 col-lg-3">
                             <center class="d-flex flex-column">
-                                @if ($new || $transferee)
-                                    <a href="https://gmail.com/"
-                                        class="btn btn-bca-outline  text-bca hvr-sweep-to-bottom mb-1"
-                                        target="__blank"><i class="fa-solid fa-envelope"></i> Google Mail</a>
-                                @endif
+                                <a href="https://gmail.com/"
+                                    class="btn btn-bca-outline  text-bca hvr-sweep-to-bottom mb-1" target="__blank"><i
+                                        class="fa-solid fa-envelope"></i> Google Mail</a>
                                 <a href="{{ route('home.index') }}"
                                     class="btn btn-bca-outline  text-bca hvr-sweep-to-bottom mb-1 {{ $dowloadForms == 'true' ? '' : 'd-none' }} wire:loading.attr="
                                     disabled""><i class="fa-solid fa-house"></i>
@@ -1313,8 +1318,8 @@
                     @endif
                     @if ($currentStep == 2 || $currentStep == 3 || $currentStep == 4 || $currentStep == 5)
                         <div wire:loading.delay class="bg-transparent">
-                            <img src="{{ asset('assets/img/icons8-loading-circle.gif') }}" width="20" height="20"
-                                class="m-auto mt-1/4">
+                            <img src="{{ asset('assets/img/icons8-loading-circle.gif') }}" width="20"
+                                height="20" class="m-auto mt-1/4">
                         </div>
                     @endif
                     @if ($currentStep == 2 || $currentStep == 3 || $currentStep == 4 || $currentStep == 5)
