@@ -28,21 +28,23 @@ class EnrolledStudentController extends Controller
         try {
             $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByRegistrar', '=', 1)->first();
             $students = Student::with('section', 'gradeLevel')
-                ->where('status','=', 1)
+                ->where('status', '=', 1)
                 ->where('enrollment_sy', '=', $currentSy->school_year)
                 ->orderBy('id', 'asc')
                 ->get();
+            $isCurrentSy = true;
         } catch (\Throwable $th) {
+            $isCurrentSy = false;
             $currentSy = SchoolYear::where('isCurrentViewByRegistrar', '=', 1)->first();
             $students = Student::with('section', 'gradeLevel')
-                ->where('status','=', 1)
+                ->where('status', '=', 1)
                 ->where('sy_id', '=', $currentSy->id)
                 ->orderBy('id', 'asc')
                 ->get();
         }
         $gradeLevels = GradeLevel::all();
         $sections = Section::all();
-        return view('BCA.Admin.registrar-layouts.students.enrolled.index', compact('students', 'gradeLevels', 'sections'));
+        return view('BCA.Admin.registrar-layouts.students.enrolled.index', compact('students', 'gradeLevels', 'sections','isCurrentSy'));
     }
 
     /**

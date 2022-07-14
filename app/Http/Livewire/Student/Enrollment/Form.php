@@ -331,8 +331,8 @@ class Form extends Component
         $age = Carbon::parse($this->birthdate)->diff(Carbon::now());
         $name = Str::ucfirst($this->first_name) . ' ' . Str::ucfirst(Str::substr($this->middle_name, 0, 1)) . ' ' . Str::ucfirst($this->last_name);
         $grade = $this->grade_level_id + 1;
-        if ($grade > 13) {
-            $grade = 13;
+        if ($grade > 14) {
+            $grade = 14;
         }
         try {
             $student  = Student::where('student_id', '=', $this->student->student_id)->firstOrFail();
@@ -361,7 +361,7 @@ class Form extends Component
             $student->balance = $student->balance + $balance;
             $student->reminder_at = $payment_reminder;
             $payment = Payment::create([
-                'student_id' => $this->student->student_id,
+                'student_id' => $this->student->id,
                 'sy_id' => $sy->id,
                 'grade_level_id' => $this->grade_level_id,
                 'mop' => $this->conPayment,
@@ -369,7 +369,7 @@ class Form extends Component
                 'amount' => ($this->payment != null) ? $this->payment :  0,
             ])->id;
             $paymentLog = PaymentLog::create([
-                'student_id' => $this->student->student_id,
+                'student_id' => $this->student->id,
                 'sy_id' => $sy->id,
                 'grade_level_id' => $this->grade_level_id,
                 'mop' => $this->conPayment,
@@ -382,9 +382,8 @@ class Form extends Component
             FileController::old($path, $this->student->student_id, $this->form_137);
             $student->age = $age->y;
             $student->grade_level_id = $grade;
-            $student->enrollment_sy = $sy->school_year;
+            $student->sy_id = $sy->id;
             $student->save();
-            $payment->save();
             $this->currentStep = 0;
         } catch (\Throwable $th) {
             dd($th, $this->student->student_id);

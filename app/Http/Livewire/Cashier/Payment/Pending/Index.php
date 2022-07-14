@@ -51,8 +51,7 @@ class Index extends Component
     {
         try {
             $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByCashier', '=', 1)->firstOrFail();
-            $this->payments = Payment::where('status', '=', 0)
-                ->where('sy_id', '=', $currentSy->id)
+            $this->payments = Payment::where('sy_id', '=', $currentSy->id)->where('status', '=', 0)
                 ->orderBy('id', 'asc')
                 ->get();
             $this->grade_name = '';
@@ -60,20 +59,14 @@ class Index extends Component
             $this->byGrade = false;
         } catch (\Throwable $th) {
             $currentSy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->firstOrFail();
-            $this->payments = PaymentLog::where('status', '=', 0)
-                ->where('sy_id', '=', $currentSy->id)
+            $this->payments = PaymentLog::where('sy_id', '=', $currentSy->id)->where('status', '=', 0)
                 ->orderBy('id', 'asc')
                 ->get();
             $this->grade_name = '';
             $this->default = true;
             $this->byGrade = false;
         }
-        $currentSy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->first();
         $this->gradeLevels = GradeLevel::all();
-        $this->payments = PaymentLog::where('status', 0)
-            ->where('sy_id', '=', $currentSy->id)
-            ->orderBy('id', 'asc')
-            ->get();
     }
     public function render()
     {

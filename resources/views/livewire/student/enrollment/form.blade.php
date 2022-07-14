@@ -863,7 +863,15 @@
                     </form>
                 @endif
             @else
-                <div>you`re done enrolling :)</div>
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="card border-0 justify-content-center align-items-center">
+                        <img class="card-img-top" style="height: 100px; width: 100px" src="{{ asset('assets/img/icons/1103-confetti-flat.gif') }}" alt="Title">
+                        <div class="card-body">
+                            <h4 class="card-title">Thank you for completing the enrollment process! :)</h4>
+                        </div>
+                    </div>
+
+                </div>
             @endif
         </div>
     @endif

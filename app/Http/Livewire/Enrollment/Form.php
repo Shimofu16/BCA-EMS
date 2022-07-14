@@ -537,7 +537,6 @@ class Form extends Component
                 'grade_level_id' => $this->grade_level_id,
                 'student_type' => $student_type,
                 'hasPromissoryNote' => $pn,
-                'enrollment_sy' => $sy->school_year,
                 'sy_id' => $sy->id,
                 'isDone' => 1,
                 'created_at' => now(),

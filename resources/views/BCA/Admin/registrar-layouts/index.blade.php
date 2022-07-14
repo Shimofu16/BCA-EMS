@@ -35,18 +35,6 @@
                 <i class="fas fa-fw fa-users"></i>
                 <span>Students</span>
             </a>
-            @php
-                try {
-                    DB::table('school_years')
-                        ->where('isCurrent', '=', 1)
-                        ->where('isEnrollment', '=', 1)
-                        ->where('isCurrentViewByRegistrar', '=', 1)
-                        ->firstOrFail();
-                    $isCurrentSy = true;
-                } catch (\Throwable $th) {
-                    $isCurrentSy = false;
-                }
-            @endphp
             <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     @if ($isCurrentSy)

@@ -30,17 +30,19 @@ class EnrolleeController extends Controller
         try {
             $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByRegistrar', '=', 1)->first();
             $students = Student::with('section', 'gradeLevel')
-                ->where('status','=', 0)
-                ->where('hasVerifiedEmail','=', 1)
+                ->where('status', '=', 0)
+                ->where('hasVerifiedEmail', '=', 1)
                 ->where('sy_id', '=', $currentSy->id)
                 ->where('isDone', '=', 1)
                 ->orderBy('id', 'asc')
                 ->get();
+            $isCurrentSy = true;
         } catch (\Throwable $th) {
+            $isCurrentSy = false;
             $currentSy = SchoolYear::where('isCurrentViewByRegistrar', '=', 1)->first();
             $students = EnrollmentLog::with('section', 'gradeLevel')
-                ->where('status','=', 0)
-                ->where('hasVerifiedEmail','=', 1)
+                ->where('status', '=', 0)
+                ->where('hasVerifiedEmail', '=', 1)
                 ->where('sy_id', '=', $currentSy->id)
                 ->where('isDone', '=', 1)
                 ->orderBy('id', 'asc')
@@ -48,7 +50,7 @@ class EnrolleeController extends Controller
         }
 
         $gradeLevels = GradeLevel::all();
-        return view('BCA.Admin.registrar-layouts.students.enrollees.index', compact('students', 'gradeLevels'));
+        return view('BCA.Admin.registrar-layouts.students.enrollees.index', compact('students', 'gradeLevels','isCurrentSy'));
     }
 
     /**

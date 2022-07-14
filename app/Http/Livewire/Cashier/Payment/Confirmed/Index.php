@@ -63,10 +63,6 @@ class Index extends Component
         }
         $currentSy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->first();
         $this->gradeLevels = GradeLevel::all();
-        $this->payments = PaymentLog::where('status', '=', 1)
-            ->where('sy_id', '=', $currentSy->id)
-            ->orderBy('id', 'asc')
-            ->get();
     }
     public function render()
     {

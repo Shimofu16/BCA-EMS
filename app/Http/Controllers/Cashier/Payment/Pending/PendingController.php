@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cashier\Payment;
 use App\Models\Cashier\PaymentLog;
 use App\Models\Registrar\SchoolYear;
+use App\Models\Registrar\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,12 +22,12 @@ class PendingController extends Controller
         try {
             $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByCashier', '=', 1)->firstOrFail();
 
-            $payments = Payment::where('sy_id','=', $currentSy->id)->where('status','=',0)->get();
+            $payments = Payment::where('sy_id', '=', $currentSy->id)->where('status', '=', 0)->get();
         } catch (\Throwable $th) {
             $currentSy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->firstOrFail();
-            $payments = PaymentLog::where('sy_id','=', $currentSy->id)->where('status','=',0)->get();
+            $payments = PaymentLog::where('sy_id', '=', $currentSy->id)->where('status', '=', 0)->get();
         }
-        return view('BCA.Admin.cashier-layout.payments.pending.index',compact('payments'));
+        return view('BCA.Admin.cashier-layout.payments.pending.index', compact('payments'));
     }
 
     /**
@@ -81,17 +82,21 @@ class PendingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $payment_log = PaymentLog::find($id);
-        $payment_log->amount = $request->input('amount');
-        $payment_log->status = 1;
-        $payment_log->updated_at = now();
-        $payment_log->updated_by = Auth::guard('registrar')->user()->name;
-        $payment = Payment::find($payment_log->payment_id);
-        $payment->balance = $payment->balance -  $payment_log->amount;
-        $payment->save();
-        $payment_log->save();
-        toast()->success('SYSTEM MESSAGE', 'Payment was successfully confirmed.')->autoClose(6000)->width('400px')->padding('10px')->background('#f8f9fc')->animation('animate__fadeInRight', 'animate__fadeOutDown')->timerProgressBar();
-        return redirect()->route('cashier.payment.confirmed.index');
+        try {
+            $payment = Payment::find($id);
+            $payment->amount = $request->input('amount');
+            $payment->status = 1;
+            $payment->updated_at = now();
+            $payment->updated_by = Auth::guard('registrar')->user()->name;
+            $student = Student::where('student_id', '=', $payment->student->student_id)->first();
+            $student->balance = $student->balance -  $payment->amount;
+            $student->save();
+            $payment->save();
+            toast()->success('SYSTEM MESSAGE', 'Payment was successfully confirmed.')->autoClose(6000)->width('400px')->padding('10px')->background('#f8f9fc')->animation('animate__fadeInRight', 'animate__fadeOutDown')->timerProgressBar();
+            return redirect()->route('cashier.payment.confirmed.index');
+        } catch (\Throwable $th) {
+            dd($th);
+        }
     }
 
     /**

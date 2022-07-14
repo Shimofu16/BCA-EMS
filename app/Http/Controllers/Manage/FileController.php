@@ -180,13 +180,9 @@ class FileController extends Controller
     public static function pop($path, $payment_id,$logId, $pop, $sy)
     {
         try {
-            $payment = Payment::where('payment_id', '=', $payment_id)->latest('id')->first();
-            $paymentLog = PaymentLog::where('payment_id', '=', $logId)->latest('id')->first();
+            $payment = Payment::where('id', '=', $payment_id)->latest('id')->first();
+            $paymentLog = PaymentLog::where('id', '=', $logId)->latest('id')->first();
             $proof = 'proof-of-payment-' . $sy . '.' . $pop->getClientOriginalExtension();
-            if (!file_exists(storage_path('app/' . $path . '/' . $proof))) {
-                //if not exist move file with name of form_137 in folder /uploads/requirements/ + student full name
-                Storage::delete('app/'.$path . '/' . $proof);
-            }
             $pop->storeAs($path, $proof);
             $payment->pop = 'proof-of-payment';
             $payment->path = $path . '/' . $proof;
@@ -196,6 +192,7 @@ class FileController extends Controller
             $paymentLog->save();
         } catch (\Throwable $th) {
             alert()->error('Error', $th->getMessage());
+            dd($th);
             return 0;
         }
     }
