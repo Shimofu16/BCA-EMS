@@ -15,10 +15,10 @@ class CreatePaymentLogsTable extends Migration
     {
         Schema::create('payment_logs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('payment_id');
-            $table->foreign('payment_id')
+            $table->unsignedBigInteger('student_id');
+            $table->foreign('student_id')
                 ->references('id')
-                ->on('payments')
+                ->on('students')
                 ->onDelete('cascade');
             $table->unsignedBigInteger('sy_id');
             $table->foreign('sy_id')
@@ -39,8 +39,8 @@ class CreatePaymentLogsTable extends Migration
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('deleted_by')->nullable();
+            $table->date('deleted_at')->nullable();
             $table->timestamps();
-            $table->dateTime('deleted_at')->nullable();
         });
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Cashier;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cashier\Payment;
 use App\Models\Cashier\PaymentLog;
 use App\Models\Registrar\SchoolYear;
 use Illuminate\Http\Request;
@@ -16,10 +17,18 @@ class CashierDashboardController extends Controller
      */
     public function index()
     {
-        $sy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->first();
-        $pendingCount =PaymentLog::where('sy_id','=', $sy->id)->where('status','=',0)->count();
-        $confirmedCount =PaymentLog::where('sy_id','=', $sy->id)->where('status','=',1)->count();
-        return view('BCA.Admin.cashier-layout.dashboard.index',compact('pendingCount','confirmedCount'));
+        try {
+            $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByCashier', '=', 1)->firstOrFail();
+
+            $pendingCount = Payment::where('sy_id', '=', $currentSy->id)->where('status', '=', 0)->count();
+            $confirmedCount = Payment::where('sy_id', '=', $currentSy->id)->where('status', '=', 1)->count();
+        } catch (\Throwable $th) {
+            $currentSy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->firstOrFail();
+            $pendingCount = PaymentLog::where('sy_id', '=', $currentSy->id)->where('status', '=', 0)->count();
+            $confirmedCount = PaymentLog::where('sy_id', '=', $currentSy->id)->where('status', '=', 1)->count();
+        }
+
+        return view('BCA.Admin.cashier-layout.dashboard.index', compact('pendingCount', 'confirmedCount'));
     }
 
     /**

@@ -15,6 +15,7 @@ class GradeLevelSeeder extends Seeder
     public function run()
     {
         $gradelevels = [
+            ['grade_name' => 'Play Group', 'grade_level' => 'Play Group', 'created_at' => now()],
             ['grade_name' => 'Nursery', 'grade_level' => 'Nursery', 'created_at' => now()],
             ['grade_name' => 'Kindergarten', 'grade_level' => 'Kindergarten', 'created_at' => now()],
             ['grade_name' => 'Preparatory', 'grade_level' => 'Preparatory', 'created_at' => now()],

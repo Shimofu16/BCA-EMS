@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cashier\Payment;
 use App\Models\Cashier\PaymentLog;
 use App\Models\Registrar\requirements as Requirement;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -176,10 +177,11 @@ class FileController extends Controller
             return 0;
         }
     }
-    public static function pop($path, $payment_id, $pop, $sy)
+    public static function pop($path, $payment_id,$logId, $pop, $sy)
     {
         try {
-            $payment = PaymentLog::where('payment_id', '=', $payment_id)->latest('id')->first();
+            $payment = Payment::where('payment_id', '=', $payment_id)->latest('id')->first();
+            $paymentLog = PaymentLog::where('payment_id', '=', $logId)->latest('id')->first();
             $proof = 'proof-of-payment-' . $sy . '.' . $pop->getClientOriginalExtension();
             if (!file_exists(storage_path('app/' . $path . '/' . $proof))) {
                 //if not exist move file with name of form_137 in folder /uploads/requirements/ + student full name
@@ -188,7 +190,10 @@ class FileController extends Controller
             $pop->storeAs($path, $proof);
             $payment->pop = 'proof-of-payment';
             $payment->path = $path . '/' . $proof;
+            $paymentLog->pop = 'proof-of-payment';
+            $paymentLog->path = $path . '/' . $proof;
             $payment->save();
+            $paymentLog->save();
         } catch (\Throwable $th) {
             alert()->error('Error', $th->getMessage());
             return 0;

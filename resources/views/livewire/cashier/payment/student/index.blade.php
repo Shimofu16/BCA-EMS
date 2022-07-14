@@ -48,20 +48,20 @@
                         <tbody>
                             @foreach ($payments as $payment)
                                 <tr>
-                                    <td>{{ $payment->student->student_id }}</td>
+                                    <td>{{ $payment->student_id }}</td>
                                     <td>
-                                        <div
-                                            class="d-flex flex-column px-2 py-1">
-                                            <h5 class="mb-0 text-sm">{{ $payment->student->first_name }}
-                                                {{ $payment->student->middle_name }},
-                                                {{ $payment->student->last_name }}
+                                        <div class="d-flex flex-column px-2 py-1">
+                                            <h5 class="mb-0 text-sm">{{ $payment->first_name }}
+                                                {{ $payment->middle_name }},
+                                                {{ $payment->last_name }}
                                                 </h6>
-                                                <p class="text-sm text-secondary mb-0">{{ $payment->student->email }}
+                                                <p class="text-sm text-secondary mb-0">
+                                                    {{ $payment->email }}
                                                 </p>
                                         </div>
                                     </td>
                                     <td>₱ {{ number_format($payment->balance, 2, '.', ',') }}</td>
-                                    <td>{{ $payment->student->gradeLevel->grade_name }}</td>
+                                    <td>{{ $payment->gradeLevel->grade_name }}</td>
                                     <td>{{ date('m/d/Y', strtotime($payment->reminder_at)) }}
                                     </td>
                                 </tr>
@@ -85,20 +85,20 @@
                         </thead>
                         <tbody>
                             @foreach ($payments as $payment)
-                                @if ($payment->student->grade_level_id == $grade->id)
+                                @if ($payment->grade_level_id == $grade->id)
                                     <tr>
-                                        <td>{{ $payment->student->student_id }}</td>
+                                        <td>{{ $payment->student_id }}</td>
                                         <td>
-                                            <div
-                                                class="d-flex flex-column px-2 py-1">
-                                                <h5 class="mb-0 text-sm">{{ $payment->student->first_name }}
-                                                    {{ $payment->student->middle_name }},
-                                                    {{ $payment->student->last_name }}
+                                            <div class="d-flex flex-column px-2 py-1">
+                                                <h5 class="mb-0 text-sm">{{ $payment->first_name }}
+                                                    {{ $payment->middle_name }},
+                                                    {{ $payment->last_name }}
                                                     </h6>
                                                     <p class="text-sm text-secondary mb-0">
-                                                        {{ $payment->student->email }}
+                                                        {{ $payment->email }}
                                                     </p>
                                             </div>
+                                        </td>
                                         <td>₱ {{ number_format($payment->balance, 2, '.', ',') }}</td>
                                         <td>{{ date('m/d/Y', strtotime($payment->reminder_at)) }}
                                         </td>

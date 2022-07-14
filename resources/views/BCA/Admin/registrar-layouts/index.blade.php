@@ -35,11 +35,25 @@
                 <i class="fas fa-fw fa-users"></i>
                 <span>Students</span>
             </a>
+            @php
+                try {
+                    DB::table('school_years')
+                        ->where('isCurrent', '=', 1)
+                        ->where('isEnrollment', '=', 1)
+                        ->where('isCurrentViewByRegistrar', '=', 1)
+                        ->firstOrFail();
+                    $isCurrentSy = true;
+                } catch (\Throwable $th) {
+                    $isCurrentSy = false;
+                }
+            @endphp
             <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
+                    @if ($isCurrentSy)
+                        <a class="collapse-item mb-1 {{ Request::is('registrar/students/enrolled') ? 'active-collapse-item' : '' }}"
+                            href="{{ route('registrar.enrolled.index') }}">Enrolled Student</a>
+                    @endif
                     {{-- <h6 class="collapse-header">Custom Components:</h6> --}}
-                    <a class="collapse-item mb-1 {{ Request::is('registrar/students/enrolled') ? 'active-collapse-item' : '' }}"
-                        href="{{ route('registrar.enrolled.index') }}">Enrolled Student</a>
                     <a class="collapse-item mb-1 {{ Request::is('registrar/students/enrollee') ? 'active-collapse-item' : '' }}"
                         href="{{ route('registrar.enrollees.index') }}">Enrollees</a>
                     {{-- <a class="collapse-item" href="{{ route('enrollees.create') }}">Add Student</a> --}}

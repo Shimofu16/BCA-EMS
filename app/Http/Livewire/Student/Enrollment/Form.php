@@ -317,7 +317,7 @@ class Form extends Component
     {
         $this->dowloadForms  = true;
         try {
-            $student = Student::where('student_id', '=', $this->student->student_id)->firstOrFail()->update(['isDone'=>1]);
+            $student = Student::where('student_id', '=', $this->student->student_id)->firstOrFail()->update(['isDone' => 1]);
         } catch (\Throwable $th) {
             $this->dowloadForms  = false;
         }
@@ -339,7 +339,7 @@ class Form extends Component
             $path = 'uploads/requirements/' . $name;
             $balance = 20000;
             $payment_method = '';
-            $payment_reminder ='';
+            $payment_reminder = '';
             switch ($this->payment_method) {
                 case 1:
                     $payment_reminder = now()->addYear(1);
@@ -358,19 +358,26 @@ class Form extends Component
                     $payment_method = 'Monthly';
                     break;
             }
-            $payment = Payment::where('student_id', '=', $this->student->id)->firstOrFail();
-            $payment->balance = $payment->balance + $balance;
-            $payment->reminder_at = $payment_reminder;
-            $payment_log = PaymentLog::create([
-                'payment_id' => $payment->id,
+            $student->balance = $student->balance + $balance;
+            $student->reminder_at = $payment_reminder;
+            $payment = Payment::create([
+                'student_id' => $this->student->student_id,
                 'sy_id' => $sy->id,
-                'grade_level_id' => $grade,
+                'grade_level_id' => $this->grade_level_id,
                 'mop' => $this->conPayment,
                 'payment_method' => $payment_method,
                 'amount' => ($this->payment != null) ? $this->payment :  0,
-            ]);
+            ])->id;
+            $paymentLog = PaymentLog::create([
+                'student_id' => $this->student->student_id,
+                'sy_id' => $sy->id,
+                'grade_level_id' => $this->grade_level_id,
+                'mop' => $this->conPayment,
+                'payment_method' => $payment_method,
+                'amount' => ($this->payment != null) ? $this->payment :  0,
+            ])->id;
             if ($this->payment_proof != null) {
-                FileController::pop($path, $payment->id, $this->payment_proof, $sy->school_year);
+                FileController::pop($path, $payment, $paymentLog, $this->payment_proof, $sy->school_year);
             }
             FileController::old($path, $this->student->student_id, $this->form_137);
             $student->age = $age->y;

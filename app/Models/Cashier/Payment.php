@@ -2,6 +2,8 @@
 
 namespace App\Models\Cashier;
 
+use App\Models\Registrar\GradeLevel;
+use App\Models\Registrar\SchoolYear;
 use App\Models\Registrar\Student;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,8 +17,10 @@ class Payment extends Model
     {
         return $this->belongsTo(Student::class, 'student_id');
     }
-    public function payments()
-    {
-        return $this->hasMany(PaymentLog::class, 'payment_id');
+    public function gradeLevel(){
+        return $this->belongsTo(GradeLevel::class);
+    }
+    public function sy(){
+        return $this->belongsTo(SchoolYear::class, 'sy_id');
     }
 }

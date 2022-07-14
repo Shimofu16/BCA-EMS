@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Registrar;
 
 use App\Http\Controllers\Controller;
+use App\Models\Registrar\EnrollmentLog;
 use App\Models\Registrar\GradeLevel;
 use App\Models\Registrar\SchoolYear;
 use App\Models\Registrar\Section;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 class RegistrarDashboardController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -20,47 +22,141 @@ class RegistrarDashboardController extends Controller
      */
     public function index()
     {
-        $currentSy = SchoolYear::where('isCurrentViewByRegistrar', '=', 1)->first();
-        $enrolleeCount = Student::where('status', 0)
-            ->where('isDone', '=', 1)
-            ->where('sy_id', '=', $currentSy->id)
-            ->count();
-        $enrolledCount = Student::where('status', 1)
-            ->where('sy_id', '=', $currentSy->id)
-            ->where('isDone', '=', 1)
-            ->count();
-        $sectionCount = Section::count();
-        $teacherCount = Teacher::count();
-        $gradeLevels = GradeLevel::all();
-        $sy = SchoolYear::all();
-        $newStudents = Student::where('student_type', 'New Student')
-            ->where('hasVerifiedEmail', 1)
-            ->where('status', 0)
-            ->where('sy_id', '=', $currentSy->id)
-            ->where('isDone', '=', 1)
-            ->orderBy('id', 'desc')
-            ->paginate(5);
-        $oldStudents = Student::where('student_type', 'Old Student')
-            ->where('hasVerifiedEmail', 1)
-            ->where('status', 0)
-            ->where('sy_id', '=', $currentSy->id)
-            ->where('isDone', '=', 1)
-            ->orderBy('id', 'desc')
-            ->paginate(5);
-        $transfereeStudents = Student::where('student_type', 'Transferee')
-            ->where('hasVerifiedEmail', 1)
-            ->where('status', 0)
-            ->where('sy_id', '=', $currentSy->id)
-            ->where('isDone', '=', 1)
-            ->orderBy('id', 'desc')
-            ->paginate(5);
-        $unverifiedStudents = Student::where('hasVerifiedEmail', 0)
-            ->where('status', 0)
-            ->where('sy_id', '=', $currentSy->id)
-            ->where('isDone', '=', 1)
-            ->orderBy('id', 'desc')
-            ->paginate(5);
-        return view('BCA.Admin.registrar-layouts.dashboard.index', compact('newStudents', 'oldStudents', 'transfereeStudents', 'unverifiedStudents', 'sy', 'enrolleeCount', 'enrolledCount', 'sectionCount', 'teacherCount', 'gradeLevels'));
+        try {
+            $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByRegistrar', '=', 1)->firstOrFail();
+            $enrolleeCount = Student::where('status', '=', 0)
+                ->where('isDone', '=', 1)
+                ->where('hasVerifiedEmail', '=', 1)
+                ->where('sy_id', '=', $currentSy->id)
+                ->count();
+            $enrolledCount = Student::where('status', '=', 1)
+                ->where('isDone', '=', 1)
+                ->where('hasVerifiedEmail', '=', 1)
+                ->where('sy_id', '=', $currentSy->id)
+                ->count();
+            $unverifiedStudents = Student::where('hasVerifiedEmail', 0)
+                ->where('status', '=',  0)
+                ->where('sy_id', '=', $currentSy->id)
+                ->where('isDone', '=', 1)
+                ->orderBy('id', 'desc')
+                ->paginate(5);
+            $newStudents = Student::where('student_type', 'New Student')
+                ->where('hasVerifiedEmail', '=',  1)
+                ->where('status', '=',  0)
+                ->where('sy_id', '=', $currentSy->id)
+                ->where('isDone', '=', 1)
+                ->orderBy('id', 'desc')
+                ->paginate(5);
+            $newStudentsCount = Student::where('student_type', 'New Student')
+                ->where('hasVerifiedEmail', '=',  1)
+                ->where('status', '=',  0)
+                ->where('sy_id', '=', $currentSy->id)
+                ->where('isDone', '=', 1)
+                ->count();
+            $oldStudents = Student::where('student_type', 'Old Student')
+                ->where('hasVerifiedEmail', '=',  1)
+                ->where('status', '=',  0)
+                ->where('sy_id', '=', $currentSy->id)
+                ->where('isDone', '=', 1)
+                ->orderBy('id', 'desc')
+                ->paginate(5);
+            $oldStudentsCount = Student::where('student_type', 'Old Student')
+                ->where('hasVerifiedEmail', '=',  1)
+                ->where('status', '=',  0)
+                ->where('sy_id', '=', $currentSy->id)
+                ->where('isDone', '=', 1)
+                ->count();
+            $oldStudentsCountTotal = Student::where('student_type', 'Old Student')
+                ->where('status', '=',  0)
+                ->count();
+            $transfereeStudents = Student::where('student_type', 'Transferee')
+                ->where('hasVerifiedEmail', '=',  1)
+                ->where('status', '=',  0)
+                ->where('sy_id', '=', $currentSy->id)
+                ->where('isDone', '=', 1)
+                ->orderBy('id', 'desc')
+                ->paginate(5);
+            $transfereeStudentsCount = Student::where('student_type', 'Transferee')
+                ->where('hasVerifiedEmail', '=',  1)
+                ->where('status', '=',  0)
+                ->where('sy_id', '=', $currentSy->id)
+                ->where('isDone', '=', 1)
+                ->count();
+
+            $sectionCount = Section::count();
+            $teacherCount = Teacher::count();
+            $gradeLevels = GradeLevel::all();
+            $sy = SchoolYear::all();
+            $isCurrentSy = true;
+            return view('BCA.Admin.registrar-layouts.dashboard.index', compact('newStudents', 'oldStudents', 'transfereeStudents', 'unverifiedStudents', 'sy', 'enrolleeCount', 'enrolledCount', 'sectionCount', 'teacherCount', 'gradeLevels', 'newStudentsCount', 'oldStudentsCount', 'transfereeStudentsCount', 'oldStudentsCountTotal', 'isCurrentSy'));
+        } catch (\Throwable $th) {
+            $currentSy = SchoolYear::where('isCurrentViewByRegistrar', '=', 1)->first();
+            $enrolleeCount = EnrollmentLog::where('status', '=', 0)
+                ->where('isDone', '=', 1)
+                ->where('hasVerifiedEmail', '=', 1)
+                ->where('sy_id', '=', $currentSy->id)
+                ->count();
+            $enrolledCount = EnrollmentLog::where('status', '=', 1)
+                ->where('isDone', '=', 1)
+                ->where('hasVerifiedEmail', '=', 1)
+                ->where('sy_id', '=', $currentSy->id)
+                ->count();
+            $unverifiedStudents = EnrollmentLog::where('hasVerifiedEmail', 0)
+                ->where('status', '=',  0)
+                ->where('sy_id', '=', $currentSy->id)
+                ->where('isDone', '=', 1)
+                ->orderBy('id', 'desc')
+                ->paginate(5);
+            $newStudents = EnrollmentLog::where('student_type', 'New Student')
+                ->where('hasVerifiedEmail', '=',  1)
+                ->where('status', '=',  0)
+                ->where('sy_id', '=', $currentSy->id)
+                ->where('isDone', '=', 1)
+                ->orderBy('id', 'desc')
+                ->paginate(5);
+            $newStudentsCount = EnrollmentLog::where('student_type', 'New Student')
+                ->where('hasVerifiedEmail', '=',  1)
+                ->where('status', '=',  0)
+                ->where('sy_id', '=', $currentSy->id)
+                ->where('isDone', '=', 1)
+                ->count();
+            $oldStudents = EnrollmentLog::where('student_type', 'Old Student')
+                ->where('hasVerifiedEmail', '=',  1)
+                ->where('status', '=',  0)
+                ->where('sy_id', '=', $currentSy->id)
+                ->where('isDone', '=', 1)
+                ->orderBy('id', 'desc')
+                ->paginate(5);
+            $oldStudentsCount = EnrollmentLog::where('student_type', 'Old Student')
+                ->where('hasVerifiedEmail', '=',  1)
+                ->where('status', '=',  0)
+                ->where('isDone', '=', 1)
+                ->where('sy_id', '=', $currentSy->id)
+                ->count();
+            $oldStudentsCountTotal = EnrollmentLog::where('student_type', 'Old Student')
+                ->where('status', '=',  0)
+                ->where('sy_id', '=', $currentSy->id)
+                ->count();
+            $transfereeStudents = EnrollmentLog::where('student_type', 'Transferee')
+                ->where('hasVerifiedEmail', '=',  1)
+                ->where('status', '=',  0)
+                ->where('sy_id', '=', $currentSy->id)
+                ->where('isDone', '=', 1)
+                ->orderBy('id', 'desc')
+                ->paginate(5);
+            $transfereeStudentsCount = EnrollmentLog::where('student_type', 'Transferee')
+                ->where('hasVerifiedEmail', '=',  1)
+                ->where('status', '=',  0)
+                ->where('sy_id', '=', $currentSy->id)
+                ->where('isDone', '=', 1)
+                ->count();
+            $sectionCount = Section::count();
+            $teacherCount = Teacher::count();
+            $gradeLevels = GradeLevel::all();
+            $sy = SchoolYear::all();
+            $isCurrentSy = false;
+            return view('BCA.Admin.registrar-layouts.dashboard.index', compact('newStudents', 'oldStudents', 'transfereeStudents', 'unverifiedStudents', 'sy', 'enrolleeCount', 'enrolledCount', 'sectionCount', 'teacherCount', 'gradeLevels', 'newStudentsCount', 'oldStudentsCount', 'transfereeStudentsCount', 'oldStudentsCountTotal', 'isCurrentSy'));
+        }
     }
 
     /**

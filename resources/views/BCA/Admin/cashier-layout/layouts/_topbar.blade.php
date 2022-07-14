@@ -21,7 +21,7 @@
                     @if ($item->isCurrentViewByCashier != 1)
                         <form action="{{ route('cashier.change.sy', $item->id) }}" method="post">
                             @csrf
-                            <button class="dropdown-item" type="submit">{{ $item->school_year }}</button>
+                            <button class="dropdown-item {{ ($item->isCurrent == 1) ? 'active' : ''  }}" type="submit">{{ $item->school_year }}</button>
                         </form>
                     @endif
                 @endforeach

@@ -541,22 +541,27 @@ class Form extends Component
                 'sy_id' => $sy->id,
                 'isDone' => 1,
                 'created_at' => now(),
-            ])->id;
-            $payment = Payment::create([
-                'student_id' => $studentID,
                 'balance' => $balance,
                 'reminder_at' => $payment_reminder,
             ])->id;
-            $payment_log = PaymentLog::create([
-                'payment_id' => $payment,
+            $payment = Payment::create([
+                'student_id' => $studentID,
                 'sy_id' => $sy->id,
                 'grade_level_id' => $this->grade_level_id,
                 'mop' => $this->conPayment,
                 'payment_method' => $payment_method,
                 'amount' => ($this->payment != null) ? $this->payment :  0,
-            ]);
+            ])->id;
+            $paymentLog = PaymentLog::create([
+                'student_id' => $studentID,
+                'sy_id' => $sy->id,
+                'grade_level_id' => $this->grade_level_id,
+                'mop' => $this->conPayment,
+                'payment_method' => $payment_method,
+                'amount' => ($this->payment != null) ? $this->payment :  0,
+            ])->id;
             if ($this->payment_proof != null) {
-                FileController::pop($path, $payment, $this->payment_proof,$sy->school_year);
+                FileController::pop($path, $payment,$paymentLog, $this->payment_proof, $sy->school_year);
             }
 
             $this->currentStep = 0;

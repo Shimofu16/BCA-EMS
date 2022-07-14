@@ -24,8 +24,8 @@ class Index extends Component
     public function filterByGradeLevel($id)
     {
         try {
-            $currentSy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->first();
-            $this->payments = PaymentLog::where('status', '=', 0)
+            $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByCashier', '=', 1)->firstOrFail();
+            $this->payments = Payment::where('status', '=', 0)
                 ->where('grade_level_id', '=', $id)
                 ->where('sy_id', '=', $currentSy->id)
                 ->orderBy('id', 'asc')
@@ -35,20 +35,45 @@ class Index extends Component
             $this->byGrade = true;
             $this->default = false;
         } catch (\Throwable $th) {
-            dd($th);
+            $currentSy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->firstOrFail();
+            $this->payments = PaymentLog::where('status', '=', 0)
+                ->where('grade_level_id', '=', $id)
+                ->where('sy_id', '=', $currentSy->id)
+                ->orderBy('id', 'asc')
+                ->get();
+            $this->grade_name = GradeLevel::where('id', '=', $id)
+                ->first()->grade_name;
+            $this->byGrade = true;
+            $this->default = false;
         }
     }
     public function resetFilters()
     {
+        try {
+            $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByCashier', '=', 1)->firstOrFail();
+            $this->payments = Payment::where('status', '=', 0)
+                ->where('sy_id', '=', $currentSy->id)
+                ->orderBy('id', 'asc')
+                ->get();
+            $this->grade_name = '';
+            $this->default = true;
+            $this->byGrade = false;
+        } catch (\Throwable $th) {
+            $currentSy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->firstOrFail();
+            $this->payments = PaymentLog::where('status', '=', 0)
+                ->where('sy_id', '=', $currentSy->id)
+                ->orderBy('id', 'asc')
+                ->get();
+            $this->grade_name = '';
+            $this->default = true;
+            $this->byGrade = false;
+        }
         $currentSy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->first();
         $this->gradeLevels = GradeLevel::all();
         $this->payments = PaymentLog::where('status', 0)
             ->where('sy_id', '=', $currentSy->id)
             ->orderBy('id', 'asc')
             ->get();
-        $this->grade_name = '';
-        $this->default = true;
-        $this->byGrade = false;
     }
     public function render()
     {

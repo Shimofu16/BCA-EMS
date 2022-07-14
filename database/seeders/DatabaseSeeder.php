@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             EventSeeder::class,
             PaymentSeeder::class,
+            EnrollmentLogSeeder::class,
         ]);
     }
 }

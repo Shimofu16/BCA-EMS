@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Cashier\Payment\Confirmed;
+namespace App\Http\Controllers\Registrar;
 
 use App\Http\Controllers\Controller;
-use App\Models\Cashier\Payment;
-use App\Models\Cashier\PaymentLog;
-use App\Models\Registrar\SchoolYear;
 use Illuminate\Http\Request;
 
-class ConfirmedController extends Controller
+class EnrollmentLogController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,15 +14,7 @@ class ConfirmedController extends Controller
      */
     public function index()
     {
-        try {
-            $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByCashier', '=', 1)->firstOrFail();
-
-            $payments = Payment::where('sy_id','=', $currentSy->id)->where('status','=',1)->get();
-        } catch (\Throwable $th) {
-            $currentSy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->firstOrFail();
-            $payments = PaymentLog::where('sy_id','=', $currentSy->id)->where('status','=',1)->get();
-        }
-        return view('BCA.Admin.cashier-layout.payments.confirmed.index',compact('payments'));
+        //
     }
 
     /**

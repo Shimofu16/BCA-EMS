@@ -44,15 +44,15 @@
                         <tbody>
                             @foreach ($payments as $payment)
                                 <tr>
-                                    <td>{{ $payment->payment->student->student_id }}</td>
+                                    <td>{{ $payment->student->student_id }}</td>
                                     <td>
                                         <div class="d-flex flex-column px-2 py-1">
-                                            <h5 class="mb-0 text-sm">{{ $payment->payment->student->first_name }}
-                                                {{ $payment->payment->student->middle_name }},
-                                                {{ $payment->payment->student->last_name }}
+                                            <h5 class="mb-0 text-sm">{{ $payment->student->first_name }}
+                                                {{ $payment->student->middle_name }},
+                                                {{ $payment->student->last_name }}
                                                 </h6>
                                                 <p class="text-sm text-secondary mb-0">
-                                                    {{ $payment->payment->student->email }}
+                                                    {{ $payment->student->email }}
                                                 </p>
                                         </div>
                                     </td>
@@ -95,15 +95,15 @@
                         <tbody>
                             @foreach ($payments as $payment)
                                 <tr>
-                                    <td>{{ $payment->payment->student->student_id }}</td>
+                                    <td>{{ $payment->student->student_id }}</td>
                                     <td>
                                         <div class="d-flex flex-column px-2 py-1">
-                                            <h5 class="mb-0 text-sm">{{ $payment->payment->student->first_name }}
-                                                {{ $payment->payment->student->middle_name }},
-                                                {{ $payment->payment->student->last_name }}
+                                            <h5 class="mb-0 text-sm">{{ $payment->student->first_name }}
+                                                {{ $payment->student->middle_name }},
+                                                {{ $payment->student->last_name }}
                                                 </h6>
                                                 <p class="text-sm text-secondary mb-0">
-                                                    {{ $payment->payment->student->email }}
+                                                    {{ $payment->student->email }}
                                                 </p>
                                         </div>
                                     </td>

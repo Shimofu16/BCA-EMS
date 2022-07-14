@@ -11,11 +11,16 @@
                 $current = DB::table('school_years')
                     ->where('isCurrentViewByRegistrar', '=', 1)
                     ->first();
+                $currentSy = DB::table('school_years')
+                    ->where('isCurrent', '=', 1)
+                    ->first();
             @endphp
             <div class="col px-0 mr-1">
-                <button class="btn" data-toggle="modal" data-target="#enrollment">
-                    {{ $current->isEnrollment == 1 ? 'Close' : 'Open' }} Enrollment
-                </button>
+                @if ($current->id >= $currentSy->id)
+                    <button class="btn" data-toggle="modal" data-target="#enrollment">
+                        {{ $current->isEnrollment == 1 ? 'Close' : 'Open' }} Enrollment
+                    </button>
+                @endif
             </div>
             <div class="col px-0">
                 @csrf

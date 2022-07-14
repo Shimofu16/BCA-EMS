@@ -11,10 +11,10 @@ class Section extends Model
     protected $table = 'sections';
     public $guarded = [];
     public function students(){
-        return $this->hasMany(Student::class);
+        return $this->hasMany(Student::class, 'section_id');
     }
     public function gradeLevel(){
-        return $this->belongsTo(GradeLevel::class);
+        return $this->belongsTo(GradeLevel::class, 'grade_level_id');
     }
     public function teacher(){
         return $this->belongsTo(Teacher::class);

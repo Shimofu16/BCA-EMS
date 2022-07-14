@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Registrar\Student\Enrollee;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Manage\MailController;
+use App\Models\Registrar\EnrollmentLog;
 use App\Models\Registrar\Family;
 use App\Models\Registrar\GradeLevel;
 use App\Models\Registrar\SchoolYear;
@@ -26,13 +27,26 @@ class EnrolleeController extends Controller
      */
     public function index()
     {
-        $currentSy = SchoolYear::where('isCurrentViewByRegistrar', '=', 1)->first();
-        $students = Student::with('section', 'gradeLevel')
-            ->where('status', 0)
-            ->where('sy_id', '=', $currentSy->id)
-            ->where('isDone', '=', 1)
-            ->orderBy('id', 'asc')
-            ->get();
+        try {
+            $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByRegistrar', '=', 1)->first();
+            $students = Student::with('section', 'gradeLevel')
+                ->where('status','=', 0)
+                ->where('hasVerifiedEmail','=', 1)
+                ->where('sy_id', '=', $currentSy->id)
+                ->where('isDone', '=', 1)
+                ->orderBy('id', 'asc')
+                ->get();
+        } catch (\Throwable $th) {
+            $currentSy = SchoolYear::where('isCurrentViewByRegistrar', '=', 1)->first();
+            $students = EnrollmentLog::with('section', 'gradeLevel')
+                ->where('status','=', 0)
+                ->where('hasVerifiedEmail','=', 1)
+                ->where('sy_id', '=', $currentSy->id)
+                ->where('isDone', '=', 1)
+                ->orderBy('id', 'asc')
+                ->get();
+        }
+
         $gradeLevels = GradeLevel::all();
         return view('BCA.Admin.registrar-layouts.students.enrollees.index', compact('students', 'gradeLevels'));
     }
@@ -358,7 +372,7 @@ class EnrolleeController extends Controller
         $sections = Section::all();
         $gradeLevels = GradeLevel::all();
 
-        return view('BCA.Admin.registrar-layouts.students.enrollees.show', compact('sections', 'gradeLevels', 'student','father','mother','guardian', 'studentPhoto', 'goodMoral', 'form137File', 'psaFile', 'hasFilePsa', 'hasFileForm137', 'hasFileGoodMoral', 'hasFilePhoto'));
+        return view('BCA.Admin.registrar-layouts.students.enrollees.show', compact('sections', 'gradeLevels', 'student', 'father', 'mother', 'guardian', 'studentPhoto', 'goodMoral', 'form137File', 'psaFile', 'hasFilePsa', 'hasFileForm137', 'hasFileGoodMoral', 'hasFilePhoto'));
     }
 
     /**

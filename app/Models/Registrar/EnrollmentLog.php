@@ -2,16 +2,14 @@
 
 namespace App\Models\Registrar;
 
-use App\Models\Cashier\Payment;
-use App\Models\Cashier\PaymentLog;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Student extends Model
+class EnrollmentLog extends Model
 {
     use HasFactory;
-    protected $table = 'students';
     public $guarded = [];
+
     public function section()
     {
         return $this->belongsTo(Section::class, 'section_id');

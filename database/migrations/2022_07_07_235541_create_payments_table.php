@@ -20,9 +20,26 @@ class CreatePaymentsTable extends Migration
                 ->references('id')
                 ->on('students')
                 ->onDelete('cascade');
-            $table->bigInteger('balance')->default(0);
-            $table->date('reminder_at'); //Payment Schedule
+            $table->unsignedBigInteger('sy_id');
+            $table->foreign('sy_id')
+                ->references('id')
+                ->on('school_years')
+                ->onDelete('restrict')->onUpdate('cascade');
+            $table->unsignedBigInteger('grade_level_id');
+            $table->foreign('grade_level_id')
+                ->references('id')
+                ->on('grade_levels')
+                ->onDelete('restrict')->onUpdate('cascade');
+            $table->string('mop'); //mode of payment
+            $table->string('payment_method');
+            $table->bigInteger('amount')->default(0)->nullable(); //amount if the mop is cash
+            $table->string('pop')->nullable(); //proof of payment if mop is bank depo.
+            $table->string('path')->nullable();
+            $table->boolean('status')->default(0);
+            $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->string('deleted_by')->nullable();
+            $table->date('deleted_at')->nullable();
             $table->timestamps();
         });
     }

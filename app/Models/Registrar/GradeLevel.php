@@ -15,15 +15,19 @@ class GradeLevel extends Model
     public $guarded = [];
     public function students()
     {
-        return $this->hasMany(Student::class);
+        return $this->hasMany(Student::class, 'grade_level_id');
     }
     public function subjects()
     {
-        return $this->hasMany(Subject::class);
+        return $this->hasMany(Subject::class, 'grade_level_id');
     }
     public function sections()
     {
-        return $this->hasMany(Section::class);
+        return $this->hasMany(Section::class, 'grade_level_id');
+    }
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'grade_level_id');
     }
     public function paymentlogs()
     {
