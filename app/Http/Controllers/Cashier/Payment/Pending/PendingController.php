@@ -19,14 +19,16 @@ class PendingController extends Controller
      */
     public function index()
     {
-        try {
+        $payments = Payment::where('status', '=', 0)->get();
+
+        /*  try {
             $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByCashier', '=', 1)->firstOrFail();
 
             $payments = Payment::where('sy_id', '=', $currentSy->id)->where('status', '=', 0)->get();
         } catch (\Throwable $th) {
             $currentSy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->firstOrFail();
             $payments = PaymentLog::where('sy_id', '=', $currentSy->id)->where('status', '=', 0)->get();
-        }
+        } */
         return view('BCA.Admin.cashier-layout.payments.pending.index', compact('payments'));
     }
 

@@ -165,7 +165,7 @@ class Form extends Component
     {
         if ($this->currentStep == 2) {
             $this->validate([
-                'student_lrn' => ($this->grade_level_id > 3) ? 'required|alpha_num|max:12|min:12|unique:students,student_lrn' : '',
+                'student_lrn' => ($this->grade_level_id > 4) ? 'required|alpha_num|max:12|min:12|unique:students,student_lrn' : '',
                 'first_name' => 'required|string',
                 'middle_name' => 'required|string',
                 'last_name' => 'required|string',
@@ -334,15 +334,15 @@ class Form extends Component
             $this->downloadFiles = false;
         }
         // if yung value ng grade level id ay between 1 - 3 pre school yun
-        if ($this->grade_level_id >= 1 && $this->grade_level_id <= 3) {
+        if ($this->grade_level_id >= 1 && $this->grade_level_id <= 4) {
             $this->preschool = true;
         }
         // if yung value ng grade level id ay between 4 - 9  thats Elementary
-        if ($this->grade_level_id >= 4 && $this->grade_level_id <= 9) {
+        if ($this->grade_level_id >= 5 && $this->grade_level_id <= 10) {
             $this->elem = true;
         }
         // and if yung value ng grade level id ay between 10 - 13  Junior High School
-        if ($this->grade_level_id >= 10 && $this->grade_level_id <= 13) {
+        if ($this->grade_level_id >= 11 && $this->grade_level_id <= 14) {
             $this->jhs = true;
         }
 

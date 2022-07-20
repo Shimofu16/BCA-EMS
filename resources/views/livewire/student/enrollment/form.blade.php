@@ -160,7 +160,8 @@
                                                                 </div>
 
                                                             </div>
-                                                            <h5 class="my-2 text-start font-weight-bold">Guardian Details:</h5>
+                                                            <h5 class="my-2 text-start font-weight-bold">Guardian
+                                                                Details:</h5>
                                                             <div class="row mt-2">
                                                                 <div class="w-max-content pe-0">
                                                                     <span class="fontsize-17-fw-500">Name:</span>
@@ -236,7 +237,8 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <h5 class="mt-2 font-weight-bold">NOTE: Reservation fee upon enrolment
+                                                            <h5 class="mt-2 font-weight-bold">NOTE: Reservation fee
+                                                                upon enrolment
                                                                 is
                                                                 non-refundable.
                                                             </h5>
@@ -376,7 +378,8 @@
                                                                 </div>
 
                                                             </div>
-                                                            <h5 class="my-2 text-start font-weight-bold">Guardian Details:</h5>
+                                                            <h5 class="my-2 text-start font-weight-bold">Guardian
+                                                                Details:</h5>
                                                             <div class="row mt-2">
                                                                 <div class="w-max-content pe-0">
                                                                     <span class="fontsize-17-fw-500">Name:</span>
@@ -412,7 +415,8 @@
                                                                 </div>
 
                                                             </div>
-                                                            <h5 class="my-2 text-start font-weight-bold">Payment Method:</h5>
+                                                            <h5 class="my-2 text-start font-weight-bold">Payment
+                                                                Method:</h5>
                                                             <div class="row justify-align-center">
                                                                 <div class="col-3">
                                                                     <p>
@@ -503,7 +507,8 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <h5 class="mt-2 font-weight-bold">NOTE: Reservation fee upon enrolment
+                                                            <h5 class="mt-2 font-weight-bold">NOTE: Reservation fee
+                                                                upon enrolment
                                                                 is
                                                                 non-refundable.
                                                             </h5>
@@ -679,11 +684,8 @@
                                                 class="gender text-dark h6 font-weight-bold"><input type="checkbox"
                                                     name="promissory_note" id="promissory_note"
                                                     wire:model="promissory_note" value="1"
-                                                    {{ $promissory_note == 1 ? 'checked' : '' }}> If your
-                                                requirements
-                                                are
-                                                not
-                                                complete, please check this agreement.</label>
+                                                    {{ $promissory_note == 1 ? 'checked' : '' }}>If your requirements
+                                                are incomplete, check this.</label>
                                         </div>
                                     </div>
                                 </div>
@@ -865,7 +867,8 @@
             @else
                 <div class="d-flex justify-content-center align-items-center">
                     <div class="card border-0 justify-content-center align-items-center">
-                        <img class="card-img-top" style="height: 100px; width: 100px" src="{{ asset('assets/img/icons/1103-confetti-flat.gif') }}" alt="Title">
+                        <img class="card-img-top" style="height: 100px; width: 100px"
+                            src="{{ asset('assets/img/icons/1103-confetti-flat.gif') }}" alt="Title">
                         <div class="card-body">
                             <h4 class="card-title">Thank you for completing the enrollment process! :)</h4>
                         </div>

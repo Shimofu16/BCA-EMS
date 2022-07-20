@@ -9,6 +9,6 @@
 </head>
 <body>
 <button type="button" class="btn btn-outline-primary">Test</button>
-
+<form action="" ></form>
 </body>
 </html>

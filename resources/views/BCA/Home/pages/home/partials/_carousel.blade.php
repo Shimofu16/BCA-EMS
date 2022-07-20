@@ -1,28 +1,17 @@
 <section>
     <div id="myCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
         <div class="carousel-indicators">
-            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" aria-label="Slide 1"
-                class="active" aria-current="true"></button>
+            <button type="button" data-bs-target="#myCarousel" class="active" data-bs-slide-to="0" aria-label="Slide 1"
+                class=""></button>
             <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"
                 class=""></button>
             <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"
                 class=""></button>
-            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="3" aria-label="Slide 4"
-                class=""></button>
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active fade-in-fwd" data-interval="3000">
-                <img class="first-slide" src="" alt="First slide">
-                <div class="container">
-                    <div class="carousel-caption d-flex flex-column">
-                        <!-- <h1>Junior Highschool.</h1>
-                        <p></p>
-                        <p><a class="btn btn-lg btn-bca" href="#">Enroll</a></p> -->
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item fade-in" data-interval="3000">
-                <img class="second-slide" src="{{ asset('./uploads/slider/nursery 3.jpg') }}" alt="Second slide">
+                <img class="first-slide" alt="First slide"
+                    src="{{ asset('./uploads/slider/nursery 3.jpg') }}">
                 <div class="container">
                     <div class="carousel-caption d-flex flex-column align-items-end">
                         <div class="d-flex justify-content-center align-items-center flex-column">
@@ -35,8 +24,8 @@
                     </div>
                 </div>
             </div>
-            <div class="carousel-item fade-in-right" data-interval="3000">
-                <img class="third-slide" src="{{ asset('./uploads/slider/lower elem.jpg') }}" alt="Third slide">
+            <div class="carousel-item fade-in" data-interval="3000">
+                <img class="second-slide" src="{{ asset('./uploads/slider/lower elem.jpg') }}" alt="Second slide">
                 <div class="container">
                     <div class="carousel-caption d-flex flex-column align-items-start">
                         <div class="d-flex justify-content-center align-items-center flex-column">
@@ -50,9 +39,9 @@
                     </div>
                 </div>
             </div>
-            <div class="carousel-item fade-in-left " data-interval="3000">
+            <div class="carousel-item fade-in-right " data-interval="3000">
 
-                <img class="third-slide" src="{{ asset('./uploads/slider/junior highschool.jpg') }}"
+                <img class="third-slide"src="{{ asset('./uploads/slider/junior highschool.jpg') }}"
                     alt="Fourth slide">
                 <div class="container">
                     <div class="carousel-caption d-flex flex-column align-items-end">

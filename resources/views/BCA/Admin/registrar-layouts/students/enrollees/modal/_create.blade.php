@@ -13,7 +13,7 @@
                 <form action="{{ route('registrar.enrollees.store', $student->id) }}" method="post">
                     @csrf
                     <div class="form-group">
-                        <label for="section" class="text-dark text-black font-weight-bold">Section:</label>
+                        <label for="section" class="text-dark text-black font-weight-bold">Section</label>
                         <select name="section_id" id="section" class="form-control w-50" required>
                             <option selected disabled>---- Select section ----</option>
                             @php

@@ -22,12 +22,70 @@ class RegistrarDashboardController extends Controller
      */
     public function index()
     {
-        try {
+        $enrolleeCount = Student::where('status', 0)
+            ->where('isDone', '=', 1)
+            /* ->where('sy_id', '=', $currentSy->id) */
+            ->count();
+        $enrolledCount = Student::where('status', 1)
+            /* ->where('sy_id', '=', $currentSy->id) */
+            ->where('isDone', '=', 1)
+            ->count();
+        $sectionCount = Section::count();
+        $teacherCount = Teacher::count();
+        $gradeLevels = GradeLevel::all();
+        $sy = SchoolYear::all();
+        $newStudentsCount = Student::where('student_type', 'New Student')
+            ->where('hasVerifiedEmail', '=',  1)
+            ->where('status', '=',  0)
+            ->where('isDone', '=', 1)
+            ->count();
+        $newStudents = Student::where('student_type', 'New Student')
+            ->where('hasVerifiedEmail', 1)
+            ->where('status', 0)
+            /* ->where('sy_id', '=', $currentSy->id) */
+            ->where('isDone', '=', 1)
+            ->orderBy('id', 'desc')
+            ->paginate(5);
+        $oldStudentsCount = Student::where('student_type', 'Old Student')
+            ->where('hasVerifiedEmail', '=',  1)
+            ->where('status', '=',  0)
+            ->where('isDone', '=', 1)
+            ->count();
+        $oldStudents = Student::where('student_type', 'Old Student')
+            ->where('hasVerifiedEmail', 1)
+            ->where('status', 0)
+            /* ->where('sy_id', '=', $currentSy->id) */
+            ->where('isDone', '=', 1)
+            ->orderBy('id', 'desc')
+            ->paginate(5);
+        $oldStudentsCountTotal = Student::where('student_type', 'Old Student')
+            ->where('status', '=',  0)
+            ->count();
+        $transfereeStudentsCount = Student::where('student_type', 'Transferee')
+            ->where('hasVerifiedEmail', '=',  1)
+            ->where('status', '=',  0)
+            ->where('isDone', '=', 1)
+            ->count();
+        $transfereeStudents = Student::where('student_type', 'Transferee')
+            ->where('hasVerifiedEmail', 1)
+            ->where('status', 0)
+            /* ->where('sy_id', '=', $currentSy->id) */
+            ->where('isDone', '=', 1)
+            ->orderBy('id', 'desc')
+            ->paginate(5);
+        $unverifiedStudents = Student::where('hasVerifiedEmail', 0)
+            ->where('status', 0)
+            /* ->where('sy_id', '=', $currentSy->id) */
+            ->where('isDone', '=', 1)
+            ->orderBy('id', 'desc')
+            ->paginate(5);
+        return view('BCA.Admin.registrar-layouts.dashboard.index', compact('newStudents', 'newStudentsCount', 'oldStudents', 'oldStudentsCount', 'oldStudentsCountTotal', 'transfereeStudents', 'transfereeStudentsCount', 'unverifiedStudents', 'sy', 'enrolleeCount', 'enrolledCount', 'sectionCount', 'teacherCount', 'gradeLevels'));
+        /* try {
             $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByRegistrar', '=', 1)->firstOrFail();
             $enrolleeCount = Student::where('status', '=', 0)
                 ->where('isDone', '=', 1)
                 ->where('hasVerifiedEmail', '=', 1)
-                ->where('sy_id', '=', $currentSy->id)
+                ->where('sy_id', '=', $currentSy->id) 
                 ->count();
             $enrolledCount = Student::where('status', '=', 1)
                 ->where('isDone', '=', 1)
@@ -156,7 +214,7 @@ class RegistrarDashboardController extends Controller
             $sy = SchoolYear::all();
             $isCurrentSy = false;
             return view('BCA.Admin.registrar-layouts.dashboard.index', compact('newStudents', 'oldStudents', 'transfereeStudents', 'unverifiedStudents', 'sy', 'enrolleeCount', 'enrolledCount', 'sectionCount', 'teacherCount', 'gradeLevels', 'newStudentsCount', 'oldStudentsCount', 'transfereeStudentsCount', 'oldStudentsCountTotal', 'isCurrentSy'));
-        }
+        } */
     }
 
     /**

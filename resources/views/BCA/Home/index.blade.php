@@ -15,7 +15,7 @@
     {{-- hover effects --}}
     <link rel="stylesheet" href="{{ asset('assets/css/hover.css') }}" />
     {{--  school logo  --}}
-    <link rel="icon" href="{{ asset('img/BCA-Logo.png') }}">
+    <link rel="icon" href="{{ asset('assets/img/BCA-Logo.png') }}">
     {{-- page level css --}}
     @yield('page_level_css')
     <title>{{ config('app.name') }}</title>

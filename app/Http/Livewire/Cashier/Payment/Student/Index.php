@@ -17,13 +17,13 @@ class Index extends Component
     public $default = true;
     public function filterByGradeLevel($id)
     {
-        try {
+        $this->payments = Student::where('grade_level_id', '=', $id)->get();
+        /* try {
             $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByCashier', '=', 1)->firstOrFail();
-            $payments = Student::where('sy_id', '=', $currentSy->id)->where('grade_level_id', '=', $id)->get();
         } catch (\Throwable $th) {
             $currentSy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->firstOrFail();
             $payments = EnrollmentLog::where('sy_id', '=', $currentSy->id)->where('grade_level_id', '=', $id)->get();
-        }
+        } */
         $this->grade = GradeLevel::where('id', '=', $id)
             ->first();
         $this->byGrade = true;
@@ -31,14 +31,14 @@ class Index extends Component
     }
     public function resetFilters()
     {
-        try {
+        $this->payments = Student::get();
+        /* try {
             $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByCashier', '=', 1)->firstOrFail();
 
-            $payments = Student::where('sy_id', '=', $currentSy->id)->get();
         } catch (\Throwable $th) {
             $currentSy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->firstOrFail();
             $payments = EnrollmentLog::where('sy_id', '=', $currentSy->id)->get();
-        }
+        } */
         $this->grade = '';
         $this->default = true;
         $this->byGrade = false;

@@ -1,4 +1,4 @@
-@extends('admin.admin-layouts.index')
+@extends('BCA.Admin.admin-layouts.index')
 @section('page-title')
     Events
 @endsection
@@ -9,10 +9,10 @@
         </div>
         <div class="col">
             <div class="d-flex justify-content-end">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#add">
+                <button class="btn btn-outline-primary" data-toggle="modal" data-target="#add">
                     <span class="d-flex align-items-center"><i class="fas fa-plus-circle"></i>&#160; Add Event</span>
                 </button>
-                @include('admin.admin-layouts.manage.events.modal._add')
+                @include('BCA.Admin.admin-layouts.manage.events.modal._add')
             </div>
         </div>
     </div>
@@ -23,26 +23,29 @@
                 <table class="table table-bordered table-hover" id="events-table">
                     <thead class="thead-light">
                         <tr>
-                            <th class="text-center">Event No.</th>
-                            <th class="text-center">Title</th>
-                            <th class="text-center">Date</th>
-                            <th class="text-center">Time</th>
-                            <th class="text-center">Action</th>
+                            <th scope="col">Event No.</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Time</th>
+                            <th scope="col" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($events as $event)
                             <tr>
-                                <td class="text-center">{{ $event->id }}</td>
-                                <td class="text-center">{{ $event->title }}</td>
-                                <td class="text-center">{{ date('m/d/Y', strtotime($event->start)) }} - {{  date('m/d/Y', strtotime($event->end)) }}</td>
-                                <td class="text-center">{{ date('h:i:s A', strtotime($event->time)) }}</td>
+                                <td>{{ $event->id }}</td>
+                                <td>{{ $event->title }}</td>
+                                <td>{{ date('m/d/Y', strtotime($event->start)) }} -
+                                    {{ date('m/d/Y', strtotime($event->end)) }}</td>
+                                <td>{{ date('h:i:s A', strtotime($event->time)) }}</td>
                                 <td class="text-center">
-                                    <a class="btn btn-primary" data-toggle="modal" data-target="#edit{{ $event->id }}">Edit</a>
-                                    <a class="btn btn-danger" data-toggle="modal" data-target="#delete{{ $event->id }}">Delete</a>
+                                    <a class="btn btn-outline-primary" data-toggle="modal"
+                                        data-target="#edit{{ $event->id }}">Edit</a>
+                                    <a class="btn btn-outline-danger" data-toggle="modal"
+                                        data-target="#delete{{ $event->id }}">Delete</a>
                                 </td>
-                                @include('admin.admin-layouts.manage.events.modal._edit')
-                                @include('admin.admin-layouts.manage.events.modal._delete')
+                                @include('BCA.Admin.admin-layouts.manage.events.modal._edit')
+                                @include('BCA.Admin.admin-layouts.manage.events.modal._delete')
                             </tr>
                         @endforeach
 
@@ -54,8 +57,6 @@
     </div>
 @endsection
 @section('dashboard-javascript')
-    <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <script type="text/javascript">
         // Call the dataTables jQuery plugin
         $(document).ready(function() {

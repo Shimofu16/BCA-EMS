@@ -23,23 +23,26 @@
                 <table class="table table-bordered table-hover" id="subject-table">
                     <thead class="thead-light">
                         <tr>
-                            <th class="text-center">Grade Level</th>
-                            <th class="text-center">Number of Subjects</th>
-                            <th class="text-center">Action</th>
+                            <th scope="col">Subject</th>
+                            <th scope="col">Garade Level</th>
+                            <th scope="col" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($gradeLevels as $gradeLevel)
-                            <tr class="text-center">
-                                <td>{{ $gradeLevel->grade_name }}</td>
-                                <td>{{ $gradeLevel->subjects->count() }}</td>
-                                <td class="d-flex justify-content-center align-items-center">
-                                    <a class="btn btn-sm btn-outline-info mr-1"
-                                        href="{{ route('registrar.subject.index', $gradeLevel->id) }}">View</a>
+                        @foreach ($subjects as $subject)
+                            <tr>
+                                <td> {{ $subject->subject }}</td>
+                                <td> {{ $subject->gradeLevel->grade_name }}</td>
+                                <td class="text-center">
+                                    <a class="btn btn-outline-primary" data-toggle="modal"
+                                        data-target="#edit{{ $subject->id }}">Edit</a>
+                                    <a class="btn btn-outline-danger" data-toggle="modal"
+                                        data-target="#delete{{ $subject->id }}">Delete</a>
                                 </td>
+                                @include('BCA.Admin.registrar-layouts.subjects.modal._modal-edit')
+                                @include('BCA.Admin.registrar-layouts.subjects.modal._modal-delete')
                             </tr>
                         @endforeach
-
                     </tbody>
                 </table>
             </div>

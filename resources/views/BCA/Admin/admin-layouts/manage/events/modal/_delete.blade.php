@@ -11,7 +11,7 @@
             <div class="modal-body">Are you sure you want to delete this data? </div>
 
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancel</button>
                 <form action="{{ route('admin.events.destroy', $event->id) }}" method="post">
                     @csrf
                     @method('DELETE')

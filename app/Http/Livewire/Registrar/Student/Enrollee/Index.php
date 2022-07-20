@@ -26,7 +26,7 @@ class Index extends Component
                     ->where('grade_level_id', '=', $id)
                     ->where('status', '=', 0)
                     ->where('hasVerifiedEmail', '=', 1)
-                    ->where('sy_id', '=', $currentSy->id)
+                    /* ->where('sy_id', '=', $currentSy->id) */
                     ->where('isDone', '=', 1)
                     ->orderBy('id', 'asc')
                     ->get();
@@ -36,7 +36,7 @@ class Index extends Component
                     ->where('grade_level_id', '=', $id)
                     ->where('status', '=', 0)
                     ->where('hasVerifiedEmail', '=', 1)
-                    ->where('sy_id', '=', $currentSy->id)
+                    /* ->where('sy_id', '=', $currentSy->id) */
                     ->where('isDone', '=', 1)
                     ->orderBy('id', 'asc')
                     ->get();
@@ -59,7 +59,7 @@ class Index extends Component
             $this->students = Student::with('section', 'gradeLevel')
                 ->where('status', '=', 0)
                 ->where('hasVerifiedEmail', '=', 1)
-                ->where('sy_id', '=', $currentSy->id)
+                /* ->where('sy_id', '=', $currentSy->id) */
                 ->where('isDone', '=', 1)
                 ->orderBy('id', 'asc')
                 ->get();
@@ -68,7 +68,7 @@ class Index extends Component
             $this->students = EnrollmentLog::with('section', 'gradeLevel')
                 ->where('status', '=', 0)
                 ->where('hasVerifiedEmail', '=', 1)
-                ->where('sy_id', '=', $currentSy->id)
+                /* ->where('sy_id', '=', $currentSy->id) */
                 ->where('isDone', '=', 1)
                 ->orderBy('id', 'asc')
                 ->get();

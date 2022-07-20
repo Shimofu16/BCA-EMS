@@ -91,7 +91,7 @@
                         class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::guard('admin')->user()->name }}</span>
                     @if (Auth::guard('admin')->user()->gender == 'Male')
                         <img class="img-profile rounded-circle asd"
-                            src="{{ asset('img/illustrations/icons/undraw_profile_2.svg') }}">
+                            src="{{ asset('assets/img/illustrations/icons/undraw_profile_2.svg') }}">
                         @if (Auth::guard('admin')->user()->active == 1)
                             <span class="badge badge-success badge-counter">o</span>
                         @else
@@ -99,7 +99,7 @@
                         @endif
                     @else
                         <img class="img-profile rounded-circle"
-                            src="{{ asset('img/illustrations/icons/undraw_profile_3.svg') }}">
+                            src="{{ asset('assets/img/illustrations/icons/undraw_profile_3.svg') }}">
                         @if (Auth::guard('admin')->user()->active == 1)
                             <span class="badge badge-success badge-counter">o</span>
                         @else
@@ -111,11 +111,11 @@
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
+                {{-- <a class="dropdown-item" href="#">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                 </a>
-                <div class="dropdown-divider"></div>
+                <div class="dropdown-divider"></div> --}}
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Logout

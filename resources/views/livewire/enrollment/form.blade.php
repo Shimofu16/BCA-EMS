@@ -532,7 +532,6 @@
                 </div>
             </div>
         @endif
-
     @endif
     @if ($currentStep == 1)
         <div class="step-one">
@@ -580,7 +579,7 @@
                             <div class="row">
                                 <div class="col-md-9 col-lg-6 mb-3">
                                     <label for="student_lrn" class="text-dark h5 font-weight-bold">Learner Reference
-                                        Number(LRN)@if ($grade_level_id >= 4)
+                                        Number(LRN)@if ($grade_level_id >= 5)
                                             <span class="text-danger">*</span>
                                         @endif
                                     </label>
@@ -1160,8 +1159,7 @@
                                 <label for="promissory_note" class="gender text-dark h6 font-weight-bold"><input
                                         type="checkbox" name="promissory_note" id="promissory_note"
                                         wire:model="promissory_note" value="1"
-                                        {{ $promissory_note == 1 ? 'checked' : '' }}> If your requirements are not
-                                    complete, please check this agreement.</label>
+                                        {{ $promissory_note == 1 ? 'checked' : '' }}> If your requirements are incomplete, check this.</label>
                             </div>
                         </div>
                     </div>

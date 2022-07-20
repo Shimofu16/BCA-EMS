@@ -27,7 +27,15 @@ class EnrolleeController extends Controller
      */
     public function index()
     {
-        try {
+
+        $students = Student::with('section', 'gradeLevel')
+        ->where('status', 0)
+        ->where('isDone', '=', 1)
+        ->orderBy('id', 'asc')
+        ->get();
+        $gradeLevels = GradeLevel::all();
+        return view('BCA.Admin.registrar-layouts.students.enrollees.index', compact('students', 'gradeLevels'));
+       /*  try {
             $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByRegistrar', '=', 1)->first();
             $students = Student::with('section', 'gradeLevel')
                 ->where('status', '=', 0)
@@ -50,7 +58,7 @@ class EnrolleeController extends Controller
         }
 
         $gradeLevels = GradeLevel::all();
-        return view('BCA.Admin.registrar-layouts.students.enrollees.index', compact('students', 'gradeLevels','isCurrentSy'));
+        return view('BCA.Admin.registrar-layouts.students.enrollees.index', compact('students', 'gradeLevels','isCurrentSy')); */
     }
 
     /**
@@ -164,7 +172,7 @@ class EnrolleeController extends Controller
                         try {
                             $this->updateStudent($enrollee->id, $request->input('section_id'));
                             $enrollee->save();
-                            MailController::sendAcceptedMail($firstName, $recipient, $password);
+                            MailController::sendAcceptedMail($firstName,$enrollee->student_id, $recipient, $password);
                             toast()->success('SYSTEM MESSAGE', 'Successfully Enrolled Student ' . $name)->autoClose(6000)->width('400px')->padding('10px')->background('#f8f9fc')->animation('animate__fadeInRight', 'animate__fadeOutDown')->timerProgressBar();
                             return redirect()->route('registrar.enrolled.index');
                         } catch (\Throwable $th) {

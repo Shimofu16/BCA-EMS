@@ -1,4 +1,4 @@
-@extends('admin.admin-layouts.layouts.index')
+@extends('BCA.Admin.admin-layouts.layouts.index')
 @section('role')
     Admin
 @endsection
@@ -40,8 +40,8 @@
                     {{-- <h6 class="collapse-header">Custom Components:</h6> --}}
                     <a class="collapse-item mb-1 {{ Request::is('admin/events') ? 'active-collapse-item' : '' }}"
                         href="{{ route('admin.events.index') }}">Events</a>
-                    <a class="collapse-item mb-1 {{ Request::is('admin/students/enrollee') ? 'active-collapse-item' : '' }}"
-                        href="#">Photo Gallery</a>
+                   {{--  <a class="collapse-item mb-1 {{ Request::is('admin/students/enrollee') ? 'active-collapse-item' : '' }}"
+                        href="#">Photo Gallery</a> --}}
                 </div>
             </div>
         </li>

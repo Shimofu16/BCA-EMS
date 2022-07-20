@@ -23,15 +23,12 @@ class Index extends Component
 
     public function filterByGradeLevel($id)
     {
-        try {
-            $currentSy = SchoolYear::where('isCurrent', '=', 1)->first();
-
-            $this->students = Student::where('status', '=', 1)
-                ->where('grade_level_id', '=', $id)
-                ->where('sy_id', '=', $currentSy->id)
-                ->where('isDone', '=', 1)
-                ->orderBy('id', 'asc')
-                ->get();
+        $this->students = Student::where('status', '=', 1)
+            ->where('grade_level_id', '=', $id)
+            /* ->where('sy_id', '=', $currentSy->id) */
+            ->where('isDone', '=', 1)
+            ->orderBy('id', 'asc')
+            ->get();
             $this->sections = Section::where('grade_level_id', '=', $id)->get();
             $this->grade_name = GradeLevel::where('id', '=', $id)
                 ->first()->grade_name;
@@ -39,38 +36,41 @@ class Index extends Component
             $this->byGrade = true;
             $this->bySection = false;
             $this->default = false;
+   /*      try {
+            $currentSy = SchoolYear::where('isCurrent', '=', 1)->first();
+
         } catch (\Throwable $th) {
             dd($th);
-        }
+        } */
     }
     public function filterBySection($id)
     {
-        try {
+        $this->students = Student::where('status', '=', 1)
+            ->where('section_id', '=', $id)
+        /*     ->where('sy_id', '=', $currentSy->id) */
+            ->where('isDone', '=', 1)
+            ->orderBy('id', 'asc')
+            ->get();
+        $this->section_name = Section::where('id', '=', $id)
+            ->first()->section_name;
+        $this->bySection = true;
+        $this->byGrade = false;
+        $this->default = false;
+        /* try {
             $currentSy = SchoolYear::where('isCurrent', '=', 1)->first();
 
-            $this->students = Student::where('status', '=', 1)
-                ->where('section_id', '=', $id)
-                ->where('sy_id', '=', $currentSy->id)
-                ->where('isDone', '=', 1)
-                ->orderBy('id', 'asc')
-                ->get();
-            $this->section_name = Section::where('id', '=', $id)
-                ->first()->section_name;
-            $this->bySection = true;
-            $this->byGrade = false;
-            $this->default = false;
         } catch (\Throwable $th) {
             dd($th);
-        }
+        } */
     }
     public function resetFilters()
     {
-        $currentSy = SchoolYear::where('isCurrent', '=', 1)->first();
+   /*      $currentSy = SchoolYear::where('isCurrent', '=', 1)->first(); */
         $this->sections = Section::all();
         $this->gradeLevels = GradeLevel::all();
         $this->students = Student::with('section', 'gradeLevel')
             ->where('status', 1)
-            ->where('sy_id', '=', $currentSy->id)
+  /*           ->where('sy_id', '=', $currentSy->id) */
             ->where('isDone', '=', 1)
             ->orderBy('id', 'asc')
             ->get();

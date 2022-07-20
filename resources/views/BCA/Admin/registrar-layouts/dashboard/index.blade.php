@@ -2,7 +2,7 @@
 @section('contents')
     <h1 class="h3 mb-4 text-gray-800">Dashboard</h1>
     <div class="row">
-        @if ($isCurrentSy)
+       {{--  @if ($isCurrentSy) --}}
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                     <a href="{{ route('registrar.enrolled.index') }}" class="card-body link-primary text-decoration-none">
@@ -23,7 +23,7 @@
             </div> --}}
                 </div>
             </div>
-        @endif
+       {{--  @endif --}}
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-danger shadow h-100 py-2">
                 <a href="{{ route('registrar.enrollees.index') }}" class="card-body link-primary text-decoration-none">
@@ -50,7 +50,7 @@
                 </a>
             </div>
         </div>
-        @if ($isCurrentSy)
+        {{-- @if ($isCurrentSy) --}}
                 <div class="col-xl-3 col-md-6 mb-4">
                     <div class="card border-left-primary shadow h-100 py-2">
                         <a href="{{ route('registrar.section.index.grade.levels') }}"
@@ -93,7 +93,7 @@
                         </a>
                     </div>
                 </div>
-        @endif
+        {{-- @endif --}}
     </div>
     <h1 class="h3 mb-4 text-gray-800">Enrollees</h1>
     <div class="row">
@@ -235,7 +235,7 @@
                 </div>
             </div>
         </div>
-        @if ($isCurrentSy)
+       {{--  @if ($isCurrentSy) --}}
             <div class="col-xl-6 col-lg-5">
                 <div class="card shadow mb-4">
                     <!-- Card Header - Dropdown -->
@@ -281,6 +281,6 @@
                     </div>
                 </div>
             </div>
-        @endif
+        {{-- @endif --}}
     </div>
 @endsection

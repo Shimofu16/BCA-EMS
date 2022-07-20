@@ -19,14 +19,15 @@ class StudentPaymentController extends Controller
      */
     public function index()
     {
-        try {
+        $payments = Student::get();
+        /* try {
             $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByCashier', '=', 1)->firstOrFail();
 
             $payments = Student::where('sy_id', '=', $currentSy->id)->get();
         } catch (\Throwable $th) {
             $currentSy = SchoolYear::where('isCurrentViewByCashier', '=', 1)->firstOrFail();
             $payments = EnrollmentLog::where('sy_id', '=', $currentSy->id)->get();
-        }
+        } */
 
         return view('BCA.Admin.cashier-layout.payments.student.index', compact('payments'));
     }

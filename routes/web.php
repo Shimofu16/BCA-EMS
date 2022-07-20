@@ -224,11 +224,5 @@ route::prefix('student')->name('student.')->group(function () {
     });
 });
 
-Route::get('download/pdf', function () {
-    try {
-
-        ExportController::exportForm('2022-00003-CL-0');
-    } catch (\Throwable $th) {
-        dd($th);
-    }
-})->name('download.pdf');
+Route::get('/export/enrollees',[ExportController::class,'exportEnrollees']);
+Route::get('/export/enrolled',[ExportController::class,'exportEnrollees']);

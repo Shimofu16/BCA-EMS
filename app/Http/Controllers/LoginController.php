@@ -138,7 +138,7 @@ class LoginController extends Controller
     public function adminLogout(Request $request)
     {
         $id = request()->validate([
-            'id' => 'required|exists:admins,id'
+            'id' => 'required|exists:admin_accounts,id'
         ]);
         if ($id) {
             AdminAccount::where('id', '=', request()->id)->update(['active' => 0]);

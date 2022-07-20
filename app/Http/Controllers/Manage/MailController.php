@@ -16,10 +16,11 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class MailController extends Controller
 {
-    public static function sendAcceptedMail($name, $recipient, $password)
+    public static function sendAcceptedMail($name,$student_id, $recipient, $password)
     {
         $data = [
             'name' => $name,
+            'student_id'=>$student_id,
             'password' => $password,
         ];
         Mail::to($recipient)->send(new Accepted($data));

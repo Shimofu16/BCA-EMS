@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="modal-footer pb-0 mb-0 py-1">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                         <button class="btn btn-primary" type="submit">Edit Event</button>
                     </div>
                 </form>

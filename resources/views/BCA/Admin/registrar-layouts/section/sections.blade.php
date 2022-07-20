@@ -1,6 +1,6 @@
 @extends('BCA.Admin.registrar-layouts.index')
 @section('page-title')
-    Grade levels
+    Sections
 @endsection
 @section('contents')
     <div class="row shadow align-items-center justify-content-between mb-3">
@@ -36,34 +36,40 @@
                 <table class="table table-bordered table-hover" id="section-table">
                     <thead class="thead-light">
                         <tr>
+                            <th scope="col">Section name</th>
                             <th scope="col">Grade Level</th>
-                            <th scope="col">Number of Sections</th>
+                            <th scope="col">Number of students</th>
+                            <th scope="col">Adviser</th>
                             <th scope="col" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($gradeLevels as $gradeLevel)
+                        @foreach ($sections as $section)
                             <tr>
-                                <td>
-                                    <div class="px-2">
-                                        {{ $gradeLevel->grade_name }}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="px-2">
-                                        {{ $gradeLevel->sections->count() }}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <a class="btn btn-sm btn-outline-info mr-1"
-                                            href="{{ route('registrar.section.index', $gradeLevel->id) }}">View</a>
-
-                                    </div>
+                                <td>{{ $section->section_name }}</td>
+                                <td>{{ $section->gradeLevel->grade_name}}</td>
+                                @if ($section->students->count() == null)
+                                    <td>No Student</td>
+                                @else
+                                    <td>{{ $section->students->count() }}</td>
+                                @endif
+                                @if ($section->teacher_id == null)
+                                    <td>No Adviser</td>
+                                @else
+                                    <td>{{ $section->teacher->name }}</td>
+                                @endif
+                                <td class="d-flex justify-content-center align-items-center">
+                                    <a class="btn btn-sm btn-outline-info mr-1"
+                                        href="{{ route('registrar.section.show', $section->id) }}">View</a>
+                                    <button type="button" class="btn btn-outline-primary btn-sm mr-1" data-toggle="modal"
+                                        data-target="#edit{{ $section->id }}">Edit</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm " data-toggle="modal"
+                                        data-target="#delete{{ $section->id }}">Delete</button>
+                                    @include('BCA.Admin.registrar-layouts.section.modal._modal-edit')
+                                    @include('BCA.Admin.registrar-layouts.section.modal._modal-delete')
                                 </td>
                             </tr>
                         @endforeach
-
                     </tbody>
                 </table>
             </div>

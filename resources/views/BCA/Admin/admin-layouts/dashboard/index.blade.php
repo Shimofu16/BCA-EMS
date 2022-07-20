@@ -1,4 +1,4 @@
-@extends('admin.admin-layouts.index')
+@extends('BCA.Admin.admin-layouts.index')
 
 @section('contents')
     <h1 class="h3 mb-4 text-gray-800">Dashboard</h1>

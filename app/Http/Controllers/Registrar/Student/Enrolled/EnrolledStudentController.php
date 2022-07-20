@@ -25,7 +25,15 @@ class EnrolledStudentController extends Controller
      */
     public function index()
     {
-        try {
+        $students = Student::with('section', 'gradeLevel')
+            ->where('status', 1)
+            ->where('isDone', '=', 1)
+            ->orderBy('id', 'asc')
+            ->get();
+        $gradeLevels = GradeLevel::all();
+        $sections = Section::all();
+        return view('BCA.Admin.registrar-layouts.students.enrolled.index', compact('students', 'gradeLevels', 'sections'));
+        /*   try {
             $currentSy = SchoolYear::where('isCurrent', '=', 1)->where('isEnrollment', '=', 1)->where('isCurrentViewByRegistrar', '=', 1)->first();
             $students = Student::with('section', 'gradeLevel')
                 ->where('status', '=', 1)
@@ -44,7 +52,7 @@ class EnrolledStudentController extends Controller
         }
         $gradeLevels = GradeLevel::all();
         $sections = Section::all();
-        return view('BCA.Admin.registrar-layouts.students.enrolled.index', compact('students', 'gradeLevels', 'sections','isCurrentSy'));
+        return view('BCA.Admin.registrar-layouts.students.enrolled.index', compact('students', 'gradeLevels', 'sections','isCurrentSy')); */
     }
 
     /**
