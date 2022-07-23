@@ -78,7 +78,7 @@
                         @endif
                     @endforeach
                     <a class="collapse-item {{ Request::routeIs('registrar.section.index.grade.levels') ? 'active-collapse-item' : '' }}"
-                        href="{{ route('registrar.section.index.grade.levels') }}">Grade Levels</a>
+                        href="{{ route('registrar.section.index.grade.levels') }}">Sections</a>
                 </div>
             </div>
         </li>
@@ -98,7 +98,7 @@
                         @endif
                     @endforeach
                     <a class="collapse-item {{ Request::routeIs('registrar.section.index.grade.levels') ? 'active-collapse-item' : '' }}"
-                        href="{{ route('registrar.subject.index.grade.levels') }}">Sections</a>
+                        href="{{ route('registrar.subject.index.grade.levels') }}">Subjects</a>
                 </div>
             </div>
         </li>

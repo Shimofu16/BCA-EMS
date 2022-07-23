@@ -71,7 +71,7 @@
                                     Calendar</a>
                             </li>
                             <li><a href="{{ route('enroll.index') }}"
-                                    class="dropdown-item p-3 text-light hover-bca-dd">Enroll</a>
+                                    class="dropdown-item p-3 text-light hover-bca-dd">Enrollment</a>
                         </ul>
                     </li>
                 </ul>

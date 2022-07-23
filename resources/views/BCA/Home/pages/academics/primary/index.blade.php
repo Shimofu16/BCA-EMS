@@ -29,7 +29,7 @@
                             ut quos non laudantium sed libero rerum eum? Impedit eos, quia ullam dicta quibusdam
                             reprehenderit, recusandae labore pariatur quo vitae odio!</p>
                         <div>
-                            <a href="{{ route('nursery.index') }}" class="btn btn-bca"> <i class="fa-solid fa-angle-right"></i>
+                            <a href="{{ route('nursery.index') }}" class="btn btn-bca-outline  text-bca hvr-sweep-to-bottom"> <i class="fa-solid fa-angle-right"></i>
                                 <span class="text-uppercase">
                                     See more
                                 </span>
@@ -50,7 +50,7 @@
                             ut quos non laudantium sed libero rerum eum? Impedit eos, quia ullam dicta quibusdam
                             reprehenderit, recusandae labore pariatur quo vitae odio!</p>
                         <div>
-                            <a href="{{ route('kindergarten.index') }}" class="btn btn-bca"> <i class="fa-solid fa-angle-right"></i>
+                            <a href="{{ route('kindergarten.index') }}" class="btn btn-bca-outline  text-bca hvr-sweep-to-bottom"> <i class="fa-solid fa-angle-right"></i>
                                 <span class="text-uppercase">
                                     See more
                                 </span>
@@ -71,7 +71,7 @@
                             ut quos non laudantium sed libero rerum eum? Impedit eos, quia ullam dicta quibusdam
                             reprehenderit, recusandae labore pariatur quo vitae odio!</p>
                         <div>
-                            <a href="{{ route('preparatory.index') }}" class="btn btn-bca"> <i class="fa-solid fa-angle-right"></i>
+                            <a href="{{ route('preparatory.index') }}" class="btn btn-bca-outline  text-bca hvr-sweep-to-bottom"> <i class="fa-solid fa-angle-right"></i>
                                 <span class="text-uppercase">
                                     See more
                                 </span>

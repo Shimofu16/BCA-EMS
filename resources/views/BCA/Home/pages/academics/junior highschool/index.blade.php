@@ -27,7 +27,7 @@
                     Quisquam unde soluta perferendis pariatur ducimus dignissimos possimus temporibus esse tenetur
                     animi consequuntur odit delectus iste dolores quos, dolorem aut earum amet?</p>
                 <div class="d-flex justify-content-end">
-                    <a href="{{ route('enroll.index') }}" class="btn btn-bca"><i class="fa-solid fa-book"></i>&#160;&#160;Enroll now</a>
+                    <a href="{{ route('enroll.index') }}" class="btn btn-bca-outline  text-bca hvr-sweep-to-bottom"><i class="fa-solid fa-book"></i>&#160;&#160;Enroll now</a>
                 </div>
             </div>
             <h3 class="mt-4">More Photos</h3>

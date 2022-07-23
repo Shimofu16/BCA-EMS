@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin\Event;
 use Illuminate\Http\Request;
 
 class AdminDashboardController extends Controller
@@ -14,7 +15,8 @@ class AdminDashboardController extends Controller
      */
     public function index()
     {
-        return view('BCA.Admin.admin-layouts.dashboard.index');
+        $eventsCount = Event::count();
+        return view('BCA.Admin.admin-layouts.dashboard.index',compact('eventsCount'));
     }
 
     /**
